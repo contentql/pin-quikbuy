@@ -8,6 +8,7 @@ import { tagRouter } from '@/trpc/routers/tag'
 import { authRouter } from './auth'
 import { categoryRouter } from './categories'
 import { formRouter } from './form'
+import { ordersRouter } from './orders/page'
 import { productRouter } from './products'
 import { searchRouter } from './search'
 import { seedRouter } from './seed'
@@ -27,6 +28,7 @@ export const appRouter = router({
   form: formRouter,
   product: productRouter,
   category: categoryRouter,
+  orders: ordersRouter,
 })
 
 export type AppRouter = typeof appRouter
