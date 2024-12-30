@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import {
   Dialog,
   DialogContent,
@@ -66,7 +66,6 @@ export default function DeleteAccountSection({ user }: { user: User }) {
             <Button
               disabled={email !== user.email}
               onClick={() => deleteUserMutation()}
-              isLoading={isDeleteAccountPending}
               variant='destructive'>
               Yes, Delete Account Forever
             </Button>

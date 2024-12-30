@@ -21,7 +21,7 @@ import { ReactElement, useState } from 'react'
 import { trpc } from '@/trpc/client'
 import { useMetadata } from '@/utils/metadataContext'
 
-import Button from './common/Button'
+import { Button } from './common/Button'
 
 type IconMapping = {
   [key: string]: ReactElement

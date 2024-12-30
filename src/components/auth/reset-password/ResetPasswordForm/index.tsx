@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Alert, AlertDescription } from '@/components/common/Alert'
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { trpc } from '@/trpc/client'
 import { ResetPasswordSchema } from '@/trpc/routers/auth/validator'
@@ -88,7 +88,7 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
                   />
 
                   {errors.password && (
-                    <p className='text-xs text-danger' id='email-error'>
+                    <p className='text-danger text-xs' id='email-error'>
                       {errors.password.message}
                     </p>
                   )}
@@ -97,7 +97,6 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
 
               <Button
                 type='submit'
-                isLoading={isResetPasswordPending}
                 disabled={isResetPasswordPending}
                 className='w-full'>
                 Reset Password

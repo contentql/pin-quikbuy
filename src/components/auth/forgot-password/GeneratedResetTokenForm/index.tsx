@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Alert, AlertDescription } from '@/components/common/Alert'
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { trpc } from '@/trpc/client'
 import { GenerateTokenSchema } from '@/trpc/routers/auth/validator'
@@ -81,14 +81,13 @@ const GenerateResetTokenForm: React.FC = () => {
                 />
 
                 {errors?.email && (
-                  <p className='text-sm text-danger'>{errors.email.message}</p>
+                  <p className='text-danger text-sm'>{errors.email.message}</p>
                 )}
               </LabelInputContainer>
 
               <Button
                 type='submit'
                 className='mb-2 w-full'
-                isLoading={isGeneratePasswordPending}
                 disabled={isGeneratePasswordPending}>
                 Send Reset Link
               </Button>

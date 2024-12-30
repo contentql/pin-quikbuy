@@ -9,7 +9,7 @@ import { TRPCClientErrorLike } from '@trpc/client'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import { Skeleton } from '@/components/common/Skeleton'
 import { tagRouter } from '@/trpc/routers/tag'
 import { useMetadata } from '@/utils/metadataContext'
@@ -102,7 +102,7 @@ const TagsList = ({
                       alt={tag.image.alt}
                       height={160}
                       width={160}
-                      className='h-full w-full animate-image-blur'
+                      className='animate-image-blur h-full w-full'
                     />
                   )}
                 </div>
@@ -121,7 +121,6 @@ const TagsList = ({
                 <Button
                   size='sm'
                   disabled={isFetchingNextPage}
-                  isLoading={isFetchingNextPage}
                   variant='outline'
                   onClick={() => fetchNextPage()}>
                   Load more

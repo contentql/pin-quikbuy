@@ -42,7 +42,8 @@ export async function GET() {
 
       // If it has a Details block with a valid collectionSlug
       if (blockData?.blockType === 'Details' && blockData.collectionSlug) {
-        const slug = blockData.collectionSlug
+        const slug =
+          blockData.collectionSlug as keyof typeof sitemapGenerationMapping
 
         // Fetch all slugs for the given collection (e.g., blogs, tags, users)
         const data = await sitemapGenerationMapping[slug]

@@ -7,30 +7,19 @@ const HomeConfig: Block = {
     singular: 'Home Block',
     plural: 'Home Blocks',
   },
-  imageURL: '/images/blocks/hero-block.png',
+  imageURL: '/images/blocks/hero-block.jpg',
   fields: [
     {
-      name: 'heading',
+      name: 'title',
       type: 'text',
-      label: 'Heading',
+      label: 'Title',
       required: true,
     },
     {
-      name: 'subHeading',
+      name: 'description',
       type: 'text',
-      label: 'Sub Heading',
-    },
-    {
-      name: 'image',
-      type: 'relationship',
-      relationTo: 'media',
+      label: 'Description',
       required: true,
-    },
-    {
-      name: 'subscribeField',
-      type: 'checkbox',
-      required: true,
-      defaultValue: false,
     },
   ],
 }

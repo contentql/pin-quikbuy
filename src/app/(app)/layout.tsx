@@ -1,11 +1,8 @@
 import { env } from '@env'
-import configPromise from '@payload-config'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata, Viewport } from 'next'
-import { unstable_cache } from 'next/cache'
 import Script from 'next/script'
-import { getPayload } from 'payload'
 import { Toaster } from 'sonner'
 
 import '@/app/(app)/globals.css'
@@ -13,23 +10,7 @@ import GoogleAdsense from '@/components/GoogleAdsense'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import { PreloadResources } from '@/payload/plugins/snipcart'
 import Provider from '@/trpc/Provider'
-
-const getCachedSiteSettings = unstable_cache(
-  async () => {
-    const payload = await getPayload({
-      config: configPromise,
-    })
-
-    const data = await payload.findGlobal({
-      slug: 'site-settings',
-      draft: false,
-    })
-
-    return data
-  },
-  ['site-settings'],
-  { tags: ['site-settings'] },
-)
+import { getCachedSiteSettings } from '@/utils/getCachedSiteSettings'
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -104,7 +85,7 @@ export default async function RootLayout({
       : '/favicon.ico'
 
   return (
-    <html lang='en' className='light'>
+    <html lang='en' className='light h-full'>
       <head>
         <link rel='icon' type='image/x-icon' href={faviconUrl} />
 
@@ -115,7 +96,7 @@ export default async function RootLayout({
       </head>
 
       <body
-        className={`${GeistSans.className} ${GeistMono.variable} antialiased`}>
+        className={`flex min-h-full flex-col ${GeistSans.className} ${GeistMono.variable} antialiased`}>
         <Provider>{children}</Provider>
 
         {/* Sonnar toast library */}

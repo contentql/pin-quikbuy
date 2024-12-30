@@ -1,8 +1,13 @@
+import { isAdmin } from '../../access/isAdmin'
 import { revalidateProducts } from '../hooks/revalidateProducts'
 import { slugField } from '@node_modules/@contentql/core/dist/payload/fields/slug'
 import { CollectionConfig } from 'payload'
 
+import { createOrFetchSnipcartProduct } from './hooks/createOrFetchSnipcartProduct'
+import { deleteSnipcartProduct } from './hooks/deleteSnipcartProduct'
 import { manageProductAttributes } from './hooks/manageProductAttributes'
+import { manageProductsCountInCategories } from './hooks/manageProductsCountInCatgories'
+import { updateSnipcartProduct } from './hooks/updateSnipcartProduct'
 import { validateStock } from './hooks/validateStock'
 
 export const Products: CollectionConfig = {
@@ -21,28 +26,18 @@ export const Products: CollectionConfig = {
   hooks: {
     afterChange: [
       revalidateProducts,
-      async ({ req, doc }) => {
-        const { totalDocs: productCount } = await req.payload.count({
-          collection: 'products',
-          where: {
-            category: {
-              equals: doc?.category,
-            },
-          },
-        })
-
-        await req.payload.update({
-          collection: 'categories',
-          data: {
-            productCount,
-          },
-          id: doc?.category,
-        })
-
-        return doc
-      },
+      manageProductsCountInCategories,
+      createOrFetchSnipcartProduct,
+      updateSnipcartProduct,
     ],
     beforeChange: [manageProductAttributes, validateStock],
+    afterDelete: [deleteSnipcartProduct],
+  },
+  access: {
+    read: () => true,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -414,7 +409,7 @@ export const Products: CollectionConfig = {
               relationTo: 'media',
               hasMany: true,
               required: true,
-              minRows: 3,
+              minRows: 1,
               admin: {
                 description: 'Upload product images.',
               },

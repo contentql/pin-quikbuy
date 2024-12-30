@@ -1,85 +1,158 @@
 'use client'
 
-import { useEffect } from 'react'
+import { createPayloadCart } from '../helpers/createPayloadCart'
+import { createPayloadOrder } from '../helpers/createPayloadOrder'
+import { deletePayloadCart } from '../helpers/deletePayloadCart'
+import { fetchCurrentUser } from '../helpers/fetchCurrentUser'
+import { updatePayloadCart } from '../helpers/updatePayloadCart'
+import { updateSnipcartCheckout } from '../helpers/updateSnipcartCheckout'
+// Helper to add order to the cart collection
+import { useEffect, useRef } from 'react'
 
-export default function useSnipcartEvents() {
+const useSnipcartEvents = () => {
+  const unsubscribeRef = useRef<(() => void)[]>([])
+
   useEffect(() => {
     const handleSnipcartReady = () => {
       if (typeof window.Snipcart === 'undefined') return
 
       const { Snipcart } = window
 
-      // Attach event listeners with specific operations
-      Snipcart.events.on('item.added', item => {
-        console.log('Item added:', item)
-      })
+      // Helper to register and store unsubscribe functions
+      const registerEvent = (
+        event: SnipcartEvent,
+        callback: (data: any) => void,
+      ) => {
+        const unsubscribe = Snipcart.events.on(event, callback)
+        unsubscribeRef.current.push(unsubscribe)
+      }
 
-      Snipcart.events.on('item.adding', item => {
+      // Item-related events
+      registerEvent('item.adding', item => {
         console.log('Item adding:', item)
       })
 
-      Snipcart.events.on('item.updated', item => {
+      registerEvent('item.added', async item => {
+        console.log('Item added:', item)
+
+        const user = await fetchCurrentUser()
+        if (!user) {
+          console.log('No user found. Cannot update cart.')
+          return
+        }
+
+        // Serialize the item object to remove unsupported properties
+        const plainItem = JSON.parse(JSON.stringify(item))
+
+        await createPayloadCart(user, plainItem)
+      })
+
+      registerEvent('item.updated', async item => {
         console.log('Item updated:', item)
+
+        const user = await fetchCurrentUser()
+        if (!user) {
+          console.log('No user found. Cannot update cart.')
+          return
+        }
+
+        // Serialize the item object to remove unsupported properties
+        const plainItem = JSON.parse(JSON.stringify(item))
+
+        await updatePayloadCart(user, plainItem)
       })
 
-      Snipcart.events.on('item.removed', item => {
+      registerEvent('item.removed', async item => {
         console.log('Item removed:', item)
+
+        const user = await fetchCurrentUser()
+        if (!user) {
+          console.log('No user found. Cannot update cart.')
+          return
+        }
+
+        // Serialize the item object to remove unsupported properties
+        const plainItem = JSON.parse(JSON.stringify(item))
+
+        await deletePayloadCart(user, plainItem)
       })
 
-      Snipcart.events.on('order.completed', order => {
-        console.log('Order completed:', order)
-      })
-
-      Snipcart.events.on('cart.closed', () => {
-        console.log('Cart closed')
-      })
-
-      Snipcart.events.on('cart.created', cart => {
+      // Cart-related events
+      registerEvent('cart.created', cart => {
         console.log('Cart created:', cart)
       })
 
-      Snipcart.events.on('cart.confirmed', cart => {
+      registerEvent('cart.confirmed', async cart => {
         console.log('Cart confirmed:', cart)
+
+        const user = await fetchCurrentUser()
+        if (!user) {
+          console.log('No user found. Cannot add order to cart collection.')
+          return
+        }
+
+        // Serialize the item object to remove unsupported properties
+        const plainOrder = JSON.parse(JSON.stringify(cart))
+
+        await createPayloadOrder(user, plainOrder)
       })
 
-      Snipcart.events.on('cart.reset', cart => {
+      registerEvent('cart.confirm.error', confirmError => {
+        console.log('Cart confirm error: ', confirmError)
+      })
+
+      registerEvent('cart.reset', cart => {
         console.log('Cart reset:', cart)
       })
 
-      Snipcart.events.on('payment.failed', error => {
+      // Payment-related events
+      registerEvent('payment.failed', error => {
         console.log('Payment failed:', error)
       })
 
-      Snipcart.events.on('discount.applied', discount => {
+      // Discount-related events
+      registerEvent('discount.applied', discount => {
         console.log('Discount applied:', discount)
       })
 
-      Snipcart.events.on('shipping.selected', shipping => {
+      // Shipping-related events
+      registerEvent('shipping.selected', shipping => {
         console.log('Shipping selected:', shipping)
       })
 
-      Snipcart.events.on('customer.registered', customer => {
+      // Customer-related events
+      registerEvent('customer.registered', customer => {
         console.log('Customer registered:', customer)
       })
 
-      Snipcart.events.on('customer.signedin', customer => {
+      registerEvent('customer.signedin', customer => {
         console.log('Customer signed in:', customer)
       })
 
-      Snipcart.events.on('customer.signedout', () => {
+      registerEvent('customer.signedout', () => {
         console.log('Customer signed out')
       })
 
-      Snipcart.events.on('snipcart.initialized', state => {
+      // Initialization and theme-related events
+      registerEvent('snipcart.initialized', state => {
         console.log('Snipcart initialized:', state)
       })
 
-      Snipcart.events.on('theme.routechanged', routes => {
+      registerEvent('theme.routechanged', routes => {
         console.log('Theme route changed:', routes)
       })
 
-      Snipcart.events.on('summary.checkout_clicked', () => {
+      // Summary-related events
+      registerEvent('summary.checkout_clicked', async () => {
         console.log('Checkout clicked')
+
+        const user = await fetchCurrentUser()
+        if (!user) {
+          console.log('No user found. Cannot update checkout details.')
+          return
+        }
+
+        await updateSnipcartCheckout(user)
       })
     }
 
@@ -87,31 +160,11 @@ export default function useSnipcartEvents() {
 
     return () => {
       // Cleanup event listeners
-      if (typeof window.Snipcart !== 'undefined') {
-        const { Snipcart } = window
-        const events = [
-          'item.added',
-          'item.adding',
-          'item.updated',
-          'item.removed',
-          'order.completed',
-          'cart.closed',
-          'cart.created',
-          'cart.confirmed',
-          'cart.reset',
-          'payment.failed',
-          'discount.applied',
-          'shipping.selected',
-          'customer.registered',
-          'customer.signedin',
-          'customer.signedout',
-          'snipcart.initialized',
-          'theme.routechanged',
-          'summary.checkout_clicked',
-        ] as SnipcartEvent[]
-        events.forEach(event => Snipcart.events.off(event))
-      }
+      unsubscribeRef.current.forEach(unsubscribe => unsubscribe())
+      unsubscribeRef.current = [] // Clear the reference
       document.removeEventListener('snipcart.ready', handleSnipcartReady)
     }
   }, [])
 }
+
+export default useSnipcartEvents

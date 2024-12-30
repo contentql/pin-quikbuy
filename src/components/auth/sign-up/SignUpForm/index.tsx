@@ -9,7 +9,7 @@ import slugify from 'slugify'
 import { toast } from 'sonner'
 
 import { Alert, AlertDescription } from '@/components/common/Alert'
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { trpc } from '@/trpc/client'
 
@@ -122,7 +122,7 @@ const SignUpForm: React.FC = () => {
               />
 
               {errors?.username && (
-                <p className='text-sm text-danger'>{errors.username.message}</p>
+                <p className='text-danger text-sm'>{errors.username.message}</p>
               )}
             </LabelInputContainer>
           </div>
@@ -141,7 +141,7 @@ const SignUpForm: React.FC = () => {
                 placeholder='john.doe@example.com'
               />
               {errors?.email && (
-                <p className='text-sm text-danger'>{errors.email.message}</p>
+                <p className='text-danger text-sm'>{errors.email.message}</p>
               )}
             </LabelInputContainer>
           </div>
@@ -159,7 +159,7 @@ const SignUpForm: React.FC = () => {
                 placeholder='● ● ● ● ● ● ● ● ●'
               />
               {errors?.password && (
-                <p className='text-sm text-danger'>{errors.password.message}</p>
+                <p className='text-danger text-sm'>{errors.password.message}</p>
               )}
             </LabelInputContainer>
           </div>
@@ -179,18 +179,14 @@ const SignUpForm: React.FC = () => {
                 placeholder='● ● ● ● ● ● ● ● ●'
               />
               {errors?.confirmPassword && (
-                <p className='text-sm text-danger'>
+                <p className='text-danger text-sm'>
                   {errors.confirmPassword.message}
                 </p>
               )}
             </LabelInputContainer>
           </div>
           <div>
-            <Button
-              type='submit'
-              className='w-full'
-              isLoading={isSignUpPending}
-              disabled={isSignUpPending}>
+            <Button type='submit' className='w-full' disabled={isSignUpPending}>
               Sign Up
             </Button>
           </div>

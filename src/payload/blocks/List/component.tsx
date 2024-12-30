@@ -48,7 +48,7 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
       )()
 
       return (
-        <div className='-mt-4'>
+        <div>
           <ShopPage products={products} />
         </div>
       )
@@ -94,7 +94,7 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
               if (typeof value === 'number') {
                 return value === tag.id
               } else {
-                return value.id === tag.id
+                return value === tag.id
               }
             })
           }

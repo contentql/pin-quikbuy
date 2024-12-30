@@ -2,12 +2,9 @@
 
 import { Params } from '../types'
 import { HomeType } from '@payload-types'
-import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { Autoplay, Navigation } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Keep existing interfaces and dummy data
 interface HomeProps extends HomeType {
@@ -108,148 +105,34 @@ const Home: React.FC<HomeProps> = ({ params, ...block }) => {
   }
 
   return (
-    <div className='relative h-5/6 w-full items-center overflow-hidden rounded-lg'>
-      <Swiper
-        modules={[Navigation, Autoplay]}
-        spaceBetween={50}
-        slidesPerView={1}
-        navigation={{
-          prevEl: '.swiper-button-prev',
-          nextEl: '.swiper-button-next',
-        }}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        loop={true}
-        className='relative'>
-        {products.map((product, index) => (
-          <SwiperSlide
-            key={product.id || index}
-            className='relative h-5/6 pb-10'>
-            {/* Blurred Background */}
-            <div
-              className='absolute inset-0 -z-10 h-full w-full bg-cover bg-center blur-xl filter'
-              style={{
-                backgroundImage: `url(${
-                  typeof product.image === 'object'
-                    ? product.image?.url || '/placeholder.jpg'
-                    : product.image || '/placeholder.jpg'
-                })`,
-              }}></div>
-
-            {/* Overlay */}
-            <div className='-z-5 absolute inset-0 bg-black/20'></div>
-
-            <div className='grid h-full items-center gap-8 p-6 md:grid-cols-2 md:p-12'>
-              {/* Product Image */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-                className='relative flex h-full w-full items-center justify-center'>
-                <div className='relative aspect-square w-full max-w-md'>
-                  <Image
-                    src={
-                      typeof product.image === 'object'
-                        ? product.image?.url || '/placeholder.jpg'
-                        : product.image || '/placeholder.jpg'
-                    }
-                    alt={product.image?.alt || product.name || 'Product Image'}
-                    fill
-                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                    className='rounded-2xl object-cover shadow-2xl 
-                    transition-transform duration-500 hover:scale-105'
-                    priority={index === 0}
-                  />
-                  {product.discount && product.discount > 0 && (
-                    <div
-                      className='absolute right-4 top-4 rounded-full bg-red-500 
-                    px-3 py-1 text-sm font-semibold text-white'>
-                      {product.discount}% OFF
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-
-              {/* Product Details */}
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className='relative space-y-6 text-center md:text-left'>
-                <h2 className='mb-4 text-3xl font-bold text-white md:text-5xl'>
-                  {product.name}
-                </h2>
-                <p className='mb-6 text-lg text-white md:text-xl'>
-                  {product.description}
-                </p>
-
-                {/* Price Section */}
-                <div className='mb-6 flex items-center justify-center space-x-4 md:justify-start'>
-                  <span className='text-2xl font-bold text-white md:text-3xl'>
-                    ${product.price?.toFixed(2)}
-                  </span>
-                  {product.originalPrice && (
-                    <span className='text-lg text-white line-through'>
-                      ${product.originalPrice.toFixed(2)}
-                    </span>
-                  )}
-                </div>
-
-                {/* Call to Action */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}>
-                  <Link
-                    href={`/product/${product.id}`}
-                    className='inline-block rounded-full bg-black px-8 py-3 
-                    text-lg font-semibold text-white 
-                    transition-all duration-300 ease-in-out 
-                    hover:bg-gray-800 hover:shadow-xl'>
-                    Shop Now
-                  </Link>
-                </motion.div>
-              </motion.div>
-            </div>
-          </SwiperSlide>
-        ))}
-
-        {/* Custom Navigation Arrows */}
-        <div className='absolute top-1/2 z-50 flex w-full -translate-y-1/2 justify-between'>
-          <div className='swiper-button-prev left-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/75'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='h-6 w-6'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M15.75 19.5 8.25 12l7.5-7.5'
-              />
-            </svg>
-          </div>
-          <div className='swiper-button-next right-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/75'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='h-6 w-6'>
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='m8.25 4.5 7.5 7.5-7.5 7.5'
-              />
-            </svg>
-          </div>
+    <section className='rounded bg-neutral-100 py-8 sm:py-12'>
+      <div className='mx-auto grid grid-cols-1 items-center justify-items-center gap-8 px-8 sm:px-16 md:grid-cols-2'>
+        <div className='max-w-md space-y-4'>
+          <h2 className='text-balance text-3xl font-bold tracking-tight md:text-4xl'>
+            {block?.title}
+          </h2>
+          <p className='text-pretty text-neutral-600'>{block?.description}</p>
+          <Link
+            className='inline-flex h-10 items-center justify-center rounded-full bg-neutral-900 px-6 font-medium text-neutral-50 transition-colors hover:bg-neutral-900/90 focus:outline-none focus:ring-1 focus:ring-neutral-950'
+            href={'/accessories'}>
+            Shop Now
+          </Link>
         </div>
-      </Swiper>
-    </div>
+        <Image
+          alt='Cup of Coffee'
+          loading='eager'
+          priority={true}
+          className='rounded'
+          height={450}
+          width={450}
+          src='/images/blocks/hero-block.jpg'
+          style={{
+            objectFit: 'cover',
+          }}
+          sizes='(max-width: 640px) 70vw, 450px'
+        />
+      </div>
+    </section>
   )
 }
 

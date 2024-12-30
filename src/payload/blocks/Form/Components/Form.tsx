@@ -6,7 +6,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import { trpc } from '@/trpc/client'
 
 import { fieldsJsx } from './Fields'
@@ -130,11 +130,7 @@ const Form = ({
           })}
       </div>
 
-      <Button
-        type='submit'
-        className='mt-8'
-        isLoading={isFormSubmissionPending}
-        disabled={isFormSubmissionPending}>
+      <Button type='submit' className='mt-8' disabled={isFormSubmissionPending}>
         {submitButtonLabel ? submitButtonLabel : 'Submit'}
       </Button>
     </form>

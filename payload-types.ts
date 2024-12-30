@@ -54,7 +54,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   globals: {
     'site-settings': SiteSetting;
@@ -94,24 +94,41 @@ export interface UserAuthOperations {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: number;
+  id: string;
   title: string;
-  layout?: (HomeType | DetailsType | ListType | NewsletterType | FormType | DisqusCommentsType)[] | null;
+  layout?:
+    | (
+        | HomeType
+        | DetailsType
+        | ListType
+        | NewsletterType
+        | FormType
+        | FeaturedProductsType
+        | CategoriesType
+        | DisqusCommentsType
+      )[]
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
-    image?: (number | null) | Media;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
   };
   isHome?: boolean | null;
   isDynamic?: boolean | null;
   slugMode?: ('generate' | 'custom') | null;
+  /**
+   * Contains only lowercase letters, numbers, and dashes.
+   */
   slug?: string | null;
   pathMode?: ('generate' | 'custom') | null;
   path?: string | null;
-  parent?: (number | null) | Page;
+  parent?: (string | null) | Page;
   breadcrumbs?:
     | {
-        doc?: (number | null) | Page;
+        doc?: (string | null) | Page;
         url?: string | null;
         label?: string | null;
         id?: string | null;
@@ -126,58 +143,11 @@ export interface Page {
  * via the `definition` "HomeType".
  */
 export interface HomeType {
-  heading: string;
-  subHeading?: string | null;
-  image: number | Media;
-  subscribeField: boolean;
+  title: string;
+  description: string;
   id?: string | null;
   blockName?: string | null;
   blockType: 'Home';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    blogImageSize2?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    blogImageSize3?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -194,8 +164,11 @@ export interface DetailsType {
  * via the `definition` "ListType".
  */
 export interface ListType {
+  /**
+   * This will be used as title for the list
+   */
   title?: string | null;
-  collectionSlug?: ('blogs' | 'tags' | 'users' | 'products') | null;
+  collectionSlug?: ('blogs' | 'tags' | 'users' | 'products' | 'categories') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'List';
@@ -207,7 +180,7 @@ export interface ListType {
 export interface NewsletterType {
   heading: string;
   description: string;
-  form?: (number | null) | Form;
+  form?: (string | null) | Form;
   id?: string | null;
   blockName?: string | null;
   blockType: 'Newsletter';
@@ -217,7 +190,7 @@ export interface NewsletterType {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: number;
+  id: string;
   title: string;
   fields?:
     | (
@@ -309,6 +282,9 @@ export interface Form {
       )[]
     | null;
   submitButtonLabel?: string | null;
+  /**
+   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
+   */
   confirmationType?: ('message' | 'redirect') | null;
   confirmationMessage?:
     | {
@@ -318,6 +294,9 @@ export interface Form {
   redirect?: {
     url: string;
   };
+  /**
+   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
+   */
   emails?:
     | {
         emailTo?: string | null;
@@ -326,6 +305,9 @@ export interface Form {
         replyTo?: string | null;
         emailFrom?: string | null;
         subject: string;
+        /**
+         * Enter the message that should be sent in this email.
+         */
         message?:
           | {
               [k: string]: unknown;
@@ -345,7 +327,7 @@ export interface FormType {
   title: string;
   form: {
     relationTo: 'forms';
-    value: number | Form;
+    value: string | Form;
   };
   id?: string | null;
   blockName?: string | null;
@@ -353,10 +335,298 @@ export interface FormType {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedProductsType".
+ */
+export interface FeaturedProductsType {
+  featuredProducts?:
+    | {
+        products?: (string | Product)[] | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'FeaturedProducts';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  /**
+   * The name of the product that will be displayed.
+   */
+  name: string;
+  /**
+   * SEO-friendly URL for this category.
+   */
+  slug: string;
+  /**
+   * Provide a rich text description for the product.
+   */
+  description: string;
+  /**
+   * The manufacturer or brand of the product.
+   */
+  brand: string;
+  /**
+   * Total available stock for the product.
+   */
+  stock: number;
+  /**
+   * The price of the product before any discounts.
+   */
+  price: number;
+  /**
+   * Provide details about any discounts available.
+   */
+  discount?: {
+    /**
+     * Discount percentage to be applied.
+     */
+    percentage?: number | null;
+    /**
+     * The date when the discount becomes active.
+     */
+    startDate?: string | null;
+    /**
+     * The date when the discount ends.
+     */
+    endDate?: string | null;
+  };
+  /**
+   * The final price of the product after applying discounts.
+   */
+  finalPrice?: number | null;
+  /**
+   * The category this product belongs to.
+   */
+  category: string | Category;
+  /**
+   * Add tags to help categorize the product.
+   */
+  tags?:
+    | {
+        /**
+         * A single tag for the product.
+         */
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Add key-value pairs to describe product attributes such as Color, Size, Material.
+   */
+  attributes?:
+    | {
+        /**
+         * The name of the attribute (e.g., Color, Size). For example, use "Size" to define size options.
+         */
+        key: string;
+        value: {
+          /**
+           * Choose the value type for this attribute. Use "Select" for predefined options like sizes.
+           */
+          type: 'text' | 'select';
+          /**
+           * The value of the attribute if it is a simple text.
+           */
+          textValue?: string | null;
+          /**
+           * Define the selectable options for this attribute (e.g., S, M, L, XL, XXL for Size).
+           */
+          selectOptions?:
+            | {
+                /**
+                 * One of the selectable options for this attribute.
+                 */
+                option: string;
+                /**
+                 * Additional price for this option, if applicable.
+                 */
+                extraPrice?: number | null;
+                /**
+                 * Available stock for this specific option.
+                 */
+                stock?: number | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Upload product images.
+   */
+  images: (string | Media)[];
+  /**
+   * Mark this product as a best seller to highlight it prominently.
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Mark this product as a new arrival to indicate its recent addition.
+   */
+  isNewArrival?: boolean | null;
+  /**
+   * Mark this product as part of a special offer or promotion.
+   */
+  isSpecialOffer?: boolean | null;
+  /**
+   * Indicate whether the product is eligible for shipping.
+   */
+  isShippable?: boolean | null;
+  /**
+   * Add flexible sections for additional information such as Product Details, Size & Fit, Material & Care, etc.
+   */
+  additionalInformationSections?:
+    | {
+        /**
+         * The title of the section (e.g., Product Details, Size & Fit). This will be displayed as the header for each additional information section.
+         */
+        sectionTitle: string;
+        /**
+         * Add attribute-value pairs to describe each section (e.g., Product Dimensions, Material, etc.). This content will provide further details under each section.
+         */
+        sectionContent?:
+          | {
+              /**
+               * The name of the attribute in this section (e.g., Material, Height). This could describe key characteristics of the product.
+               */
+              attributeName: string;
+              /**
+               * The value corresponding to the attribute in this section (e.g., Cotton, 12 inches). This will provide specific details for the attribute.
+               */
+              attributeValue: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  /**
+   * The name of the category. This will be displayed across the application.
+   */
+  name: string;
+  /**
+   * SEO-friendly URL for this category.
+   */
+  slug: string;
+  /**
+   * Provide a rich text description to explain this category.
+   */
+  description?: string | null;
+  /**
+   * Select the parent category if this category belongs to a hierarchy.
+   */
+  parentCategory?: (string | null) | Category;
+  /**
+   * Select subcategories related to this category.
+   */
+  subCategories?: (string | Category)[] | null;
+  /**
+   * Mark this category as featured to highlight it on the homepage or special sections.
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Upload an image that represents this category.
+   */
+  image: string | Media;
+  /**
+   * View the products associated with this category.
+   */
+  products?: {
+    docs?: (string | Product)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
+  /**
+   * The total number of products under this category.
+   */
+  productCount?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    blogImageSize2?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    blogImageSize3?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CategoriesType".
+ */
+export interface CategoriesType {
+  categories?:
+    | {
+        category?: (string | null) | Category;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'Categories';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "DisqusCommentsType".
  */
 export interface DisqusCommentsType {
   title?: string | null;
+  /**
+   * To find your Disqus shortname, log into Disqus, access the Admin panel, and check the URL or General Site Settings.
+   */
   shortName: string;
   id?: string | null;
   blockName?: string | null;
@@ -367,31 +637,49 @@ export interface DisqusCommentsType {
  * via the `definition` "blogs".
  */
 export interface Blog {
-  id: number;
-  blogImage: number | Media;
+  id: string;
+  /**
+   * Upload blog image
+   */
+  blogImage: string | Media;
   title: string;
+  /**
+   * Add the summary of the blog post
+   */
   description: string;
   tags?:
     | {
         relationTo: 'tags';
-        value: number | Tag;
+        value: string | Tag;
       }[]
     | null;
   author?:
     | {
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       }[]
     | null;
+  /**
+   * Main content of the blog post. Use the rich text editor for formatting.
+   */
   content: {
     [k: string]: unknown;
   }[];
   meta?: {
     title?: string | null;
     description?: string | null;
-    image?: (number | null) | Media;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
   };
+  /**
+   * Contains only lowercase letters, numbers, and dashes.
+   */
   slug?: string | null;
+  /**
+   * Save it as draft to schedule.
+   */
   publishOn?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -402,16 +690,25 @@ export interface Blog {
  * via the `definition` "tags".
  */
 export interface Tag {
-  id: number;
-  tagImage: number | Media;
+  id: string;
+  /**
+   * Upload tag image
+   */
+  tagImage: string | Media;
   title: string;
   description: string;
   color?: ('blue' | 'gray' | 'red' | 'green' | 'yellow' | 'indigo' | 'purple' | 'pink') | null;
   meta?: {
     title?: string | null;
     description?: string | null;
-    image?: (number | null) | Media;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
   };
+  /**
+   * Contains only lowercase letters, numbers, and dashes.
+   */
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -422,10 +719,13 @@ export interface Tag {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   displayName?: string | null;
+  /**
+   * Contains only lowercase letters, numbers, and dashes.
+   */
   username: string;
-  imageUrl?: (number | null) | Media;
+  imageUrl?: (string | null) | Media;
   role: ('admin' | 'author' | 'user')[];
   emailVerified?: string | null;
   socialLinks?:
@@ -452,6 +752,9 @@ export interface User {
         id?: string | null;
       }[]
     | null;
+  /**
+   * This bio will be shown in the authors details page
+   */
   bio?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -468,98 +771,14 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  brand: string;
-  stock: number;
-  price: number;
-  discount?: {
-    percentage?: number | null;
-    startDate?: string | null;
-    endDate?: string | null;
-  };
-  finalPrice?: number | null;
-  category: number | Category;
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  attributes?:
-    | {
-        key: string;
-        value: {
-          type: 'text' | 'select';
-          textValue?: string | null;
-          selectOptions?:
-            | {
-                option: string;
-                extraPrice?: number | null;
-                stock?: number | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  images: (number | Media)[];
-  isFeatured?: boolean | null;
-  isNewArrival?: boolean | null;
-  isSpecialOffer?: boolean | null;
-  isShippable?: boolean | null;
-  additionalInformationSections?:
-    | {
-        sectionTitle: string;
-        sectionContent?:
-          | {
-              attributeName: string;
-              attributeValue: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string | null;
-  parentCategory?: (number | null) | Category;
-  subCategories?: (number | Category)[] | null;
-  isFeatured?: boolean | null;
-  image: number | Media;
-  products?: {
-    docs?: (number | Product)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
-  productCount?: number | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "offers".
  */
 export interface Offer {
-  id: number;
+  id: string;
   name: string;
+  /**
+   * SEO-friendly URL for this category.
+   */
   slug: string;
   description?:
     | {
@@ -569,7 +788,7 @@ export interface Offer {
   discountPercentage: number;
   startDate: string;
   endDate: string;
-  associatedProducts?: (number | Product)[] | null;
+  associatedProducts?: (string | Product)[] | null;
   isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -580,10 +799,10 @@ export interface Offer {
  * via the `definition` "wishlist".
  */
 export interface Wishlist {
-  id: number;
-  user: number | User;
+  id: string;
+  user: string | User;
   items: {
-    product: number | Product;
+    product: string | Product;
     addedAt?: string | null;
     id?: string | null;
   }[];
@@ -592,20 +811,47 @@ export interface Wishlist {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Manage the shopping carts of users, including their selected items and total price.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cart".
  */
 export interface Cart {
-  id: number;
-  user: number | User;
+  id: string;
+  /**
+   * The user associated with this cart.
+   */
+  user: string | User;
+  /**
+   * List of items added to the cart.
+   */
   items: {
-    product: number | Product;
+    /**
+     * The product added to the cart.
+     */
+    product: string | Product;
+    /**
+     * Number of units of the product.
+     */
     quantity: number;
+    /**
+     * Price per unit of the product.
+     */
     price: number;
+    /**
+     * Total cost for this item (calculated automatically).
+     */
     total?: number | null;
     id?: string | null;
   }[];
+  /**
+   * Total cost of all items in the cart (calculated automatically).
+   */
   totalPrice?: number | null;
+  /**
+   * The unique identifier associated with this cart in Snipcart.
+   */
+  snipcartId: string;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -615,26 +861,169 @@ export interface Cart {
  * via the `definition` "orders".
  */
 export interface Order {
-  id: number;
-  user: number | User;
+  id: string;
+  /**
+   * Select the customer placing the order.
+   */
+  user: string | User;
+  /**
+   * List of items included in this order. At least one item is required.
+   */
   items: {
-    product: number | Product;
-    quantity: number;
+    uniqueId: string;
+    id: string | null;
+    name: string;
     price: number;
-    total?: number | null;
-    id?: string | null;
+    description?: string | null;
+    /**
+     * Indicates if taxes are included in the price.
+     */
+    hasTaxesIncluded?: boolean | null;
+    taxes?:
+      | {
+          name?: string | null;
+          rate?: number | null;
+          amount?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+    categories?:
+      | {
+          category?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    url?: string | null;
+    quantity: number;
+    shippable?: boolean | null;
+    taxable?: boolean | null;
+    attributes?:
+      | {
+          name?: string | null;
+          value?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    dimensions?: {
+      width?: number | null;
+      height?: number | null;
+      length?: number | null;
+      weight?: number | null;
+    };
+    unitPrice: number;
+    /**
+     * Automatically calculated as quantity × unit price.
+     */
+    totalPrice: number;
+    totalPriceWithoutTaxes?: number | null;
+    totalPriceWithoutDiscountsAndTaxes?: number | null;
+    totalPriceWithoutDiscountsAndTaxesLegacy?: number | null;
+    addedOn?: string | null;
+    modificationDate?: string | null;
+    paymentGatewayId?: string | null;
+    state?: {
+      committing?: boolean | null;
+    };
   }[];
+  /**
+   * Total number of items in the order.
+   */
+  totalCount?: number | null;
+  /**
+   * The total price of all items in the order.
+   */
   totalPrice?: number | null;
-  status?: ('Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled') | null;
-  placedAt?: string | null;
-  paymentMethod: string;
-  shippingAddress: {
-    addressLine1: string;
-    addressLine2?: string | null;
+  shipToBillingAddress?: boolean | null;
+  billingAddress: {
+    fullName: string;
+    firstName?: string | null;
+    name: string;
+    company?: string | null;
+    address1: string;
+    address2?: string | null;
+    fullAddress?: string | null;
     city: string;
-    state: string;
-    zipCode: string;
     country: string;
+    postalCode: string;
+    province?: string | null;
+    phone?: string | null;
+    vatNumber?: string | null;
+    hasMinimalRequiredInfo: boolean;
+  };
+  shippingAddress: {
+    fullName: string;
+    firstName?: string | null;
+    name: string;
+    company?: string | null;
+    address1: string;
+    address2?: string | null;
+    fullAddress?: string | null;
+    city: string;
+    country: string;
+    postalCode: string;
+    province?: string | null;
+    phone?: string | null;
+    vatNumber?: string | null;
+    hasMinimalRequiredInfo: boolean;
+  };
+  shippingDetails: {
+    cost: number;
+    method: string;
+    status: number;
+  };
+  shippingRates?: {
+    loading?: boolean | null;
+    status?: string | null;
+    items?:
+      | {
+          item?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  discounts?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  status: number;
+  token: string;
+  email: string;
+  taxes?: {
+    loading?: boolean | null;
+    status?: string | null;
+    items?:
+      | {
+          item?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  discountInducedTaxesVariation?: number | null;
+  currency: string;
+  subtotal: number;
+  total: number;
+  invoiceNumber: string;
+  card: {
+    last4: string;
+    brand: string;
+  };
+  paymentDetails: {
+    method: string;
+    status: number;
+    details?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    iconUrl?: string | null;
+    instructions?: string | null;
+    display?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -645,8 +1034,8 @@ export interface Order {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: number;
-  form: number | Form;
+  id: string;
+  form: string | Form;
   submissionData?:
     | {
         field: string;
@@ -658,25 +1047,27 @@ export interface FormSubmission {
   createdAt: string;
 }
 /**
+ * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "search".
  */
 export interface Search {
-  id: number;
+  id: string;
   title?: string | null;
   priority?: number | null;
   doc:
     | {
         relationTo: 'blogs';
-        value: number | Blog;
+        value: string | Blog;
       }
     | {
         relationTo: 'tags';
-        value: number | Tag;
+        value: string | Tag;
       }
     | {
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       };
   updatedAt: string;
   createdAt: string;
@@ -686,68 +1077,68 @@ export interface Search {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'pages';
-        value: number | Page;
+        value: string | Page;
       } | null)
     | ({
         relationTo: 'blogs';
-        value: number | Blog;
+        value: string | Blog;
       } | null)
     | ({
         relationTo: 'tags';
-        value: number | Tag;
+        value: string | Tag;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'products';
-        value: number | Product;
+        value: string | Product;
       } | null)
     | ({
         relationTo: 'categories';
-        value: number | Category;
+        value: string | Category;
       } | null)
     | ({
         relationTo: 'offers';
-        value: number | Offer;
+        value: string | Offer;
       } | null)
     | ({
         relationTo: 'wishlist';
-        value: number | Wishlist;
+        value: string | Wishlist;
       } | null)
     | ({
         relationTo: 'cart';
-        value: number | Cart;
+        value: string | Cart;
       } | null)
     | ({
         relationTo: 'orders';
-        value: number | Order;
+        value: string | Order;
       } | null)
     | ({
         relationTo: 'forms';
-        value: number | Form;
+        value: string | Form;
       } | null)
     | ({
         relationTo: 'form-submissions';
-        value: number | FormSubmission;
+        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'search';
-        value: number | Search;
+        value: string | Search;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -757,10 +1148,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -780,7 +1171,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -795,56 +1186,14 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        Home?:
-          | T
-          | {
-              heading?: T;
-              subHeading?: T;
-              image?: T;
-              subscribeField?: T;
-              id?: T;
-              blockName?: T;
-            };
-        Details?:
-          | T
-          | {
-              collectionSlug?: T;
-              id?: T;
-              blockName?: T;
-            };
-        List?:
-          | T
-          | {
-              title?: T;
-              collectionSlug?: T;
-              id?: T;
-              blockName?: T;
-            };
-        Newsletter?:
-          | T
-          | {
-              heading?: T;
-              description?: T;
-              form?: T;
-              id?: T;
-              blockName?: T;
-            };
-        FormBlock?:
-          | T
-          | {
-              title?: T;
-              form?: T;
-              id?: T;
-              blockName?: T;
-            };
-        DisqusComments?:
-          | T
-          | {
-              title?: T;
-              shortName?: T;
-              id?: T;
-              blockName?: T;
-            };
+        Home?: T | HomeTypeSelect<T>;
+        Details?: T | DetailsTypeSelect<T>;
+        List?: T | ListTypeSelect<T>;
+        Newsletter?: T | NewsletterTypeSelect<T>;
+        FormBlock?: T | FormTypeSelect<T>;
+        FeaturedProducts?: T | FeaturedProductsTypeSelect<T>;
+        Categories?: T | CategoriesTypeSelect<T>;
+        DisqusComments?: T | DisqusCommentsTypeSelect<T>;
       };
   meta?:
     | T
@@ -871,6 +1220,94 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeType_select".
+ */
+export interface HomeTypeSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DetailsType_select".
+ */
+export interface DetailsTypeSelect<T extends boolean = true> {
+  collectionSlug?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ListType_select".
+ */
+export interface ListTypeSelect<T extends boolean = true> {
+  title?: T;
+  collectionSlug?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsletterType_select".
+ */
+export interface NewsletterTypeSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  form?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormType_select".
+ */
+export interface FormTypeSelect<T extends boolean = true> {
+  title?: T;
+  form?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedProductsType_select".
+ */
+export interface FeaturedProductsTypeSelect<T extends boolean = true> {
+  featuredProducts?:
+    | T
+    | {
+        products?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CategoriesType_select".
+ */
+export interface CategoriesTypeSelect<T extends boolean = true> {
+  categories?:
+    | T
+    | {
+        category?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DisqusCommentsType_select".
+ */
+export interface DisqusCommentsTypeSelect<T extends boolean = true> {
+  title?: T;
+  shortName?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1135,6 +1572,7 @@ export interface CartSelect<T extends boolean = true> {
         id?: T;
       };
   totalPrice?: T;
+  snipcartId?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1148,25 +1586,158 @@ export interface OrdersSelect<T extends boolean = true> {
   items?:
     | T
     | {
-        product?: T;
-        quantity?: T;
-        price?: T;
-        total?: T;
+        uniqueId?: T;
         id?: T;
+        name?: T;
+        price?: T;
+        description?: T;
+        hasTaxesIncluded?: T;
+        taxes?:
+          | T
+          | {
+              name?: T;
+              rate?: T;
+              amount?: T;
+              id?: T;
+            };
+        categories?:
+          | T
+          | {
+              category?: T;
+              id?: T;
+            };
+        url?: T;
+        quantity?: T;
+        shippable?: T;
+        taxable?: T;
+        attributes?:
+          | T
+          | {
+              name?: T;
+              value?: T;
+              id?: T;
+            };
+        dimensions?:
+          | T
+          | {
+              width?: T;
+              height?: T;
+              length?: T;
+              weight?: T;
+            };
+        unitPrice?: T;
+        totalPrice?: T;
+        totalPriceWithoutTaxes?: T;
+        totalPriceWithoutDiscountsAndTaxes?: T;
+        totalPriceWithoutDiscountsAndTaxesLegacy?: T;
+        addedOn?: T;
+        modificationDate?: T;
+        paymentGatewayId?: T;
+        state?:
+          | T
+          | {
+              committing?: T;
+            };
       };
+  totalCount?: T;
   totalPrice?: T;
-  status?: T;
-  placedAt?: T;
-  paymentMethod?: T;
+  shipToBillingAddress?: T;
+  billingAddress?:
+    | T
+    | {
+        fullName?: T;
+        firstName?: T;
+        name?: T;
+        company?: T;
+        address1?: T;
+        address2?: T;
+        fullAddress?: T;
+        city?: T;
+        country?: T;
+        postalCode?: T;
+        province?: T;
+        phone?: T;
+        vatNumber?: T;
+        hasMinimalRequiredInfo?: T;
+      };
   shippingAddress?:
     | T
     | {
-        addressLine1?: T;
-        addressLine2?: T;
+        fullName?: T;
+        firstName?: T;
+        name?: T;
+        company?: T;
+        address1?: T;
+        address2?: T;
+        fullAddress?: T;
         city?: T;
-        state?: T;
-        zipCode?: T;
         country?: T;
+        postalCode?: T;
+        province?: T;
+        phone?: T;
+        vatNumber?: T;
+        hasMinimalRequiredInfo?: T;
+      };
+  shippingDetails?:
+    | T
+    | {
+        cost?: T;
+        method?: T;
+        status?: T;
+      };
+  shippingRates?:
+    | T
+    | {
+        loading?: T;
+        status?: T;
+        items?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
+      };
+  discounts?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  status?: T;
+  token?: T;
+  email?: T;
+  taxes?:
+    | T
+    | {
+        loading?: T;
+        status?: T;
+        items?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
+      };
+  discountInducedTaxesVariation?: T;
+  currency?: T;
+  subtotal?: T;
+  total?: T;
+  invoiceNumber?: T;
+  card?:
+    | T
+    | {
+        last4?: T;
+        brand?: T;
+      };
+  paymentDetails?:
+    | T
+    | {
+        method?: T;
+        status?: T;
+        details?: T;
+        iconUrl?: T;
+        instructions?: T;
+        display?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -1358,18 +1929,27 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
-  id: number;
+  id: string;
   general: {
     title: string;
     description: string;
-    faviconUrl: number | Media;
-    ogImageUrl: number | Media;
+    /**
+     * We recommend a maximum size of 256 * 256 pixels
+     */
+    faviconUrl: string | Media;
+    /**
+     * We recommend a maximum size of 1200 * 630 pixels
+     */
+    ogImageUrl: string | Media;
     keywords?: string[] | null;
   };
   navbar: {
     logo: BrandLogo;
     menuLinks?:
       | {
+          /**
+           * Check to create group of links
+           */
           group?: boolean | null;
           menuLink?: {
             type?: ('reference' | 'custom') | null;
@@ -1377,7 +1957,7 @@ export interface SiteSetting {
             label: string;
             page?: {
               relationTo: 'pages';
-              value: number | Page;
+              value: string | Page;
             } | null;
             url?: string | null;
             id?: string | null;
@@ -1391,7 +1971,7 @@ export interface SiteSetting {
                   label: string;
                   page?: {
                     relationTo: 'pages';
-                    value: number | Page;
+                    value: string | Page;
                   } | null;
                   url?: string | null;
                   id?: string | null;
@@ -1406,6 +1986,9 @@ export interface SiteSetting {
     logo: BrandLogo;
     footerLinks?:
       | {
+          /**
+           * Check to create group of links
+           */
           group?: boolean | null;
           menuLink?: {
             type?: ('reference' | 'custom') | null;
@@ -1413,7 +1996,7 @@ export interface SiteSetting {
             label: string;
             page?: {
               relationTo: 'pages';
-              value: number | Page;
+              value: string | Page;
             } | null;
             url?: string | null;
             id?: string | null;
@@ -1427,7 +2010,7 @@ export interface SiteSetting {
                   label: string;
                   page?: {
                     relationTo: 'pages';
-                    value: number | Page;
+                    value: string | Page;
                   } | null;
                   url?: string | null;
                   id?: string | null;
@@ -1464,22 +2047,40 @@ export interface SiteSetting {
     copyright?: string | null;
   };
   redirectionLinks?: {
+    /**
+     * This redirects to a blog details page
+     */
     blogLink?: {
       relationTo: 'pages';
-      value: number | Page;
+      value: string | Page;
     } | null;
+    /**
+     * This redirects to a author details page
+     */
     authorLink?: {
       relationTo: 'pages';
-      value: number | Page;
+      value: string | Page;
     } | null;
+    /**
+     * This redirects to a tag details page
+     */
     tagLink?: {
       relationTo: 'pages';
-      value: number | Page;
+      value: string | Page;
     } | null;
   };
   monetization?: {
+    /**
+     * Add the publisher-id from Google AdSense Console
+     */
     adSenseId?: string | null;
+    /**
+     * Add the measurement id from Google Analytics dashboard
+     */
     measurementId?: string | null;
+  };
+  productInformation?: {
+    currency?: ('USD' | 'INR') | null;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1489,9 +2090,18 @@ export interface SiteSetting {
  * via the `definition` "BrandLogo".
  */
 export interface BrandLogo {
-  imageUrl: number | Media;
+  imageUrl: string | Media;
+  /**
+   * Adjust to the height of the logo
+   */
   height?: number | null;
+  /**
+   * Adjust to the width of the logo
+   */
   width?: number | null;
+  /**
+   * This text appears below the footer image
+   */
   description?: string | null;
 }
 /**
@@ -1511,13 +2121,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   navbar?:
     | T
     | {
-        logo?:
-          | T
-          | {
-              imageUrl?: T;
-              height?: T;
-              width?: T;
-            };
+        logo?: T | BrandLogoSelect<T>;
         menuLinks?:
           | T
           | {
@@ -1553,14 +2157,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   footer?:
     | T
     | {
-        logo?:
-          | T
-          | {
-              imageUrl?: T;
-              height?: T;
-              width?: T;
-              description?: T;
-            };
+        logo?: T | BrandLogoSelect<T>;
         footerLinks?:
           | T
           | {
@@ -1614,9 +2211,24 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         adSenseId?: T;
         measurementId?: T;
       };
+  productInformation?:
+    | T
+    | {
+        currency?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BrandLogo_select".
+ */
+export interface BrandLogoSelect<T extends boolean = true> {
+  imageUrl?: T;
+  height?: T;
+  width?: T;
+  description?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

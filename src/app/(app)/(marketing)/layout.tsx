@@ -15,10 +15,12 @@ const MarketingLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <MetadataProvider metadata={metadata}>
-      <div className='grid min-h-screen w-full grid-rows-[1fr_auto]'>
+      <div className='flex min-h-full flex-1 flex-col bg-white'>
         <Navbar metadata={metadata} user={user} />
         {/* <SecondNavbar /> */}
-        <main className='container mt-40'>{children}</main>
+        <main className='mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pb-6 pt-2 sm:px-6 lg:px-8'>
+          {children}
+        </main>
         <Footer metadata={metadata} />
         <Branding />
       </div>

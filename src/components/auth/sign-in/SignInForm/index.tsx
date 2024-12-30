@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Alert, AlertDescription } from '@/components/common/Alert'
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import { Input } from '@/components/common/Input'
 import { trpc } from '@/trpc/client'
 import { SignInSchema } from '@/trpc/routers/auth/validator'
@@ -94,7 +94,7 @@ const SignInForm: React.FC = () => {
                 />
 
                 {errors?.email && (
-                  <p className='text-sm text-danger'>{errors.email.message}</p>
+                  <p className='text-danger text-sm'>{errors.email.message}</p>
                 )}
               </LabelInputContainer>
             </div>
@@ -113,7 +113,7 @@ const SignInForm: React.FC = () => {
                 />
 
                 {errors?.password && (
-                  <p className='text-sm text-danger'>
+                  <p className='text-danger text-sm'>
                     {errors.password.message}
                   </p>
                 )}
@@ -133,7 +133,6 @@ const SignInForm: React.FC = () => {
               <Button
                 type='submit'
                 className='w-full'
-                isLoading={isSignInPending}
                 disabled={isSignInPending}>
                 Sign In
               </Button>

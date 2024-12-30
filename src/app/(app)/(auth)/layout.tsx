@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 
 const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
   return (

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 import { trpc } from '@/trpc/client'
 
-import Button from './common/Button'
+import { Button } from './common/Button'
 
 const PageNotFound: React.FC = () => {
   const pathname = usePathname()
@@ -29,7 +29,6 @@ const PageNotFound: React.FC = () => {
         </p>
 
         <Button
-          isLoading={isPending}
           disabled={isPending}
           onClick={() => {
             runSeedMutation()

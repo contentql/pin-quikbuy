@@ -1,21 +1,18 @@
 'use client'
 
 import type { SiteSetting, User } from '@payload-types'
-import { ChevronDown, Heart, ShoppingCart } from 'lucide-react'
+import { ChevronDown, SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/common/Dropdown'
+  SearchInput,
+  SearchInputPlaceholder,
+} from '@/ui/nav/search-input.client'
 import { generateMenuLinks } from '@/utils/generateMenuLinks'
 
 import ProfileDropdown from './ProfileDropdown'
-import Button from './common/Button'
 
 const CategoryDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -90,16 +87,18 @@ const Navbar = ({
   const { height, width } = logo
 
   return (
-    <nav className='fixed z-[19] w-full bg-popover/50 backdrop-blur-3xl'>
-      <div className='container mx-auto flex items-center justify-between px-4 py-3'>
+    <header className='nav-border-reveal sticky top-0 z-50 bg-white/90 py-4 backdrop-blur-sm'>
+      <div className='mx-auto flex max-w-7xl flex-row items-center gap-2 px-4 sm:px-6 lg:px-8'>
         {/* Left: Categories */}
-        <div className='flex items-center space-x-4'>
+        {/* <div className='flex items-center space-x-4'>
           <CategoryDropdown />
-        </div>
-
+        </div> */}
         {logoDetails.url && (
-          <div className='flex-1'>
-            <Link href='/'>
+          <div>
+            <Link href='/' className='flex flex-1 gap-x-2'>
+              <div className='-mt-0.5 whitespace-nowrap text-xl font-bold'>
+                QuikBuy
+              </div>
               <Image
                 src={logoDetails.url}
                 alt={logoDetails.alt}
@@ -110,71 +109,59 @@ const Navbar = ({
           </div>
         )}
 
-        <div className='flex items-center gap-8'>
-          {navLinks?.length > 0 && (
-            <nav>
-              <ul className='hidden gap-8 lg:flex'>
-                {navLinks.map(({ label, children, href = '', newTab }) => (
-                  <li
-                    className='flex list-none items-center gap-1 text-sm'
-                    key={label}>
-                    {children ? (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger className='flex items-center gap-1'>
-                          {label}
-                          <ChevronDown size={16} />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          className='z-[60] max-w-56'
-                          align='end'>
-                          {children.map(details => (
-                            <Link
-                              className='text-base font-medium'
-                              href={details.href}
-                              key={details.label}
-                              target={details.newTab ? '_blank' : '_self'}>
-                              <DropdownMenuItem className='cursor-pointer'>
-                                {details.label}
-                              </DropdownMenuItem>
-                            </Link>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    ) : (
-                      <Link href={href} target={newTab ? '_blank' : '_self'}>
-                        {label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
+        <div className='flex w-auto max-w-full flex-shrink overflow-auto max-sm:order-2 sm:mr-auto'>
+          <div className='hidden sm:block'>
+            <ul className='flex flex-row items-center justify-center gap-x-1'>
+              {navLinks.map(({ label, children, href = '', newTab }) => (
+                <li key={label}>
+                  <Link
+                    href={`/category/${href}`}
+                    target={newTab ? '_blank' : '_self'}
+                    className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none'>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className='ml-auto mr-3 sm:ml-0'>
+          <label className='flex w-full min-w-9 items-center justify-end'>
+            <span className='sr-only'>Search</span>
+            <Suspense
+              fallback={
+                <SearchInputPlaceholder placeholder='Search for products…' />
+              }>
+              <SearchInput placeholder='Search for products…' />
+            </Suspense>
+            <SearchIcon className='block h-5 w-5 max-smb:z-10 max-smb:cursor-pointer xs:-ml-7' />
+          </label>
         </div>
 
         {/* Center: Search */}
 
         {/* Right: Icons */}
         <div className='flex items-center space-x-4'>
-          <Link
+          {/* <Link
             href='/wishlist'
             className='relative rounded p-2 hover:bg-gray-100'>
             <Heart className='h-6 w-6' />
             <span className='absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
               0
             </span>
-          </Link>
+          </Link> */}
 
-          <Button className='snipcart-checkout relative rounded p-2 hover:bg-gray-100'>
+          {/* <Button className='snipcart-checkout relative rounded p-2 hover:bg-gray-100'>
             <ShoppingCart className='h-6 w-6' />
             <span className='snipcart-items-count absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-black text-xs text-white'></span>
-          </Button>
+          </Button> */}
 
           {/* <CommandBar /> */}
           <ProfileDropdown user={user} navLinks={navLinks} />
         </div>
       </div>
-    </nav>
+    </header>
   )
 }
 

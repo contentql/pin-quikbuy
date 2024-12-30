@@ -2,122 +2,164 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'swiper/css';
-@import 'swiper/css/pagination';
-@import 'swiper/css/navigation';
-/* 
-  hex-codes:
-
-  primary: #A978DE
-  text: #F4F4F5
-  text-secondary: #A1A1AA
-  background-color: #09090B
-  card: #18181B
-  input: #55555a
-  info: #69bbf9;
-  info-foreground: #092848;
-  warning-foreground: #361900;
-  warning: #ff9300;
-  danger: #ff565f;
-  danger-foreground: #440d13;
-  success: #00ca50;
-  success-foreground: #00320b
-  popover: #0C0C0C
-*/
-
 @layer base {
-  /* followed the shadcn format of extracting values out of hsl code to support tailwind opacity values like bg-primary/90 etc  */
-  /* :root {
-    --primary: 269 61% 67%;
-    --text: 240 5% 96%;
-    --secondary: 240 5% 65%;
-    --background: 240 10% 4%;
-    --card: 240 6% 10%;
-    --input: 240 3% 34%;
-    --info: 206 92% 69%;
-    --info-foreground: 210 78% 16%;
-    --warning: 35 100% 50%;
-    --warning-foreground: 28 100% 11%;
-    --danger: 357 100% 67%;
-    --danger-foreground: 353 68% 16%;
-    --success: 144 100% 40%;
-    --success-foreground: 133 100% 10%;
-  } */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
 
   .dark {
-    --primary: 269 61% 67%;
-    --text: 240 5% 96%;
-    --secondary: 240 5% 65%;
-    --background: 240 10% 4%;
-    --card: 240 6% 10%;
-    --input: 240 3% 34%;
-    --info: 206 92% 69%;
-    --info-foreground: 210 78% 16%;
-    --warning: 35 100% 50%;
-    --warning-foreground: 28 100% 11%;
-    --danger: 357 100% 67%;
-    --danger-foreground: 353 68% 16%;
-    --success: 144 100% 40%;
-    --success-foreground: 133 100% 10%;
-    --popover: 0 0% 5%;
-    --pink: 289 68 82;
-    --indigo: 185 100% 74;
-  }
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-  html {
-    @apply scroll-smooth bg-background text-primary antialiased;
-  }
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-  body {
-    @apply text-base text-text;
-  }
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
   * {
-    @apply border-secondary/10 outline-offset-4 outline-primary;
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-.green-tag {
-  @apply text-success hover:text-success/80;
+@layer utilities {
+  .text-pretty {
+    text-wrap: balance;
+    text-wrap: pretty;
+  }
+
+  .animation-fade-in {
+    animation: fade-in 0.2s ease-out forwards;
+  }
+
+  .animation-slide-from-right {
+    animation: slide-from-right 0.2s ease-out forwards;
+  }
 }
 
-.purple-tag {
-  @apply text-primary hover:text-primary/80;
+label:has([required]) > span:first-child {
+  &::after {
+    content: '*';
+    @apply ml-1 text-destructive;
+  }
 }
 
-.blue-tag {
-  @apply text-info hover:text-info/80;
+.CollapsibleContent {
+  overflow: hidden;
+}
+.CollapsibleContent[data-state='open'] {
+  animation: slideDown 250ms ease-in-out;
+}
+.CollapsibleContent[data-state='closed'] {
+  animation: slideUp 250ms ease-in-out;
 }
 
-.red-tag {
-  @apply text-danger hover:text-danger/80;
-}
-
-.yellow-tag {
-  @apply text-warning hover:text-warning/80;
-}
-
-.pink-tag {
-  @apply text-pink hover:text-pink/80;
-}
-
-.indigo-tag {
-  @apply text-indigo hover:text-indigo/80;
-}
-
-/* shadcn dropdown hides scroll when it's open */
-body[data-scroll-locked] #main-header {
-  padding-right: var(--removed-body-scroll-bar-size);
-}
-
-img {
-  object-fit: cover;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
+input[type='search' i]::-webkit-search-cancel-button {
   display: none;
 }
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.nav-border-reveal::after {
+  @apply absolute bottom-0 h-px w-full bg-neutral-200 content-[''];
+
+  animation: nav-border-reveal;
+  animation-timeline: scroll();
+  animation-range: 0 100px;
+}
+
+@keyframes nav-border-reveal {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
 }

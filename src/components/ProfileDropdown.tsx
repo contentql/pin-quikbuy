@@ -18,7 +18,7 @@ import { signOut } from '@/utils/signOut'
 
 import HamburgerMenu from './HamburgerMenu'
 import { Avatar, AvatarFallback, AvatarImage } from './common/Avatar'
-import Button from './common/Button'
+import { Button } from './common/Button'
 
 const ProfileDropdown = ({
   user,

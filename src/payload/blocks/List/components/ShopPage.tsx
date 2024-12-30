@@ -1,106 +1,72 @@
 'use client'
 
-import { Product } from '@payload-types'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Media, Product } from '@payload-types'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
-import { Breadcrumbs } from './ProductBreadCrums'
-import { ProductGrid } from './ProductGrid'
-import { SideNavbar } from './SideNavBar'
+import { trpc } from '@/trpc/client'
 
 export default function ShopPage({ products }: { products: Product[] }) {
-  const router = useRouter()
   const searchParams = useSearchParams()
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products)
-  const [appliedFilters, setAppliedFilters] = useState<
-    Record<string, string[]>
-  >({})
+  const category = searchParams.get('category')
 
-  const parseQuery = (query: string) => {
-    const parsed: Record<string, string[]> = {}
-    new URLSearchParams(query).forEach((value, key) => {
-      parsed[key] = value.split(',')
-    })
-    return parsed
-  }
+  const { data: categoryId } = trpc.category.getCategoryByName.useQuery({
+    categoryName: category ?? '',
+  })
 
-  useEffect(() => {
-    const filters = parseQuery(searchParams.toString())
-    setAppliedFilters(filters)
-    applyFilters(filters)
-  }, [searchParams])
-
-  const applyFilters = (filters: Record<string, string[]>) => {
-    const filtered = products.filter(product => {
-      return Object.entries(filters).every(([type, filterValues]) => {
-        if (filterValues.length === 0) return true
-
-        switch (type) {
-          case 'category':
-            return filterValues.includes(product.category?.name || '')
-          case 'brand':
-            return filterValues.includes(product.brand || '')
-          case 'price':
-            const [min, max] = filterValues[0].split('-').map(Number)
-            const price = product.finalPrice || product.price || 0
-            return price >= min && price <= max
-          case 'discount':
-            const discount = product.discount?.percentage || 0
-            return filterValues.some(discountRange => {
-              const [minDiscount, maxDiscount] = discountRange
-                .split('-')
-                .map(Number)
-              return discount >= minDiscount && discount <= maxDiscount
-            })
-          default:
-            return true
-        }
-      })
+  const { data: productsByCategories } =
+    trpc.product.getProductsByCategory.useQuery({
+      categoryId: categoryId ?? '',
     })
 
-    setFilteredProducts(filtered)
-  }
-
-  const handleFilterChange = (filterType: string, values: string[]) => {
-    const current = new URLSearchParams(Array.from(searchParams.entries()))
-
-    if (values.length > 0) {
-      current.set(filterType, values.join(','))
-    } else {
-      current.delete(filterType)
-    }
-
-    router.push(`/shop?${current.toString()}`)
-  }
-
-  const handleClearFilters = () => {
-    setAppliedFilters({})
-    setFilteredProducts(products)
-    router.push('/shop')
-  }
-
-  const uniqueCategories = [
-    ...new Set(products.map(p => p.category?.name || '')),
-  ]
-  const uniqueBrands = [...new Set(products.map(p => p.brand || ''))]
+  const displayProducts = category ? productsByCategories : products
 
   return (
-    <div className='flex'>
-      <SideNavbar
-        categories={uniqueCategories}
-        brands={uniqueBrands}
-        onFilterChange={handleFilterChange}
-      />
-
-      <div className='flex-1 p-4'>
-        <Breadcrumbs
-          currentPage='Shop'
-          appliedFilters={appliedFilters}
-          onClearFilters={handleClearFilters}
-        />
-
-        <ProductGrid products={filteredProducts} />
+    <>
+      <div className='text-3xl font-bold leading-none tracking-tight text-foreground'>
+        {category ? `${category} Products` : 'All Products'}
       </div>
-    </div>
+      <ul className='mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        {displayProducts?.map((product, idx) => {
+          const productImage = product.images[0] as Media
+
+          return (
+            <li key={product.id} className='group'>
+              <Link href={`/product/${product.slug}`}>
+                <article className='overflow-hidden bg-white'>
+                  {product.images[0] && (
+                    <div className='aspect-square w-full overflow-hidden rounded-lg bg-neutral-100'>
+                      <Image
+                        className='group-hover:rotate hover-perspective w-full bg-neutral-100 object-cover object-center transition-opacity group-hover:opacity-75'
+                        src={productImage?.url ?? '/contentql-logo.png'}
+                        width={768}
+                        height={768}
+                        loading={idx < 3 ? 'eager' : 'lazy'}
+                        priority={idx < 3}
+                        sizes='(max-width: 1024px) 100vw, (max-width: 1280px) 50vw, 700px'
+                        alt=''
+                      />
+                    </div>
+                  )}
+                  <div className='p-2'>
+                    <h2 className='text-xl font-medium text-neutral-700'>
+                      {product.name}
+                    </h2>
+                    <footer className='text-base font-normal text-neutral-900'>
+                      {/* <p>
+                        {product.finalPrice
+                          ? `${productInformation?.currency === 'USD' ? '$' : '₹'}${product.finalPrice}`
+                          : 'Price not available'}
+                      </p> */}
+                    </footer>
+                  </div>
+                </article>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </>
   )
 }

@@ -35,8 +35,12 @@ const ListConfig: Block = {
           value: 'users',
         },
         {
-          label: 'Shop',
+          label: 'Products',
           value: 'products',
+        },
+        {
+          label: 'Categories',
+          value: 'categories',
         },
       ],
     },

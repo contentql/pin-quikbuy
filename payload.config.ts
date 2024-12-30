@@ -1,6 +1,6 @@
 import { collectionSlug, cqlConfig } from '@contentql/core'
 import { env } from '@env'
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -34,11 +34,14 @@ export default cqlConfig({
 
   secret: env.PAYLOAD_SECRET,
 
-  db: sqliteAdapter({
-    client: {
-      url: 'file:payload.db',
-      // authToken: env.DATABASE_SECRET,
-    },
+  // db: sqliteAdapter({
+  //   client: {
+  //     url: 'file:payload.db',
+  //     // authToken: env.DATABASE_SECRET,
+  //   },
+  // }),
+  db: mongooseAdapter({
+    url: env.DATABASE_URI,
   }),
 
   s3: {
@@ -62,8 +65,8 @@ export default cqlConfig({
   plugins: [
     snipcart({
       enabled: true,
-      publicApiKey: env.SNIPCART_PUBLIC_API_KEY,
-      secretApiKey: env.SNIPCART_SECRET_API_KEY,
+      publicApiKey: env.SNIPCART_PUBLIC_API_KEY || '',
+      secretApiKey: env.SNIPCART_SECRET_API_KEY || '',
     }),
   ],
 
@@ -190,6 +193,27 @@ export default cqlConfig({
               admin: {
                 hidden: true,
               },
+            },
+            {
+              label: 'Product Information',
+              name: 'productInformation',
+              fields: [
+                {
+                  name: 'currency',
+                  type: 'select',
+                  label: 'Currency',
+                  options: [
+                    {
+                      label: 'USD',
+                      value: 'USD',
+                    },
+                    {
+                      label: 'INR',
+                      value: 'INR',
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

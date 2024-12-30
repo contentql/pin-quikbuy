@@ -1,3 +1,4 @@
+import { isAdmin } from '../../access/isAdmin'
 import { revalidateOffers } from '../hooks/revalidateOffers'
 import { slugField } from '@node_modules/@contentql/core/dist/payload/fields/slug'
 import { CollectionConfig } from 'payload'
@@ -13,6 +14,12 @@ export const Offers: CollectionConfig = {
   },
   hooks: {
     afterChange: [revalidateOffers],
+  },
+  access: {
+    read: () => true,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {

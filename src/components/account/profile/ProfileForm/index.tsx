@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/common/Avatar'
-import Button from '@/components/common/Button'
+import { Button } from '@/components/common/Button'
 import {
   Dialog,
   DialogContent,
@@ -221,7 +221,6 @@ const ProfileForm = ({ user }: { user: User }) => {
               </Button>
               <Button
                 disabled={!userImage || uploadingImage || isUpdateUserPending}
-                isLoading={uploadingImage || isUpdateUserPending}
                 onClick={() => {
                   if (userImage) {
                     uploadProfilePic(userImage)
@@ -333,10 +332,7 @@ const ProfileForm = ({ user }: { user: User }) => {
           </div>
         </div>
 
-        <Button
-          type='submit'
-          isLoading={isUpdateUserPending}
-          disabled={isUpdateUserPending}>
+        <Button type='submit' disabled={isUpdateUserPending}>
           Update Profile
         </Button>
       </form>
