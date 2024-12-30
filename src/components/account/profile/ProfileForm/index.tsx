@@ -239,7 +239,7 @@ const ProfileForm = ({ user }: { user: User }) => {
         <div className='mb-4 sm:mb-6'>
           <label
             htmlFor='displayName'
-            className='mb-1 block text-sm font-medium text-secondary'>
+            className='mb-1 block text-sm font-medium text-black'>
             Name
           </label>
           <Input
@@ -255,7 +255,7 @@ const ProfileForm = ({ user }: { user: User }) => {
         <div className='mb-4 sm:mb-6'>
           <label
             htmlFor='bio'
-            className='mb-1 block text-sm font-medium text-secondary'>
+            className='mb-1 block text-sm font-medium text-black'>
             Bio
           </label>
           <Textarea
@@ -270,7 +270,7 @@ const ProfileForm = ({ user }: { user: User }) => {
           <div className='w-full'>
             <label
               htmlFor='username'
-              className='mb-1 block text-sm font-medium text-secondary'>
+              className='mb-1 block text-sm font-medium text-black'>
               Username
             </label>
             <Input
@@ -286,7 +286,7 @@ const ProfileForm = ({ user }: { user: User }) => {
           <div className='w-full'>
             <label
               htmlFor='email'
-              className='mb-1 block text-sm font-medium text-secondary'>
+              className='mb-1 block text-sm font-medium text-black'>
               Email
             </label>
             <Input
@@ -304,7 +304,7 @@ const ProfileForm = ({ user }: { user: User }) => {
           <div className='w-full'>
             <label
               htmlFor='password'
-              className='mb-1 block text-sm font-medium text-secondary'>
+              className='mb-1 block text-sm font-medium text-black'>
               New Password
             </label>
             <Input
@@ -319,7 +319,7 @@ const ProfileForm = ({ user }: { user: User }) => {
           <div className='w-full'>
             <label
               htmlFor='confirmPassword'
-              className='mb-1 block text-sm font-medium text-secondary'>
+              className='mb-1 block text-sm font-medium text-black'>
               Confirm Password
             </label>
             <Input
@@ -337,7 +337,9 @@ const ProfileForm = ({ user }: { user: User }) => {
         </Button>
       </form>
 
-      <DeleteAccountSection user={user} />
+      <div className='max-w-3xl'>
+        <DeleteAccountSection user={user} />
+      </div>
     </>
   )
 }

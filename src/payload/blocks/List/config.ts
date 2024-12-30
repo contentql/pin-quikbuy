@@ -42,6 +42,10 @@ const ListConfig: Block = {
           label: 'Categories',
           value: 'categories',
         },
+        {
+          label: 'Orders',
+          value: 'orders',
+        },
       ],
     },
   ],

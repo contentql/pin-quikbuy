@@ -168,7 +168,7 @@ export interface ListType {
    * This will be used as title for the list
    */
   title?: string | null;
-  collectionSlug?: ('blogs' | 'tags' | 'users' | 'products' | 'categories') | null;
+  collectionSlug?: ('blogs' | 'tags' | 'users' | 'products' | 'categories' | 'orders') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'List';

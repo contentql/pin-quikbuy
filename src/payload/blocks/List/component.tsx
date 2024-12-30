@@ -7,6 +7,7 @@ import React from 'react'
 
 import AuthorsList from './components/AuthorsList'
 import BlogsList from './components/BlogsList'
+import OrderList from './components/OrdersList'
 import ShopPage from './components/ShopPage'
 
 interface ListProps extends ListType {
@@ -128,6 +129,21 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
           block={block}
         />
       )
+    }
+
+    case 'orders': {
+      const { docs: orders = [] } = await unstable_cache(
+        async () =>
+          await payload.find({
+            collection: 'orders',
+            depth: 10,
+            limit: 1000,
+          }),
+        ['orders', 'allOrders'],
+        { tags: ['list-orders'] },
+      )()
+
+      return <OrderList orders={orders} />
     }
   }
 }
