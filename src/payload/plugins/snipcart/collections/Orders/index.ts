@@ -480,12 +480,6 @@ export const Orders: CollectionConfig = {
                       type: 'text',
                       label: 'VAT Number',
                     },
-                    {
-                      name: 'hasMinimalRequiredInfo',
-                      type: 'checkbox',
-                      label: 'Has Minimal Required Info',
-                      required: true,
-                    },
                   ],
                 },
                 {
@@ -565,12 +559,6 @@ export const Orders: CollectionConfig = {
                       name: 'vatNumber',
                       type: 'text',
                       label: 'VAT Number',
-                    },
-                    {
-                      name: 'hasMinimalRequiredInfo',
-                      type: 'checkbox',
-                      label: 'Has Minimal Required Info',
-                      required: true,
                     },
                   ],
                 },

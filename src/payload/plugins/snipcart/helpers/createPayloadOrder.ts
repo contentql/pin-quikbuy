@@ -105,7 +105,6 @@ export const createPayloadOrder = async (
           province: order.billingAddress.province,
           phone: order.billingAddress.phone,
           vatNumber: order.billingAddress.vatNumber,
-          hasMinimalRequiredInfo: order.billingAddress.hasMinimalRequiredInfo,
         },
         shippingAddress: {
           fullName: order.shippingAddress.fullName,
@@ -121,7 +120,6 @@ export const createPayloadOrder = async (
           province: order.shippingAddress.province,
           phone: order.shippingAddress.phone,
           vatNumber: order.shippingAddress.vatNumber,
-          hasMinimalRequiredInfo: order.shippingAddress.hasMinimalRequiredInfo,
         },
         shipToBillingAddress: order.shipToBillingAddress,
         shippingDetails: {

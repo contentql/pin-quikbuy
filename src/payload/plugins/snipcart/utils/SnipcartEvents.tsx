@@ -1,16 +1,34 @@
 'use client'
 
-import { createPayloadCart } from '../helpers/createPayloadCart'
+import { addItemToPayloadCart } from '../helpers/cart/addItemToPayloadCart'
+import { createPayloadCart } from '../helpers/cart/createPayloadCart'
+import { removeItemFromPayloadCart } from '../helpers/cart/removeItemFromPayloadCart'
+import { updateItemInPayloadCart } from '../helpers/cart/updateItemInPayloadCart'
+import { checkAndSetSnipcartCart } from '../helpers/checkAndSetSnipcartCart'
 import { createPayloadOrder } from '../helpers/createPayloadOrder'
-import { deletePayloadCart } from '../helpers/deletePayloadCart'
 import { fetchCurrentUser } from '../helpers/fetchCurrentUser'
-import { updatePayloadCart } from '../helpers/updatePayloadCart'
 import { updateSnipcartCheckout } from '../helpers/updateSnipcartCheckout'
 // Helper to add order to the cart collection
 import { useEffect, useRef } from 'react'
 
-const useSnipcartEvents = () => {
+const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const unsubscribeRef = useRef<(() => void)[]>([])
+
+  useEffect(() => {
+    const updateSnipcartCart = async () => {
+      const user = await fetchCurrentUser()
+      if (!user) {
+        console.log('No user found. Cannot update checkout details.')
+        return
+      }
+
+      await checkAndSetSnipcartCart({ user })
+    }
+
+    updateSnipcartCart()
+  }, [])
 
   useEffect(() => {
     const handleSnipcartReady = () => {
@@ -37,14 +55,14 @@ const useSnipcartEvents = () => {
 
         const user = await fetchCurrentUser()
         if (!user) {
-          console.log('No user found. Cannot update cart.')
+          console.log('No user found. Cannot update item in cart.')
           return
         }
 
         // Serialize the item object to remove unsupported properties
         const plainItem = JSON.parse(JSON.stringify(item))
 
-        await createPayloadCart(user, plainItem)
+        await addItemToPayloadCart(user, plainItem)
       })
 
       registerEvent('item.updated', async item => {
@@ -52,14 +70,14 @@ const useSnipcartEvents = () => {
 
         const user = await fetchCurrentUser()
         if (!user) {
-          console.log('No user found. Cannot update cart.')
+          console.log('No user found. Cannot update item in cart.')
           return
         }
 
         // Serialize the item object to remove unsupported properties
         const plainItem = JSON.parse(JSON.stringify(item))
 
-        await updatePayloadCart(user, plainItem)
+        await updateItemInPayloadCart(user, plainItem)
       })
 
       registerEvent('item.removed', async item => {
@@ -74,12 +92,23 @@ const useSnipcartEvents = () => {
         // Serialize the item object to remove unsupported properties
         const plainItem = JSON.parse(JSON.stringify(item))
 
-        await deletePayloadCart(user, plainItem)
+        await removeItemFromPayloadCart(user, plainItem)
       })
 
       // Cart-related events
-      registerEvent('cart.created', cart => {
+      registerEvent('cart.created', async cart => {
         console.log('Cart created:', cart)
+
+        const user = await fetchCurrentUser()
+        if (!user) {
+          console.log('No user found. Cannot add item to cart.')
+          return
+        }
+
+        // Serialize the cart object to remove unsupported properties
+        const plainCart = JSON.parse(JSON.stringify(cart))
+
+        await createPayloadCart(user, plainCart)
       })
 
       registerEvent('cart.confirmed', async cart => {
@@ -165,6 +194,8 @@ const useSnipcartEvents = () => {
       document.removeEventListener('snipcart.ready', handleSnipcartReady)
     }
   }, [])
+
+  return <>{children}</>
 }
 
-export default useSnipcartEvents
+export default SnipcartEvents

@@ -1,6 +1,8 @@
 import { revalidateCart } from '../hooks/revalidateCart'
 import { CollectionConfig } from 'payload'
 
+import { deleteOldCarts } from './hooks/deleteOldCart'
+
 export const Cart: CollectionConfig = {
   slug: 'cart',
   labels: {
@@ -68,6 +70,7 @@ export const Cart: CollectionConfig = {
   },
   hooks: {
     afterChange: [revalidateCart],
+    beforeChange: [deleteOldCarts],
   },
   admin: {
     description:
@@ -89,17 +92,17 @@ export const Cart: CollectionConfig = {
               admin: {
                 description: 'The user associated with this cart.',
               },
-              filterOptions: ({ user, relationTo }) => {
-                if (relationTo === 'users') {
-                  return {
-                    id: {
-                      equals: user?.id,
-                    },
-                  }
-                }
+              // filterOptions: ({ user, relationTo }) => {
+              //   if (relationTo === 'users') {
+              //     return {
+              //       id: {
+              //         equals: user?.id,
+              //       },
+              //     }
+              //   }
 
-                return false
-              },
+              //   return false
+              // },
             },
           ],
         },
@@ -110,12 +113,22 @@ export const Cart: CollectionConfig = {
               name: 'items',
               type: 'array',
               label: 'Cart Items',
-              required: true,
-              minRows: 1,
               admin: {
                 description: 'List of items added to the cart.',
               },
               fields: [
+                {
+                  name: 'snipcartId',
+                  type: 'text',
+                  label: 'Snipcart ID',
+                  required: true,
+                  admin: {
+                    description:
+                      'The unique identifier associated with this item in Snipcart.',
+                    placeholder: 'Enter Snipcart unique ID',
+                    readOnly: true,
+                  },
+                },
                 {
                   name: 'product',
                   type: 'relationship',
@@ -196,7 +209,6 @@ export const Cart: CollectionConfig = {
               type: 'text',
               label: 'Snipcart ID',
               required: true,
-              access: {},
               admin: {
                 description:
                   'The unique identifier associated with this cart in Snipcart.',

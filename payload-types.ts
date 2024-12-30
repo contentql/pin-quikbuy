@@ -365,7 +365,7 @@ export interface Product {
   /**
    * Provide a rich text description for the product.
    */
-  description: string;
+  description?: string | null;
   /**
    * The manufacturer or brand of the product.
    */
@@ -825,25 +825,31 @@ export interface Cart {
   /**
    * List of items added to the cart.
    */
-  items: {
-    /**
-     * The product added to the cart.
-     */
-    product: string | Product;
-    /**
-     * Number of units of the product.
-     */
-    quantity: number;
-    /**
-     * Price per unit of the product.
-     */
-    price: number;
-    /**
-     * Total cost for this item (calculated automatically).
-     */
-    total?: number | null;
-    id?: string | null;
-  }[];
+  items?:
+    | {
+        /**
+         * The unique identifier associated with this item in Snipcart.
+         */
+        snipcartId: string;
+        /**
+         * The product added to the cart.
+         */
+        product: string | Product;
+        /**
+         * Number of units of the product.
+         */
+        quantity: number;
+        /**
+         * Price per unit of the product.
+         */
+        price: number;
+        /**
+         * Total cost for this item (calculated automatically).
+         */
+        total?: number | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Total cost of all items in the cart (calculated automatically).
    */
@@ -948,7 +954,6 @@ export interface Order {
     province?: string | null;
     phone?: string | null;
     vatNumber?: string | null;
-    hasMinimalRequiredInfo: boolean;
   };
   shippingAddress: {
     fullName: string;
@@ -964,7 +969,6 @@ export interface Order {
     province?: string | null;
     phone?: string | null;
     vatNumber?: string | null;
-    hasMinimalRequiredInfo: boolean;
   };
   shippingDetails: {
     cost: number;
@@ -1565,6 +1569,7 @@ export interface CartSelect<T extends boolean = true> {
   items?:
     | T
     | {
+        snipcartId?: T;
         product?: T;
         quantity?: T;
         price?: T;
@@ -1658,7 +1663,6 @@ export interface OrdersSelect<T extends boolean = true> {
         province?: T;
         phone?: T;
         vatNumber?: T;
-        hasMinimalRequiredInfo?: T;
       };
   shippingAddress?:
     | T
@@ -1676,7 +1680,6 @@ export interface OrdersSelect<T extends boolean = true> {
         province?: T;
         phone?: T;
         vatNumber?: T;
-        hasMinimalRequiredInfo?: T;
       };
   shippingDetails?:
     | T

@@ -76,7 +76,6 @@ export const Products: CollectionConfig = {
             {
               name: 'description',
               type: 'textarea',
-              required: true,
               admin: {
                 description: 'Provide a rich text description for the product.',
               },
@@ -409,7 +408,7 @@ export const Products: CollectionConfig = {
               relationTo: 'media',
               hasMany: true,
               required: true,
-              minRows: 1,
+              minRows: 3,
               admin: {
                 description: 'Upload product images.',
               },

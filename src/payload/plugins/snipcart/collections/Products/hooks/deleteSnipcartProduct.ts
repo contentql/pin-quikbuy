@@ -7,7 +7,7 @@ export const deleteSnipcartProduct: CollectionAfterDeleteHook<
 > = async ({ doc }) => {
   try {
     const response = await snipcartAPI({
-      endpoint: `/products/${doc.id}`,
+      endpoint: `/products/${doc.slug}`,
       method: 'DELETE',
     })
 
