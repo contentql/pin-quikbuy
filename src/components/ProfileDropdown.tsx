@@ -92,6 +92,13 @@ const ProfileDropdown = ({
               </DropdownMenuItem>
             </Link>
 
+            <Link href='/orders'>
+              <DropdownMenuItem className='cursor-pointer'>
+                <UserRound size={16} className='mr-2' />
+                My Orders
+              </DropdownMenuItem>
+            </Link>
+
             {userDetails.isAdmin && (
               <Link href='/admin' target='_blank'>
                 <DropdownMenuItem className='cursor-pointer'>
