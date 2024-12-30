@@ -5,7 +5,7 @@ const Branding = () => {
   return (
     <Link
       data-disable-nprogress={true}
-      className='bg-text fixed bottom-4 right-4 flex items-center gap-1 rounded py-2 pl-3 pr-4 text-sm font-bold text-black shadow-xl'
+      className='fixed bottom-4 right-4 flex items-center gap-1 rounded bg-white py-2 pl-3 pr-4 text-sm font-bold text-black shadow-xl'
       href='https://contentql.io'
       target='_blank'
       aria-label='contentQL website'>
