@@ -175,7 +175,8 @@ export default async function ProductDetails({
             )} */}
 
             <AddToCartButton
-              productId={product?.id || ''}
+              product={product}
+              route={route}
               disabled={(product?.stock ?? 0) <= 0}
             />
           </div>
