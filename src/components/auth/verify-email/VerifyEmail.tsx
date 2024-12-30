@@ -17,7 +17,7 @@ const VerifyEmail = ({ token, userId }: { token: string; userId: string }) => {
   if (isLoading) {
     return (
       <div className='flex items-center gap-4'>
-        <Spinner className='size-6 text-center text-secondary' />
+        <Spinner className='size-6 text-center' />
         <p>Please wait, verification in progress...</p>
       </div>
     )

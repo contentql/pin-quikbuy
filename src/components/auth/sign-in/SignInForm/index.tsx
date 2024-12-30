@@ -57,8 +57,8 @@ const SignInForm: React.FC = () => {
 
   return (
     <div className='flex w-full items-center justify-center'>
-      <div className='mx-auto w-full max-w-md  drop-shadow-2xl'>
-        <div className='w-full max-w-md p-6'>
+      <div className='mx-auto w-full max-w-md'>
+        <div className='w-full max-w-md rounded-md border px-6 py-10'>
           {isSignInSuccess ? (
             <Alert variant='success' className='mb-12'>
               <AlertDescription>
@@ -72,10 +72,7 @@ const SignInForm: React.FC = () => {
               </AlertDescription>
             </Alert>
           ) : null}
-          <h1 className=' mb-1 text-3xl font-semibold'>Sign In</h1>
-          <p className='mb-6 text-secondary'>
-            Join our Community with all time access and free{' '}
-          </p>
+          <h1 className=' mb-6 text-3xl font-semibold'>Sign In</h1>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
@@ -94,7 +91,9 @@ const SignInForm: React.FC = () => {
                 />
 
                 {errors?.email && (
-                  <p className='text-danger text-sm'>{errors.email.message}</p>
+                  <p className='text-sm text-destructive'>
+                    {errors.email.message}
+                  </p>
                 )}
               </LabelInputContainer>
             </div>
@@ -113,14 +112,14 @@ const SignInForm: React.FC = () => {
                 />
 
                 {errors?.password && (
-                  <p className='text-danger text-sm'>
+                  <p className='text-sm text-destructive'>
                     {errors.password.message}
                   </p>
                 )}
               </LabelInputContainer>
             </div>
 
-            <p className='mb-2 text-sm text-secondary'>
+            <p className='mb-2 text-sm'>
               Forgot your password?{' '}
               <Link
                 className='text-primary hover:underline'
@@ -132,13 +131,13 @@ const SignInForm: React.FC = () => {
             <div>
               <Button
                 type='submit'
-                className='w-full'
+                className='w-full shadow-none'
                 disabled={isSignInPending}>
                 Sign In
               </Button>
             </div>
           </form>
-          <div className='mt-8 text-center text-sm text-secondary'>
+          <div className='mt-8 text-center text-sm'>
             <p>
               Don&apos;t have an account?{' '}
               <Link href='/sign-up' className='text-primary hover:underline'>

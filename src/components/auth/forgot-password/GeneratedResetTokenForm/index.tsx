@@ -58,7 +58,7 @@ const GenerateResetTokenForm: React.FC = () => {
             </Alert>
           ) : null}
           <h1 className='mb-1 text-3xl font-semibold'>Forgot your password</h1>
-          <p className='mb-6 text-secondary'>
+          <p className='mb-6'>
             Forgot your password? Please enter your email we&apos;ll send you
             reset link
           </p>
@@ -81,7 +81,9 @@ const GenerateResetTokenForm: React.FC = () => {
                 />
 
                 {errors?.email && (
-                  <p className='text-danger text-sm'>{errors.email.message}</p>
+                  <p className='text-sm text-destructive'>
+                    {errors.email.message}
+                  </p>
                 )}
               </LabelInputContainer>
 

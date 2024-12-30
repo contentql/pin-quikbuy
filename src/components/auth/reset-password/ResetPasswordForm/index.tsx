@@ -65,9 +65,7 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
           ) : null}
 
           <h1 className=' mb-1 text-3xl font-semibold'>Almost there!</h1>
-          <p className='mb-6 text-secondary'>
-            Please enter a new password to reset.
-          </p>
+          <p className='mb-6'>Please enter a new password to reset.</p>
         </div>
 
         <div className='mt-10'>
@@ -88,7 +86,7 @@ const ResetPasswordForm: React.FC<Props> = ({ token }) => {
                   />
 
                   {errors.password && (
-                    <p className='text-danger text-xs' id='email-error'>
+                    <p className='text-xs text-destructive' id='email-error'>
                       {errors.password.message}
                     </p>
                   )}

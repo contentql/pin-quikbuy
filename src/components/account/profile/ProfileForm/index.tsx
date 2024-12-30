@@ -187,12 +187,12 @@ const ProfileForm = ({ user }: { user: User }) => {
                   htmlFor='dropzone-file'
                   className='flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed transition-colors hover:bg-secondary/10'>
                   <div className='flex flex-col items-center justify-center pb-6 pt-5'>
-                    <ImageUp className='text-secondary' />
+                    <ImageUp className='' />
 
                     <p className='mt-4 text-sm'>
                       <span className='font-semibold'>Click to upload</span>
                     </p>
-                    <p className='mt-2 text-center text-xs leading-5 text-secondary'>
+                    <p className='mt-2 text-center text-xs leading-5'>
                       Use square image for best results,
                       <br /> maximum upload size is 5MB
                     </p>

@@ -52,9 +52,9 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
                         </time>
                       </h3>
 
-                      <AccordionTrigger className='hover:bg-gray-200 hover:no-underline'>
+                      <AccordionTrigger className='rounded-md hover:no-underline'>
                         <div className='flex items-center p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6'>
-                          <dl className='grid flex-1 grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2'>
+                          <dl className='grid flex-1 grid-cols-2 gap-x-6 text-left text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2'>
                             <div>
                               <dt className='font-medium text-gray-900'>
                                 Order number

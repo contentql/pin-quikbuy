@@ -57,7 +57,7 @@ export default function DeleteAccountSection({ user }: { user: User }) {
             </DialogDescription>
           </DialogHeader>
 
-          <p className='mt-6 text-sm leading-3 text-secondary'>
+          <p className='mt-6 text-sm leading-3'>
             Type <strong>{user.email}</strong> to confirm
           </p>
           <Input type='text' onChange={e => setEmail(e.target.value)} />

@@ -76,7 +76,7 @@ const SignUpForm: React.FC = () => {
 
   return (
     <div className='flex w-full items-center justify-center'>
-      <div className='w-full max-w-md p-6'>
+      <div className='w-full max-w-md rounded-md border px-6 py-10'>
         {isSignUpSuccess ? (
           <Alert variant='success' className='mb-12'>
             <AlertDescription>
@@ -90,10 +90,7 @@ const SignUpForm: React.FC = () => {
             </AlertDescription>
           </Alert>
         ) : null}
-        <h1 className=' mb-1 text-3xl font-semibold'>Sign Up</h1>
-        <p className='mb-6 text-secondary'>
-          Join our Community with all time access and free{' '}
-        </p>
+        <h1 className=' mb-6 text-3xl font-semibold'>Sign Up</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <div>
@@ -122,7 +119,9 @@ const SignUpForm: React.FC = () => {
               />
 
               {errors?.username && (
-                <p className='text-danger text-sm'>{errors.username.message}</p>
+                <p className='text-sm text-destructive'>
+                  {errors.username.message}
+                </p>
               )}
             </LabelInputContainer>
           </div>
@@ -141,7 +140,9 @@ const SignUpForm: React.FC = () => {
                 placeholder='john.doe@example.com'
               />
               {errors?.email && (
-                <p className='text-danger text-sm'>{errors.email.message}</p>
+                <p className='text-sm text-destructive'>
+                  {errors.email.message}
+                </p>
               )}
             </LabelInputContainer>
           </div>
@@ -159,7 +160,9 @@ const SignUpForm: React.FC = () => {
                 placeholder='● ● ● ● ● ● ● ● ●'
               />
               {errors?.password && (
-                <p className='text-danger text-sm'>{errors.password.message}</p>
+                <p className='text-sm text-destructive'>
+                  {errors.password.message}
+                </p>
               )}
             </LabelInputContainer>
           </div>
@@ -179,7 +182,7 @@ const SignUpForm: React.FC = () => {
                 placeholder='● ● ● ● ● ● ● ● ●'
               />
               {errors?.confirmPassword && (
-                <p className='text-danger text-sm'>
+                <p className='text-sm text-destructive'>
                   {errors.confirmPassword.message}
                 </p>
               )}
@@ -192,7 +195,7 @@ const SignUpForm: React.FC = () => {
           </div>
         </form>
 
-        <div className='mt-8 text-center text-sm text-secondary'>
+        <div className='mt-8 text-center text-sm'>
           <p>
             Already have an account?{' '}
             <Link href='/sign-in' className='text-primary hover:underline'>

@@ -1,7 +1,7 @@
 'use client'
 
 import { User } from '@payload-types'
-import { LogOut, UserRound, UserRoundCog } from 'lucide-react'
+import { LogOut, ReceiptText, UserRound, UserRoundCog } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -94,7 +94,7 @@ const ProfileDropdown = ({
 
             <Link href='/orders'>
               <DropdownMenuItem className='cursor-pointer'>
-                <UserRound size={16} className='mr-2' />
+                <ReceiptText size={16} className='mr-2' />
                 My Orders
               </DropdownMenuItem>
             </Link>
