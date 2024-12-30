@@ -8,6 +8,7 @@ import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
 import React, { useState } from 'react'
 import SuperJSON from 'superjson'
 
+import SnipcartEvents from '@/payload/plugins/snipcart/utils/SnipcartEvents'
 import { trpc } from '@/trpc/client'
 
 export default function Provider({ children }: { children: React.ReactNode }) {
@@ -43,7 +44,9 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           color='#A978DE'
           options={{ showSpinner: false }}
         />
-        <KBarProvider>{children}</KBarProvider>
+        <KBarProvider>
+          <SnipcartEvents>{children}</SnipcartEvents>
+        </KBarProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </trpc.Provider>
