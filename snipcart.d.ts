@@ -1,13 +1,12 @@
 declare global {
   type SnipcartEvent =
-    | 'item.added'
     | 'item.adding'
+    | 'item.added'
     | 'item.updated'
     | 'item.removed'
-    | 'order.completed'
-    | 'cart.closed'
     | 'cart.created'
     | 'cart.confirmed'
+    | 'cart.confirm.error'
     | 'cart.reset'
     | 'payment.failed'
     | 'discount.applied'
