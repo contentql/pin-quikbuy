@@ -17,7 +17,7 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
 
   return (
     <div className='bg-white'>
-      <div className='py-16 sm:py-24'>
+      <div className='py-8 sm:py-16'>
         <div className='mx-auto max-w-7xl sm:px-2 lg:px-8'>
           <div className='mx-auto max-w-2xl px-4 lg:max-w-4xl lg:px-0'>
             <h1 className='text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl'>
@@ -30,7 +30,7 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
           </div>
         </div>
 
-        <div className='mt-16'>
+        <div className='mt-8'>
           <h2 className='sr-only'>Recent orders</h2>
           <div className='mx-auto max-w-7xl sm:px-2 lg:px-8'>
             <div className='mx-auto max-w-2xl space-y-8 sm:px-4 lg:max-w-4xl lg:px-0'>
@@ -44,7 +44,7 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
                   <AccordionItem value={order.id}>
                     <div
                       key={order.id}
-                      className='shadow-xs bg-white sm:rounded-lg'>
+                      className='shadow-xs justify-start bg-white sm:rounded-lg'>
                       <h3 className='sr-only'>
                         Order placed on{' '}
                         <time dateTime={order.createdAt}>
@@ -52,9 +52,9 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
                         </time>
                       </h3>
 
-                      <AccordionTrigger className='rounded-md hover:no-underline'>
+                      <AccordionTrigger className='justify-start rounded-md bg-accent hover:no-underline'>
                         <div className='flex items-center p-4 sm:grid sm:grid-cols-4 sm:gap-x-6 sm:p-6'>
-                          <dl className='grid flex-1 grid-cols-2 gap-x-6 text-left text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2'>
+                          <dl className='grid w-full flex-1 grid-cols-2 gap-x-6 text-left text-sm sm:col-span-4 sm:grid-cols-3 lg:col-span-2'>
                             <div>
                               <dt className='font-medium text-gray-900'>
                                 Order number
@@ -91,7 +91,7 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
                       {/* Products */}
                       <h4 className='sr-only'>Items</h4>
                       <AccordionContent>
-                        <ul role='list' className='divide-y divide-gray-200'>
+                        <ul role='list' className=''>
                           {order.items.map(product => {
                             return (
                               <li key={product.id} className='p-4 sm:p-6'>
@@ -161,6 +161,74 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
                             )
                           })}
                         </ul>
+
+                        <div className='sm:flex'>
+                          <div className='px-8 py-2'>
+                            <div className='mb-1.5 font-semibold'>
+                              Shipping Address
+                            </div>
+                            <div className='ml-0.5'>
+                              <div>{order.shippingAddress.fullName}</div>
+                              <div>{order.shippingAddress.fullAddress}</div>
+                              <div>
+                                {order.shippingAddress.city},{' '}
+                                {order.shippingAddress.province}
+                              </div>
+                              <div>
+                                {order.shippingAddress.postalCode} -{' '}
+                                {order.shippingAddress.country}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className='px-8 py-2'>
+                            <div className='mb-1.5 font-semibold'>
+                              Payment Methods
+                            </div>
+                            <div className='ml-0.5'>
+                              <div>
+                                {order.card.brand} ending in{' '}
+                                <span>{order.card.last4}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className='px-8 py-2'>
+                            <div className='mb-1.5 font-semibold'>
+                              Order Summary
+                            </div>
+                            <div className='ml-0.5 w-44'>
+                              <div className='flex justify-between'>
+                                <div>Item(s) Subtotal: </div>
+                                <div>
+                                  {productInformation?.currency === 'USD'
+                                    ? '$'
+                                    : ''}
+                                  {order.totalPrice}
+                                </div>
+                              </div>
+                              <div className='flex justify-between'>
+                                <div>Shipping: </div>
+                                <div>
+                                  {productInformation?.currency === 'USD'
+                                    ? '$'
+                                    : ''}
+                                  {order.shippingDetails.cost}
+                                </div>
+                              </div>
+                              <div className='flex justify-between'>
+                                <div className='font-medium'>Total: </div>
+                                <div>
+                                  {productInformation?.currency === 'USD'
+                                    ? '$'
+                                    : ''}
+                                  {(order.totalPrice ?? 0) +
+                                    order.shippingDetails.cost}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </AccordionContent>
                     </div>
                   </AccordionItem>
