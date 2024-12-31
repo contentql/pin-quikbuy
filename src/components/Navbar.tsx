@@ -1,10 +1,10 @@
 'use client'
 
 import type { SiteSetting, User } from '@payload-types'
-import { ChevronDown, SearchIcon } from 'lucide-react'
+import { SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 
 import {
   SearchInput,
@@ -13,42 +13,6 @@ import {
 import { generateMenuLinks } from '@/utils/generateMenuLinks'
 
 import ProfileDropdown from './ProfileDropdown'
-
-const CategoryDropdown: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const categories = [
-    { name: 'Electronics', slug: 'Electronics' },
-    { name: 'Clothing', slug: 'Clothing' },
-    { name: 'Home & Living', slug: 'Home-living' },
-    { name: 'Sports', slug: 'Sports' },
-    { name: 'Accessories', slug: 'Accessories' },
-  ]
-
-  return (
-    <div className='relative'>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className='flex items-center space-x-2 rounded p-2 hover:bg-gray-100'>
-        <span>Shop by Category</span>
-        <ChevronDown className='h-4 w-4' />
-      </button>
-
-      {isOpen && (
-        <div className='absolute left-0 top-full z-50 mt-2 w-56 rounded-md border bg-white shadow-lg'>
-          {categories.map(category => (
-            <Link
-              key={category.slug}
-              href={`/shop?category=${category.slug}`}
-              className='block px-4 py-2 text-gray-800 hover:bg-gray-100'
-              onClick={() => setIsOpen(false)}>
-              {category.name}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
 
 const Navbar = ({
   metadata,
