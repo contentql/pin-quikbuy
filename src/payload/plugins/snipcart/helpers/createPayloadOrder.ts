@@ -4,6 +4,17 @@ import configPromise from '@payload-config'
 import { Order, User } from '@payload-types'
 import { getPayload } from 'payload'
 
+const paymentStatus: Record<number, string> = {
+  0: 'Unset',
+  1: 'Saving',
+  2: 'Saved',
+  3: 'Processing',
+  4: 'WaitingForUser',
+  5: 'Paid',
+  6: 'Refunded',
+  7: 'Pending',
+}
+
 /**
  * Creates the order in Payload based on Snipcart order data.
  */
@@ -34,6 +45,8 @@ export const createPayloadOrder = async (
 
         return {
           uniqueId: item.uniqueId,
+          product: product.id,
+          image: item.imageUrl,
           id: item.id,
           name: item.name,
           price: item.price,
@@ -73,7 +86,6 @@ export const createPayloadOrder = async (
           state: {
             committing: item.state.committing,
           },
-          product: product.id,
         } as Order['items'][0]
       }),
     )
@@ -150,7 +162,9 @@ export const createPayloadOrder = async (
         },
         paymentDetails: {
           method: order.paymentDetails.method,
-          status: order.paymentDetails.status,
+          status: paymentStatus[
+            order.paymentDetails.status
+          ] as Order['paymentDetails']['status'],
           details: order.paymentDetails.details,
           iconUrl: order.paymentDetails.iconUrl,
           instructions: order.paymentDetails.instructions,

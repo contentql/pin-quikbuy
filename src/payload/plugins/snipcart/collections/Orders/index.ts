@@ -100,18 +100,25 @@ export const Orders: CollectionConfig = {
                   },
                 },
                 {
+                  name: 'product',
+                  type: 'relationship',
+                  label: 'Product',
+                  relationTo: 'products',
+                  required: true,
+                },
+                {
                   name: 'id',
                   type: 'text',
-                  label: 'Product ID',
+                  label: 'ID or Slug',
                   required: true,
                   admin: {
-                    placeholder: 'Enter product ID.',
+                    placeholder: 'Enter product ID or slug.',
                   },
                 },
                 {
                   name: 'name',
                   type: 'text',
-                  label: 'Product Name',
+                  label: 'Name',
                   required: true,
                   admin: {
                     placeholder: 'Enter product name.',
@@ -144,6 +151,57 @@ export const Orders: CollectionConfig = {
                   },
                 },
                 {
+                  name: 'categories',
+                  type: 'array',
+                  label: 'Categories',
+                  fields: [
+                    {
+                      name: 'category',
+                      type: 'text',
+                      label: 'Category',
+                      admin: {
+                        placeholder: 'e.g., Clothes, Shirt',
+                      },
+                    },
+                  ],
+                },
+                {
+                  name: 'url',
+                  type: 'text',
+                  label: 'Product URL',
+                  admin: {
+                    placeholder: 'Enter product URL.',
+                  },
+                },
+                {
+                  name: 'image',
+                  type: 'text',
+                  label: 'Image',
+                  admin: {
+                    placeholder: 'Enter image url.',
+                  },
+                },
+                {
+                  name: 'quantity',
+                  type: 'number',
+                  required: true,
+                  label: 'Quantity',
+                  min: 1,
+                  admin: {
+                    placeholder: 'Enter the quantity.',
+                  },
+                },
+                {
+                  name: 'shippable',
+                  type: 'checkbox',
+                  label: 'Shippable',
+                },
+                {
+                  name: 'taxable',
+                  type: 'checkbox',
+                  label: 'Taxable',
+                },
+                {
                   name: 'taxes',
                   type: 'array',
                   label: 'Taxes',
@@ -173,49 +231,6 @@ export const Orders: CollectionConfig = {
                       },
                     },
                   ],
-                },
-                {
-                  name: 'categories',
-                  type: 'array',
-                  label: 'Categories',
-                  fields: [
-                    {
-                      name: 'category',
-                      type: 'text',
-                      label: 'Category',
-                      admin: {
-                        placeholder: 'e.g., Clothes, Shirt',
-                      },
-                    },
-                  ],
-                },
-                {
-                  name: 'url',
-                  type: 'text',
-                  label: 'Product URL',
-                  admin: {
-                    placeholder: 'Enter product URL.',
-                  },
-                },
-                {
-                  name: 'quantity',
-                  type: 'number',
-                  required: true,
-                  label: 'Quantity',
-                  min: 1,
-                  admin: {
-                    placeholder: 'Enter the quantity.',
-                  },
-                },
-                {
-                  name: 'shippable',
-                  type: 'checkbox',
-                  label: 'Shippable',
-                },
-                {
-                  name: 'taxable',
-                  type: 'checkbox',
-                  label: 'Taxable',
                 },
                 {
                   name: 'attributes',
@@ -337,18 +352,6 @@ export const Orders: CollectionConfig = {
                   admin: {
                     placeholder: 'Enter payment gateway ID.',
                   },
-                },
-                {
-                  name: 'state',
-                  type: 'group',
-                  label: 'State',
-                  fields: [
-                    {
-                      name: 'committing',
-                      type: 'checkbox',
-                      label: 'Committing',
-                    },
-                  ],
                 },
               ],
             },
@@ -748,34 +751,44 @@ export const Orders: CollectionConfig = {
                 {
                   name: 'method',
                   type: 'text',
-                  label: 'Payment Method',
+                  label: 'Method',
                   required: true,
                 },
                 {
                   name: 'status',
-                  type: 'number',
-                  label: 'Payment Status',
+                  type: 'select',
+                  label: 'Status',
+                  options: [
+                    { label: 'Unset', value: 'unset' },
+                    { label: 'Saving', value: 'saving' },
+                    { label: 'Saved', value: 'saved' },
+                    { label: 'Processing', value: 'processing' },
+                    { label: 'WaitingForUser', value: 'waitingForUser' },
+                    { label: 'Paid', value: 'paid' },
+                    { label: 'Refunded', value: 'refunded' },
+                    { label: 'Pending', value: 'pending' },
+                  ],
                   required: true,
                 },
                 {
                   name: 'details',
                   type: 'json',
-                  label: 'Payment Details',
+                  label: 'Details',
                 },
                 {
                   name: 'iconUrl',
                   type: 'text',
-                  label: 'Payment Icon URL',
+                  label: 'Icon URL',
                 },
                 {
                   name: 'instructions',
                   type: 'text',
-                  label: 'Payment Instructions',
+                  label: 'Instructions',
                 },
                 {
                   name: 'display',
                   type: 'text',
-                  label: 'Payment Display',
+                  label: 'Display',
                 },
               ],
             },
