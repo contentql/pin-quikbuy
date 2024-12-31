@@ -1,8 +1,5 @@
-'use client'
-
-import { Media, Product } from '@payload-types'
+import { Category, Media, Product } from '@payload-types'
 import { Loader2Icon } from 'lucide-react'
-import { useTransition } from 'react'
 
 import { Button } from '@/components/common/Button'
 import { SNIPCART_LOCAL_DEV_URL } from '@/payload/plugins/snipcart/utils/constants'
@@ -19,9 +16,6 @@ export const AddToCartButton = ({
   disabled?: boolean
   className?: string
 }) => {
-  const [pending, startTransition] = useTransition()
-  const isDisabled = disabled || pending
-
   // Safe image handling
   const productImages =
     product?.images && product.images.length > 0
@@ -37,13 +31,13 @@ export const AddToCartButton = ({
         ]
 
   // Formatting categories into string[]
-  // const categories = [
-  //   ((product?.category as Category)?.parentCategory as Category)?.name,
-  //   (product?.category as Category).name,
-  //   ...((product?.category as Category).subCategories?.map(
-  //     category => (category as Category).name,
-  //   ) || []),
-  // ].filter(Boolean)
+  const categories = [
+    ((product?.category as Category)?.parentCategory as Category)?.name,
+    (product?.category as Category)?.name,
+    ...((product?.category as Category)?.subCategories?.map(
+      category => (category as Category)?.name,
+    ) || []),
+  ].filter(Boolean)
 
   // const customAttributes =
   //   product?.attributes
@@ -89,7 +83,10 @@ export const AddToCartButton = ({
       id='button-add-to-cart'
       size='lg'
       type='submit'
-      className={cn('relative rounded-full text-lg', className)}
+      className={cn(
+        'snipcart-add-item relative rounded-full text-lg',
+        className,
+      )}
       data-item-id={product?.slug}
       data-item-name={product?.name}
       data-item-description={product?.description}
@@ -98,7 +95,7 @@ export const AddToCartButton = ({
       data-item-image={(productImages.at(0) as Media).url}
       data-item-quantity={1}
       data-item-min-quantity={1}
-      // data-item-categories={categories}
+      data-item-categories={categories}
       // {...customAttributes}
       data-item-stackable={'auto'}
       data-item-max-quantity={product?.stock}
@@ -106,14 +103,14 @@ export const AddToCartButton = ({
       <span
         className={cn(
           'transition-opacity ease-in',
-          pending ? 'opacity-0' : 'opacity-100',
+          false ? 'opacity-0' : 'opacity-100',
         )}>
         {disabled ? 'Out of stock' : 'Add to cart'}
       </span>
       <span
         className={cn(
           'pointer-events-none absolute z-10 transition-opacity ease-out',
-          pending ? 'opacity-100' : 'opacity-0',
+          true ? 'opacity-100' : 'opacity-0',
         )}>
         <Loader2Icon className='h-4 w-4 animate-spin' />
       </span>

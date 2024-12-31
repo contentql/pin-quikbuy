@@ -49,6 +49,5 @@ export const checkAndSetSnipcartCart = async ({ user }: { user: User }) => {
     return cartData.snipcartId // Return the fetched cart ID
   } catch (error) {
     console.error('Error checking or setting Snipcart cart:', error)
-    throw error // Rethrow the error for higher-level handling
   }
 }
