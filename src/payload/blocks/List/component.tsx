@@ -1,9 +1,12 @@
 import { Params } from '../types'
+import { headers } from '@node_modules/next/headers'
 import configPromise from '@payload-config'
 import { ListType } from '@payload-types'
 import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import React from 'react'
+
+import { getCurrentUser } from '@/utils/getCurrentUser'
 
 import AuthorsList from './components/AuthorsList'
 import BlogsList from './components/BlogsList'
@@ -132,12 +135,20 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
     }
 
     case 'orders': {
+      const listHeaders = await headers()
+      const user = await getCurrentUser(listHeaders)
+
       const { docs: orders = [] } = await unstable_cache(
         async () =>
           await payload.find({
             collection: 'orders',
             depth: 10,
             limit: 1000,
+            where: {
+              user: {
+                equals: user?.id,
+              },
+            },
           }),
         ['orders', 'allOrders'],
         { tags: ['list-orders'] },
