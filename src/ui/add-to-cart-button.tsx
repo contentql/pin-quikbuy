@@ -110,7 +110,7 @@ export const AddToCartButton = ({
       <span
         className={cn(
           'pointer-events-none absolute z-10 transition-opacity ease-out',
-          true ? 'opacity-100' : 'opacity-0',
+          false ? 'opacity-100' : 'opacity-0',
         )}>
         <Loader2Icon className='h-4 w-4 animate-spin' />
       </span>

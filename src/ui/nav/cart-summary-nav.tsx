@@ -8,8 +8,6 @@ import {
   TooltipTrigger,
 } from '@/components/common/Tooltip'
 
-import { CartLink } from './cart-link'
-
 const CartFallback = () => (
   <div className='h-6 w-6 opacity-30'>
     <ShoppingBagIcon />
@@ -40,27 +38,29 @@ const CartSummaryNavInner = () => {
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>
           <div className='mr-2'>
-            <CartLink>
+            <button className='snipcart-checkout relative block h-6 w-6'>
               <ShoppingBagIcon />
               <span className='absolute bottom-0 right-0 inline-flex h-5 w-5 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full border-2 bg-white text-center text-xs'>
                 <span className='sr-only'>Items in cart: </span>
-                {0}
+                <span className='snipcart-items-count'>{0}</span>
               </span>
               <span className='sr-only'>
-                Total:{' '}
+                Total:<span className='snipcart-total-price'>{0}</span>
                 {/* {formatMoney({
                   amount: total,
                   currency: cart.cart.currency,
                   locale,
                 })} */}
               </span>
-            </CartLink>
+            </button>
           </div>
         </TooltipTrigger>
         <TooltipContent side='left' sideOffset={25}>
-          <p>{`${0} items in cart`}</p>
           <p>
-            Total:{' '}
+            <span className='snipcart-items-count'>{0}</span> items in cart
+          </p>
+          <p>
+            Total:<span className='snipcart-total-price'>{0}</span>
             {/* {formatMoney({
               amount: total,
               currency: cart.cart.currency,

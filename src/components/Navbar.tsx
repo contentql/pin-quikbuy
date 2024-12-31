@@ -52,7 +52,7 @@ const Navbar = ({
   const { height, width } = logo
 
   return (
-    <header className='nav-border-reveal sticky top-0 z-50 bg-white/90 py-4 backdrop-blur-sm'>
+    <header className='nav-border-reveal sticky top-0 z-20 bg-white/90 py-4 backdrop-blur-sm'>
       <div className='mx-auto flex max-w-7xl flex-row items-center gap-2 px-4 sm:px-6 lg:px-8'>
         {/* Left: Categories */}
         {/* <div className='flex items-center space-x-4'>
