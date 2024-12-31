@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
+import { CartSummaryNav } from '@/ui/nav/cart-summary-nav'
 import {
   SearchInput,
   SearchInputPlaceholder,
@@ -103,6 +104,7 @@ const Navbar = ({
           </label>
         </div>
 
+        <CartSummaryNav />
         {/* Center: Search */}
 
         {/* Right: Icons */}

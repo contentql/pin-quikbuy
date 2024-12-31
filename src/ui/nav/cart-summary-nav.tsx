@@ -44,7 +44,7 @@ const CartSummaryNavInner = async () => {
               <ShoppingBagIcon />
               <span className='absolute bottom-0 right-0 inline-flex h-5 w-5 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full border-2 bg-white text-center text-xs'>
                 <span className='sr-only'>Items in cart: </span>
-                {/* {totalItems} */}
+                {0}
               </span>
               <span className='sr-only'>
                 Total:{' '}
@@ -58,7 +58,7 @@ const CartSummaryNavInner = async () => {
           </div>
         </TooltipTrigger>
         <TooltipContent side='left' sideOffset={25}>
-          <p>{`count, plural, =0 {No items} =1 {# item} other {# items}} in cart`}</p>
+          <p>{`${0} items in cart`}</p>
           <p>
             Total:{' '}
             {/* {formatMoney({
