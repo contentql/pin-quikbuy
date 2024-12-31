@@ -877,6 +877,7 @@ export interface Order {
    */
   items: {
     uniqueId: string;
+    product: string | Product;
     id: string | null;
     name: string;
     price: number;
@@ -885,6 +886,17 @@ export interface Order {
      * Indicates if taxes are included in the price.
      */
     hasTaxesIncluded?: boolean | null;
+    categories?:
+      | {
+          category?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    url?: string | null;
+    image?: string | null;
+    quantity: number;
+    shippable?: boolean | null;
+    taxable?: boolean | null;
     taxes?:
       | {
           name?: string | null;
@@ -893,16 +905,6 @@ export interface Order {
           id?: string | null;
         }[]
       | null;
-    categories?:
-      | {
-          category?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    url?: string | null;
-    quantity: number;
-    shippable?: boolean | null;
-    taxable?: boolean | null;
     attributes?:
       | {
           name?: string | null;
@@ -927,9 +929,6 @@ export interface Order {
     addedOn?: string | null;
     modificationDate?: string | null;
     paymentGatewayId?: string | null;
-    state?: {
-      committing?: boolean | null;
-    };
   }[];
   /**
    * Total number of items in the order.
@@ -1015,7 +1014,7 @@ export interface Order {
   };
   paymentDetails: {
     method: string;
-    status: number;
+    status: 'unset' | 'saving' | 'saved' | 'processing' | 'waitingForUser' | 'paid' | 'refunded' | 'pending';
     details?:
       | {
           [k: string]: unknown;
@@ -1592,11 +1591,23 @@ export interface OrdersSelect<T extends boolean = true> {
     | T
     | {
         uniqueId?: T;
+        product?: T;
         id?: T;
         name?: T;
         price?: T;
         description?: T;
         hasTaxesIncluded?: T;
+        categories?:
+          | T
+          | {
+              category?: T;
+              id?: T;
+            };
+        url?: T;
+        image?: T;
+        quantity?: T;
+        shippable?: T;
+        taxable?: T;
         taxes?:
           | T
           | {
@@ -1605,16 +1616,6 @@ export interface OrdersSelect<T extends boolean = true> {
               amount?: T;
               id?: T;
             };
-        categories?:
-          | T
-          | {
-              category?: T;
-              id?: T;
-            };
-        url?: T;
-        quantity?: T;
-        shippable?: T;
-        taxable?: T;
         attributes?:
           | T
           | {
@@ -1638,11 +1639,6 @@ export interface OrdersSelect<T extends boolean = true> {
         addedOn?: T;
         modificationDate?: T;
         paymentGatewayId?: T;
-        state?:
-          | T
-          | {
-              committing?: T;
-            };
       };
   totalCount?: T;
   totalPrice?: T;
