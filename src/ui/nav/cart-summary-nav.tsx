@@ -24,7 +24,7 @@ export const CartSummaryNav = () => {
   )
 }
 
-const CartSummaryNavInner = async () => {
+const CartSummaryNavInner = () => {
   //   const cart = await getCartFromCookiesAction()
   //   if (!cart) {
   //     return <CartFallback />
