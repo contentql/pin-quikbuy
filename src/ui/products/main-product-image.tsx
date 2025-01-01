@@ -7,6 +7,8 @@ export const MainProductImage = (
     'width' | 'height' | 'sizes'
   >,
 ) => {
+  const { alt, ...remainingProps } = props
+
   return (
     <Image
       // using exactly the same width, height adn sizes as the main product image
@@ -14,7 +16,8 @@ export const MainProductImage = (
       width={700}
       height={700}
       sizes='(max-width: 1024x) 100vw, (max-width: 1280px) 50vw, 700px'
-      {...props}
+      alt={props.alt || 'default alt text'}
+      {...remainingProps}
     />
   )
 }
