@@ -408,7 +408,7 @@ export const Products: CollectionConfig = {
               relationTo: 'media',
               hasMany: true,
               required: true,
-              minRows: 3,
+              minRows: 1,
               admin: {
                 description: 'Upload product images.',
               },
