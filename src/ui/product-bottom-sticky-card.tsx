@@ -8,9 +8,11 @@ import { AddToCartButton } from './add-to-cart-button'
 export const ProductBottomStickyCard = ({
   product,
   show,
+  route,
 }: {
   product: Product | undefined
   show: boolean
+  route: string
 }) => {
   return (
     <div
@@ -52,7 +54,8 @@ export const ProductBottomStickyCard = ({
         </div>
 
         <AddToCartButton
-          productId={product?.id || ''}
+          product={product}
+          route={route}
           disabled={(product?.stock ?? 0) <= 0}
           className='h-9 shrink-0 px-3 text-sm sm:h-10 sm:px-8 sm:text-lg'
         />

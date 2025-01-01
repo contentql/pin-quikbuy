@@ -68,7 +68,7 @@ export default async function ProductDetails({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <StickyBottom product={product}>
+      <StickyBottom product={product} route={route}>
         <div className='mt-4 grid gap-4 lg:grid-cols-12'>
           <div className='lg:col-span-5 lg:col-start-8'>
             <h1 className='text-3xl font-bold leading-none tracking-tight text-foreground'>

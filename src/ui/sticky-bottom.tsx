@@ -8,9 +8,11 @@ import { ProductBottomStickyCard } from './product-bottom-sticky-card'
 export const StickyBottom = ({
   children,
   product,
+  route,
 }: Readonly<{
   children: React.ReactNode
   product: Product | undefined
+  route: string
 }>) => {
   const [show, setShow] = useState(false)
   useEffect(() => {
@@ -37,7 +39,7 @@ export const StickyBottom = ({
   return (
     <>
       {children}
-      <ProductBottomStickyCard product={product} show={show} />
+      <ProductBottomStickyCard product={product} show={show} route={route} />
     </>
   )
 }
