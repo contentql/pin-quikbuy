@@ -30,9 +30,8 @@ export const deletePayloadCart = async (
       return
     }
 
-    const updatedItems = cart.items.filter(
-      (cartItem: any) => cartItem.product !== item.id,
-    )
+    const updatedItems =
+      cart.items?.filter((cartItem: any) => cartItem.product !== item.id) || []
 
     if (updatedItems.length === 0) {
       // If no items remain, delete the entire cart

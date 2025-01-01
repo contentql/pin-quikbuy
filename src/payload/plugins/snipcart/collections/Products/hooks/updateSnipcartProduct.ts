@@ -1,4 +1,4 @@
-import { snipcartAPI } from '../../../lib/snipcart/utils/snipcartAPI'
+import { snipcartAPI } from '../../../utils/snipcartAPI'
 import { Product } from '@payload-types'
 import { CollectionAfterChangeHook } from 'payload'
 

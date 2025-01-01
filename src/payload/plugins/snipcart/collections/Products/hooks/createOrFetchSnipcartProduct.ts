@@ -1,5 +1,5 @@
-import { snipcartAPI } from '../../../lib/snipcart/utils/snipcartAPI'
 import { SNIPCART_LOCAL_DEV_URL } from '../../../utils/constants'
+import { snipcartAPI } from '../../../utils/snipcartAPI'
 import { Product } from '@payload-types'
 import { CollectionAfterChangeHook } from 'payload'
 
