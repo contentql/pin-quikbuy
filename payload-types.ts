@@ -150,7 +150,7 @@ export interface HomeType {
  * via the `definition` "DetailsType".
  */
 export interface DetailsType {
-  collectionSlug?: ('blogs' | 'tags' | 'users' | 'products') | null;
+  collectionSlug?: 'products' | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'Details';
@@ -164,7 +164,7 @@ export interface ListType {
    * This will be used as title for the list
    */
   title?: string | null;
-  collectionSlug?: ('blogs' | 'tags' | 'users' | 'products' | 'categories' | 'orders') | null;
+  collectionSlug?: ('products' | 'categories' | 'orders') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'List';
