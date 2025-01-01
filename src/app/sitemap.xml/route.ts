@@ -10,9 +10,7 @@ export const dynamic = 'force-dynamic'
 type StaticRoute = { route: string; updatedAt: Date }
 
 const sitemapGenerationMapping = {
-  blogs: serverClient.blog.getAllBlogs(),
   tags: serverClient.tag.getAllTags(),
-  users: serverClient.author.getAllAuthors(),
 } as const
 
 export async function GET() {
