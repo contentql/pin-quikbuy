@@ -32,7 +32,7 @@ export default cqlConfig({
 
   // dbURI: env.DATABASE_URI,
   // dbSecret: env.DATABASE_SECRET,
-  // syncDB: false,
+  syncDB: false,
 
   removeCollections: ['blogs', 'tags'],
   searchPluginOptions: {
