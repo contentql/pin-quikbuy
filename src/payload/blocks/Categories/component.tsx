@@ -14,7 +14,7 @@ const Categories: React.FC<CategoriesType> = ({ ...block }) => {
 
           return (
             <Link
-              href={`/products?category=${category?.category?.name.toLowerCase()}`}
+              href={`/products?category=${(category?.category as Category)?.name.toLowerCase()}`}
               key={category?.id}
               className='group relative'>
               <div className='relative overflow-hidden rounded-lg'>

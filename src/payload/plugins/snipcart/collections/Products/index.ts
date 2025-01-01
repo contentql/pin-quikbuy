@@ -467,6 +467,7 @@ export const Products: CollectionConfig = {
               name: 'additionalInformationSections',
               type: 'array',
               label: 'Additional Product Information Sections',
+              dbName: 'additionalInfo',
               admin: {
                 description:
                   'Add flexible sections for additional information such as Product Details, Size & Fit, Material & Care, etc.',
