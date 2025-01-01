@@ -1,7 +1,6 @@
 import { router } from '@/trpc'
 import { pageRouter } from '@/trpc/routers/page'
 import { siteSettingsRouter } from '@/trpc/routers/site-settings'
-import { tagRouter } from '@/trpc/routers/tag'
 
 import { authRouter } from './auth'
 import { categoryRouter } from './categories'
@@ -15,7 +14,6 @@ export const appRouter = router({
   auth: authRouter,
   page: pageRouter,
   siteSettings: siteSettingsRouter,
-  tag: tagRouter,
   user: userRouter,
   seed: seedRouter,
   // this is used for global search
