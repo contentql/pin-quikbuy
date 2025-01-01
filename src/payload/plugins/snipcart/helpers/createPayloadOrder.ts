@@ -4,15 +4,15 @@ import configPromise from '@payload-config'
 import { Order, User } from '@payload-types'
 import { getPayload } from 'payload'
 
-const paymentStatus: Record<number, string> = {
-  0: 'Unset',
-  1: 'Saving',
-  2: 'Saved',
-  3: 'Processing',
-  4: 'WaitingForUser',
-  5: 'Paid',
-  6: 'Refunded',
-  7: 'Pending',
+const paymentStatus: Record<number, Order['paymentDetails']['status']> = {
+  0: 'unset',
+  1: 'saving',
+  2: 'saved',
+  3: 'processing',
+  4: 'waitingForUser',
+  5: 'paid',
+  6: 'refunded',
+  7: 'pending',
 }
 
 /**
@@ -162,9 +162,7 @@ export const createPayloadOrder = async (
         },
         paymentDetails: {
           method: order.paymentDetails.method,
-          status: paymentStatus[
-            order.paymentDetails.status
-          ] as Order['paymentDetails']['status'],
+          status: paymentStatus[order.paymentDetails.status],
           details: order.paymentDetails.details,
           iconUrl: order.paymentDetails.iconUrl,
           instructions: order.paymentDetails.instructions,
