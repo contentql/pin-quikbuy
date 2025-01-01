@@ -1,8 +1,10 @@
+'use client'
+
+import { env } from '@env'
 import { Category, Media, Product } from '@payload-types'
 import { Loader2Icon } from 'lucide-react'
 
 import { Button } from '@/components/common/Button'
-import { SNIPCART_LOCAL_DEV_URL } from '@/payload/plugins/snipcart/utils/constants'
 import { cn } from '@/utils/cn'
 
 export const AddToCartButton = ({
@@ -91,7 +93,7 @@ export const AddToCartButton = ({
       data-item-name={product?.name}
       data-item-description={product?.description}
       data-item-price={product?.finalPrice || product?.price}
-      data-item-url={`${process.env.NODE_ENV === 'production' ? '' : SNIPCART_LOCAL_DEV_URL}/${route}`}
+      data-item-url={`${env.NEXT_PUBLIC_PUBLIC_URL}/${route}`}
       data-item-image={(productImages.at(0) as Media).url}
       data-item-quantity={1}
       data-item-min-quantity={1}
