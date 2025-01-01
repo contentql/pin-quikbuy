@@ -91,7 +91,7 @@ export const AddToCartButton = ({
       data-item-name={product?.name}
       data-item-description={product?.description}
       data-item-price={product?.finalPrice || product?.price}
-      data-item-url={`${process.env.NODE_ENV === 'development' ? SNIPCART_LOCAL_DEV_URL : ''}/${route}`}
+      data-item-url={`${process.env.NODE_ENV === 'production' ? '' : SNIPCART_LOCAL_DEV_URL}/${route}`}
       data-item-image={(productImages.at(0) as Media).url}
       data-item-quantity={1}
       data-item-min-quantity={1}
