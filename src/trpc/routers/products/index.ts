@@ -1,3 +1,4 @@
+import { TRPCError } from '@node_modules/@trpc/server/dist'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { z } from 'zod'
@@ -8,11 +9,18 @@ const payload = await getPayload({ config: configPromise })
 
 export const productRouter = router({
   getProductsByCategory: publicProcedure
-    .input(z.object({ categoryId: z.string() }))
+    .input(z.object({ categoryId: z.number().optional() }))
     .query(async ({ input }) => {
       const { categoryId } = input
 
       try {
+        if (!categoryId) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Category ID is required',
+          })
+        }
+
         const { docs: products } = await payload.find({
           collection: 'products',
           where: {
