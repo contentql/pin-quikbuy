@@ -25,9 +25,14 @@ export const CartSummaryNav = () => {
 }
 
 const CartSummaryNavInner = () => {
-  const [cart, setCart] = useState<{ itemsCount: number; totalPrice: number }>({
+  const [cart, setCart] = useState<{
+    itemsCount: number
+    totalPrice: number
+    currency: string
+  }>({
     itemsCount: 0,
     totalPrice: 0,
+    currency: 'usd', // Default to USD in case there's no cart state
   })
   const [isMounted, setIsMounted] = useState(false)
 
@@ -40,10 +45,12 @@ const CartSummaryNavInner = () => {
         const state = window.Snipcart.store.getState()
         const itemsCount = state.cart.items.count
         const totalPrice = state.cart.total
+        const currency = state.cart.currency // Fetch the dynamic currency
 
         setCart({
           itemsCount,
           totalPrice,
+          currency,
         })
       }
 
@@ -64,6 +71,12 @@ const CartSummaryNavInner = () => {
     return <CartFallback />
   }
 
+  // Format the price dynamically based on the currency from the cart state
+  const formattedPrice = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: cart.currency.toUpperCase(), // Use cart currency dynamically
+  }).format(cart.totalPrice)
+
   return (
     <TooltipProvider>
       <Tooltip delayDuration={100}>
@@ -77,10 +90,7 @@ const CartSummaryNavInner = () => {
                 </span>
                 <span className='snipcart-items-count'>{cart.itemsCount}</span>
               </span>
-              <span className='sr-only'>
-                Total:{' '}
-                <span className='snipcart-total-price'>{cart.totalPrice}</span>
-              </span>
+              <span className='sr-only'>Total: {formattedPrice}</span>
             </button>
           </div>
         </TooltipTrigger>
@@ -91,9 +101,7 @@ const CartSummaryNavInner = () => {
           </p>
           <p>
             Total:{' '}
-            <span className='snipcart-total-price'>
-              {cart.totalPrice.toFixed(2)}
-            </span>
+            <span className='snipcart-total-price'>{formattedPrice}</span>
           </p>
         </TooltipContent>
       </Tooltip>
