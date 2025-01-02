@@ -36,9 +36,7 @@ export const checkAndSetSnipcartCart = async ({ user }: { user: User }) => {
 
     // Set the fetched cart ID in cookies
     cookieStore.set(SNIPCART_CART_KEY, cartData.snipcartId, {
-      httpOnly: true,
       path: '/',
-      sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 30, // 30 days
     })
     console.log(
