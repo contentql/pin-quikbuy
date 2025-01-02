@@ -1,3 +1,4 @@
+import { formatCurrency } from '@contentql/core/client'
 import { FeaturedProductsType } from '@payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,23 +9,24 @@ const FeaturedProducts: React.FC<FeaturedProductsType> = async ({
   ...block
 }) => {
   const metadata = await getCachedSiteSettings()
-  const { productInformation } = metadata
+  const {
+    general: { currency: currencyCode },
+  } = metadata
 
   return (
     <ul className='mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-      {block?.featuredProducts?.map((product: any, idx: any) => {
+      {block?.featuredProducts?.map((prod: any, idx: any) => {
+        const product = prod.products[0]
+
         return (
-          <li key={product.products[0].id} className='group'>
-            <Link href={`/product/${product.products[0].slug}`}>
+          <li key={product.id} className='group'>
+            <Link href={`/product/${product.slug}`}>
               <article className='overflow-hidden bg-white'>
-                {product.products[0].images[0] && (
+                {product.images[0] && (
                   <div className='aspect-square w-full overflow-hidden rounded-lg bg-neutral-100'>
                     <Image
                       className='group-hover:rotate hover-perspective w-full bg-neutral-100 object-cover object-center transition-opacity group-hover:opacity-75'
-                      src={
-                        product.products[0].images[0]?.url ??
-                        '/contentql-logo.png'
-                      }
+                      src={product.images[0]?.url ?? '/contentql-logo.png'}
                       width={768}
                       height={768}
                       loading={idx < 3 ? 'eager' : 'lazy'}
@@ -36,13 +38,14 @@ const FeaturedProducts: React.FC<FeaturedProductsType> = async ({
                 )}
                 <div className='p-2'>
                   <h2 className='text-xl font-medium text-neutral-700'>
-                    {product.products[0].name}
+                    {product.name}
                   </h2>
                   <footer className='text-base font-normal text-neutral-900'>
                     <p>
-                      {product.products[0].price
-                        ? `${productInformation?.currency === 'USD' ? '$' : '₹'}${product.products[0].price}`
-                        : 'Price not available'}
+                      {formatCurrency({
+                        amount: product.price,
+                        currencyCode,
+                      })}
                     </p>
                   </footer>
                 </div>
