@@ -50,7 +50,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   globals: {
     'site-settings': SiteSetting;
@@ -90,7 +90,7 @@ export interface UserAuthOperations {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: string;
+  id: number;
   title: string;
   layout?:
     | (
@@ -110,7 +110,7 @@ export interface Page {
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
-    image?: (string | null) | Media;
+    image?: (number | null) | Media;
   };
   isHome?: boolean | null;
   isDynamic?: boolean | null;
@@ -121,10 +121,10 @@ export interface Page {
   slug?: string | null;
   pathMode?: ('generate' | 'custom') | null;
   path?: string | null;
-  parent?: (string | null) | Page;
+  parent?: (number | null) | Page;
   breadcrumbs?:
     | {
-        doc?: (string | null) | Page;
+        doc?: (number | null) | Page;
         url?: string | null;
         label?: string | null;
         id?: string | null;
@@ -176,7 +176,7 @@ export interface ListType {
 export interface NewsletterType {
   heading: string;
   description: string;
-  form?: (string | null) | Form;
+  form?: (number | null) | Form;
   id?: string | null;
   blockName?: string | null;
   blockType: 'Newsletter';
@@ -186,7 +186,7 @@ export interface NewsletterType {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: string;
+  id: number;
   title: string;
   fields?:
     | (
@@ -323,7 +323,7 @@ export interface FormType {
   title: string;
   form: {
     relationTo: 'forms';
-    value: string | Form;
+    value: number | Form;
   };
   id?: string | null;
   blockName?: string | null;
@@ -336,7 +336,7 @@ export interface FormType {
 export interface FeaturedProductsType {
   featuredProducts?:
     | {
-        products?: (string | Product)[] | null;
+        products?: (number | Product)[] | null;
         id?: string | null;
       }[]
     | null;
@@ -349,7 +349,7 @@ export interface FeaturedProductsType {
  * via the `definition` "products".
  */
 export interface Product {
-  id: string;
+  id: number;
   /**
    * The name of the product that will be displayed.
    */
@@ -398,7 +398,7 @@ export interface Product {
   /**
    * The category this product belongs to.
    */
-  category: string | Category;
+  category: number | Category;
   /**
    * Add tags to help categorize the product.
    */
@@ -456,7 +456,7 @@ export interface Product {
   /**
    * Upload product images.
    */
-  images: (string | Media)[];
+  images: (number | Media)[];
   /**
    * Mark this product as a best seller to highlight it prominently.
    */
@@ -510,7 +510,7 @@ export interface Product {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: string;
+  id: number;
   /**
    * The name of the category. This will be displayed across the application.
    */
@@ -526,11 +526,11 @@ export interface Category {
   /**
    * Select the parent category if this category belongs to a hierarchy.
    */
-  parentCategory?: (string | null) | Category;
+  parentCategory?: (number | null) | Category;
   /**
    * Select subcategories related to this category.
    */
-  subCategories?: (string | Category)[] | null;
+  subCategories?: (number | Category)[] | null;
   /**
    * Mark this category as featured to highlight it on the homepage or special sections.
    */
@@ -538,12 +538,12 @@ export interface Category {
   /**
    * Upload an image that represents this category.
    */
-  image: string | Media;
+  image: number | Media;
   /**
    * View the products associated with this category.
    */
   products?: {
-    docs?: (string | Product)[] | null;
+    docs?: (number | Product)[] | null;
     hasNextPage?: boolean | null;
   } | null;
   /**
@@ -556,7 +556,7 @@ export interface Category {
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
-    image?: (string | null) | Media;
+    image?: (number | null) | Media;
   };
   updatedAt: string;
   createdAt: string;
@@ -567,7 +567,7 @@ export interface Category {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -614,7 +614,7 @@ export interface Media {
 export interface CategoriesType {
   categories?:
     | {
-        category?: (string | null) | Category;
+        category?: (number | null) | Category;
         id?: string | null;
       }[]
     | null;
@@ -641,13 +641,13 @@ export interface DisqusCommentsType {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   displayName?: string | null;
   /**
    * Contains only lowercase letters, numbers, and dashes.
    */
   username: string;
-  imageUrl?: (string | null) | Media;
+  imageUrl?: (number | null) | Media;
   role: ('admin' | 'author' | 'user')[];
   emailVerified?: string | null;
   socialLinks?:
@@ -696,7 +696,7 @@ export interface User {
  * via the `definition` "offers".
  */
 export interface Offer {
-  id: string;
+  id: number;
   name: string;
   /**
    * SEO-friendly URL for this category.
@@ -710,7 +710,7 @@ export interface Offer {
   discountPercentage: number;
   startDate: string;
   endDate: string;
-  associatedProducts?: (string | Product)[] | null;
+  associatedProducts?: (number | Product)[] | null;
   isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -721,10 +721,10 @@ export interface Offer {
  * via the `definition` "wishlist".
  */
 export interface Wishlist {
-  id: string;
-  user: string | User;
+  id: number;
+  user: number | User;
   items: {
-    product: string | Product;
+    product: number | Product;
     addedAt?: string | null;
     id?: string | null;
   }[];
@@ -739,11 +739,11 @@ export interface Wishlist {
  * via the `definition` "cart".
  */
 export interface Cart {
-  id: string;
+  id: number;
   /**
    * The user associated with this cart.
    */
-  user: string | User;
+  user: number | User;
   /**
    * List of items added to the cart.
    */
@@ -756,7 +756,7 @@ export interface Cart {
         /**
          * The product added to the cart.
          */
-        product: string | Product;
+        product: number | Product;
         /**
          * Number of units of the product.
          */
@@ -789,17 +789,17 @@ export interface Cart {
  * via the `definition` "orders".
  */
 export interface Order {
-  id: string;
+  id: number;
   /**
    * Select the customer placing the order.
    */
-  user: string | User;
+  user: number | User;
   /**
    * List of items included in this order. At least one item is required.
    */
   items: {
     uniqueId: string;
-    product: string | Product;
+    product: number | Product;
     id: string | null;
     name: string;
     price: number;
@@ -959,8 +959,8 @@ export interface Order {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: string;
-  form: string | Form;
+  id: number;
+  form: number | Form;
   submissionData?:
     | {
         field: string;
@@ -978,12 +978,12 @@ export interface FormSubmission {
  * via the `definition` "search".
  */
 export interface Search {
-  id: string;
+  id: number;
   title?: string | null;
   priority?: number | null;
   doc: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -993,60 +993,60 @@ export interface Search {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'pages';
-        value: string | Page;
+        value: number | Page;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
       } | null)
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'products';
-        value: string | Product;
+        value: number | Product;
       } | null)
     | ({
         relationTo: 'categories';
-        value: string | Category;
+        value: number | Category;
       } | null)
     | ({
         relationTo: 'offers';
-        value: string | Offer;
+        value: number | Offer;
       } | null)
     | ({
         relationTo: 'wishlist';
-        value: string | Wishlist;
+        value: number | Wishlist;
       } | null)
     | ({
         relationTo: 'cart';
-        value: string | Cart;
+        value: number | Cart;
       } | null)
     | ({
         relationTo: 'orders';
-        value: string | Order;
+        value: number | Order;
       } | null)
     | ({
         relationTo: 'forms';
-        value: string | Form;
+        value: number | Form;
       } | null)
     | ({
         relationTo: 'form-submissions';
-        value: string | FormSubmission;
+        value: number | FormSubmission;
       } | null)
     | ({
         relationTo: 'search';
-        value: string | Search;
+        value: number | Search;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -1056,10 +1056,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -1079,7 +1079,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -1795,18 +1795,18 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
-  id: string;
+  id: number;
   general: {
     title: string;
     description: string;
     /**
      * We recommend a maximum size of 256 * 256 pixels
      */
-    faviconUrl: string | Media;
+    faviconUrl: number | Media;
     /**
      * We recommend a maximum size of 1200 * 630 pixels
      */
-    ogImageUrl: string | Media;
+    ogImageUrl: number | Media;
     keywords?: string[] | null;
     /**
      * This field is used to format currency values & used as default currency for ecommerce-theme
@@ -1847,11 +1847,11 @@ export interface SiteSetting {
             /**
              * Upload an svg or logo to be displayed with link
              */
-            icon?: (string | null) | Media;
+            icon?: (number | null) | Media;
             label: string;
             page?: {
               relationTo: 'pages';
-              value: string | Page;
+              value: number | Page;
             } | null;
             url?: string | null;
             id?: string | null;
@@ -1865,11 +1865,11 @@ export interface SiteSetting {
                   /**
                    * Upload an svg or logo to be displayed with link
                    */
-                  icon?: (string | null) | Media;
+                  icon?: (number | null) | Media;
                   label: string;
                   page?: {
                     relationTo: 'pages';
-                    value: string | Page;
+                    value: number | Page;
                   } | null;
                   url?: string | null;
                   id?: string | null;
@@ -1894,11 +1894,11 @@ export interface SiteSetting {
             /**
              * Upload an svg or logo to be displayed with link
              */
-            icon?: (string | null) | Media;
+            icon?: (number | null) | Media;
             label: string;
             page?: {
               relationTo: 'pages';
-              value: string | Page;
+              value: number | Page;
             } | null;
             url?: string | null;
             id?: string | null;
@@ -1912,11 +1912,11 @@ export interface SiteSetting {
                   /**
                    * Upload an svg or logo to be displayed with link
                    */
-                  icon?: (string | null) | Media;
+                  icon?: (number | null) | Media;
                   label: string;
                   page?: {
                     relationTo: 'pages';
-                    value: string | Page;
+                    value: number | Page;
                   } | null;
                   url?: string | null;
                   id?: string | null;
@@ -1958,28 +1958,28 @@ export interface SiteSetting {
      */
     blogLink?: {
       relationTo: 'pages';
-      value: string | Page;
+      value: number | Page;
     } | null;
     /**
      * This redirect to a product details page
      */
     productLink?: {
       relationTo: 'pages';
-      value: string | Page;
+      value: number | Page;
     } | null;
     /**
      * This redirects to a author details page
      */
     authorLink?: {
       relationTo: 'pages';
-      value: string | Page;
+      value: number | Page;
     } | null;
     /**
      * This redirects to a tag details page
      */
     tagLink?: {
       relationTo: 'pages';
-      value: string | Page;
+      value: number | Page;
     } | null;
   };
   monetization?: {
@@ -2012,13 +2012,13 @@ export interface SiteSetting {
     fonts: {
       display: {
         type: 'customFont' | 'googleFont';
-        customFont?: (string | null) | Media;
+        customFont?: (number | null) | Media;
         remoteFont?: string | null;
         fontName?: string | null;
       };
       body: {
         type: 'customFont' | 'googleFont';
-        customFont?: (string | null) | Media;
+        customFont?: (number | null) | Media;
         remoteFont?: string | null;
         fontName?: string | null;
       };
@@ -2036,7 +2036,7 @@ export interface SiteSetting {
  * via the `definition` "BrandLogo".
  */
 export interface BrandLogo {
-  imageUrl: string | Media;
+  imageUrl: number | Media;
   /**
    * Adjust to the height of the logo
    */
