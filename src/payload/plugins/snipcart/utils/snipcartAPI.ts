@@ -33,7 +33,7 @@ export const snipcartAPI = async <T = any>({
     // Merge headers from config with default headers.
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: `Basic ${env.SNIPCART_SECRET_API_KEY}`,
+      Authorization: `Basic ${btoa(env.SNIPCART_SECRET_API_KEY || '')}`,
       ...config.headers,
     }
 
