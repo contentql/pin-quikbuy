@@ -25,8 +25,9 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
       }
 
       const data = await checkAndSetSnipcartCart({ user })
-      if (data.snipcartId) {
-        // Notify Snipcart to reload the cart
+      console.log({ data })
+      if (data?.snipcartId !== data?.oldSnipcartId) {
+        // Notify Snipcart to reload the page
         document.dispatchEvent(new CustomEvent('snipcartCartUpdated'))
         console.log('Cart updated successfully on client')
       }

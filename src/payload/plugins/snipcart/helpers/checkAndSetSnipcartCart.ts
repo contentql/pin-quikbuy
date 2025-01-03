@@ -15,6 +15,8 @@ export const checkAndSetSnipcartCart = async ({ user }: { user: User }) => {
     // Check if the 'snipcart-cart' value exists in cookies
     const cookieStore = await cookies()
 
+    const oldSnipcartId = cookieStore.get(SNIPCART_CART_KEY)?.value || ''
+
     // Fetch cart data for the user
     const { docs: carts, totalDocs: isCartExist } = await payload.find({
       collection: 'cart',
@@ -48,6 +50,7 @@ export const checkAndSetSnipcartCart = async ({ user }: { user: User }) => {
     // Return a response indicating success
     return {
       snipcartId: cartData.snipcartId,
+      oldSnipcartId,
       message: 'Cart token set successfully.',
     }
   } catch (error) {
