@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Input } from '@/components/common/Input'
 import { useDebouncedValue } from '@/lib/hooks'
@@ -41,42 +41,13 @@ export const SearchInput = ({ placeholder }: { placeholder: string }) => {
   const [query, setQuery] = useState(searchParamQuery)
   const [_isQueryPending, debouncedQuery] = useDebouncedValue(query, 100)
 
-  useEffect(() => {
-    router.prefetch(`/search?q=${encodeURIComponent(query)}`)
-  }, [query, router])
-
-  useEffect(() => {
-    if (debouncedQuery) {
-      router.push(`/search?q=${encodeURIComponent(debouncedQuery)}`, {
-        scroll: false,
-      })
-    }
-  }, [debouncedQuery, router])
-
-  useEffect(() => {
-    if (pathname === '/search' && !query) {
-      router.push(`/`, { scroll: true })
-    }
-  }, [pathname, query, router])
-
-  useEffect(() => {
-    if (pathname !== '/search') {
-      setQuery('')
-    }
-  }, [pathname])
-
   return (
     <Input
-      onChange={e => {
-        const query = e.target.value
-        setQuery(query)
-      }}
       className={inputClasses}
       placeholder={placeholder}
       type='search'
       enterKeyHint='search'
       name='search'
-      value={query}
     />
   )
 }
