@@ -110,7 +110,8 @@ export default async function RootLayout({
           id='snipcart'
           data-api-key={env.SNIPCART_PUBLIC_API_KEY}
           data-config-modal-style='side'
-          data-config-add-product-behavior='none'></div>
+          data-config-add-product-behavior='none'
+          data-config-load-strategy='on-user-interaction'></div>
       </body>
     </html>
   )

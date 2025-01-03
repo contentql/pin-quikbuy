@@ -32,50 +32,64 @@ const CartSummaryNavInner = () => {
   }>({
     itemsCount: 0,
     totalPrice: 0,
-    currency: 'usd', // Default to USD in case there's no cart state
+    currency: '', // No default currency; keep empty if unavailable
   })
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    // Check if Snipcart is available and client-side rendering
+    const updateCart = () => {
+      if (typeof window === 'undefined' || !window.Snipcart) return
+
+      const state = window.Snipcart.store.getState()
+      const itemsCount = state?.cart?.items?.count || 0 // Get the number of items in the cart
+      const totalPrice = state?.cart?.total || 0 // Get the total price from the cart state
+      const currency = state?.cart?.currency || '' // Fetch the dynamic currency, fallback to empty if not found
+
+      setCart({
+        itemsCount,
+        totalPrice,
+        currency,
+      })
+    }
+
     if (typeof window !== 'undefined') {
       setIsMounted(true)
 
-      const updateCart = () => {
-        const state = window.Snipcart.store.getState()
-        const itemsCount = state.cart.items.count
-        const totalPrice = state.cart.total
-        const currency = state.cart.currency // Fetch the dynamic currency
-
-        setCart({
-          itemsCount,
-          totalPrice,
-          currency,
-        })
-      }
-
-      // Subscribe to the Snipcart store updates
-      const unsubscribe = window.Snipcart.store.subscribe(() => {
-        updateCart() // Update cart details on state change
-      })
+      // Subscribe to Snipcart updates
+      const unsubscribe = window.Snipcart.store.subscribe(updateCart)
 
       // Initial cart state update
       updateCart()
 
-      // Cleanup the subscription when the component is unmounted
-      return () => unsubscribe()
+      // Listen for custom event to trigger reload
+      const handleCartUpdateEvent = () => {
+        window.location.reload()
+      }
+
+      document.addEventListener('snipcartCartUpdated', handleCartUpdateEvent)
+
+      return () => {
+        unsubscribe()
+        document.removeEventListener(
+          'snipcartCartUpdated',
+          handleCartUpdateEvent,
+        )
+      }
     }
   }, [])
 
+  // Return fallback UI if component is not mounted yet
   if (!isMounted) {
     return <CartFallback />
   }
 
   // Format the price dynamically based on the currency from the cart state
-  const formattedPrice = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: cart.currency.toUpperCase(), // Use cart currency dynamically
-  }).format(cart.totalPrice)
+  const formattedPrice = cart.currency
+    ? new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: cart.currency.toUpperCase(), // Use cart currency dynamically
+      }).format(cart.totalPrice || 0) // Ensure totalPrice is a number
+    : cart.totalPrice.toString() // Fallback to displaying the raw totalPrice if no currency is present
 
   return (
     <TooltipProvider>

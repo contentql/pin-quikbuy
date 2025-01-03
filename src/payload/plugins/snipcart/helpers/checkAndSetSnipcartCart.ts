@@ -39,13 +39,22 @@ export const checkAndSetSnipcartCart = async ({ user }: { user: User }) => {
       path: '/',
       maxAge: 60 * 60 * 24 * 30, // 30 days
     })
+
     console.log(
       'Snipcart cart set successfully in cookies:',
       cartData.snipcartId,
     )
 
-    return cartData.snipcartId // Return the fetched cart ID
+    // Return a response indicating success
+    return {
+      snipcartId: cartData.snipcartId,
+      message: 'Cart token set successfully.',
+    }
   } catch (error) {
     console.error('Error checking or setting Snipcart cart:', error)
+    return {
+      error: true,
+      message: 'Failed to set Snipcart cart token.',
+    }
   }
 }
