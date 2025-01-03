@@ -1,5 +1,5 @@
 import { isAdmin } from '../../access/isAdmin'
-import { revalidateProducts } from '../hooks/revalidateProducts'
+import { revalidateProducts } from '../../hooks/revalidateProducts'
 import { slugField } from '@node_modules/@contentql/core/dist/payload/fields/slug'
 import { CollectionConfig } from 'payload'
 

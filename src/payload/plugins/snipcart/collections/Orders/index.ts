@@ -1,4 +1,4 @@
-import { revalidateOrders } from '../hooks/revalidateOrders'
+import { revalidateOrders } from '../../hooks/revalidateOrders'
 import { CollectionConfig } from 'payload'
 
 export const Orders: CollectionConfig = {
