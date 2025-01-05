@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server'
 import { cookies } from 'next/headers'
 import { getPayload } from 'payload'
 
+import { snipcartAPI } from '@/payload/plugins/snipcart/utils/snipcartAPI'
 import { publicProcedure, router } from '@/trpc'
 
 import {
@@ -72,6 +73,25 @@ export const authRouter = router({
           disableVerificationEmail: false, // Set to false if you want to enable verification email
         })
 
+        // Create a Snipcart customer for the signed-up user
+        try {
+          const response = await snipcartAPI({
+            endpoint: '/v3/customers',
+            method: 'POST',
+            data: {
+              email,
+              password,
+              password_confirm: password,
+              cartToken: result.id,
+            },
+            usePublicKey: true,
+          })
+
+          console.log('Snipcart customer created successfully:', response)
+        } catch (error) {
+          console.log('Error creating Snipcart customer:', error)
+        }
+
         return result
       } catch (error: any) {
         console.error('Error signing up:', error)
@@ -108,6 +128,33 @@ export const authRouter = router({
           maxAge: 60 * 60 * 24 * 7,
           path: '/',
         })
+
+        // Create a Snipcart customer session for the logged-in user
+        try {
+          const response = await snipcartAPI({
+            endpoint: '/v3/customers/session',
+            method: 'POST',
+            data: {
+              email,
+              password,
+              cartToken: result.user.id,
+            },
+            usePublicKey: true,
+          })
+
+          const cookieStore = await cookies()
+          cookieStore.set('snipcart-customer', response.sessionToken, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+          })
+
+          console.log(
+            'Snipcart customer session created successfully:',
+            response,
+          )
+        } catch (error) {
+          console.log('Error creating Snipcart customer session:', error)
+        }
 
         return result
       } catch (error: any) {
