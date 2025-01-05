@@ -15,6 +15,28 @@ const Details: React.FC<DetailsProps> = async ({ params, ...block }) => {
     config: configPromise,
   })
 
+  // await fetch('https://app.snipcart.com/api/products', {
+  //   method: 'POST',
+  //   headers: {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //     Authorization:
+  //       'Basic U1RfTmpaaU1ESTJaVEF0TW1JeE5DMDBabU5rTFdFMU1UQXRabUl4WW1Ga09UUXhaakEyTmpNNE56RXdOek14TXpFd05UYzFPREV6',
+  //     // 'X-Snipcart-Publicapikey':
+  //     //   'NTA4MDhhZjUtMDQ3ZS00OTc2LTlkZTktOGRiZDczZDg4NmY4NjM4Njk5MjcwODQ4Mzk4OTUw',
+  //   },
+  //   body: JSON.stringify({
+  //     fetchUrl: 'https://quikbuy.contentql.io/product/horizon-gaze-sunglasses',
+  //   }),
+  // })
+  //   .then(res => res.json())
+  //   .then(products => {
+  //     console.log({ products })
+  //   })
+  //   .catch(err => {
+  //     console.log({ err })
+  //   })
+
   switch (block?.collectionSlug) {
     case 'products': {
       const slug = params?.route?.at(-1) ?? ''
