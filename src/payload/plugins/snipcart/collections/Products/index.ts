@@ -523,6 +523,22 @@ export const Products: CollectionConfig = {
             },
           ],
         },
+        {
+          label: 'Snipcart Details',
+          fields: [
+            {
+              name: 'snipcartId',
+              type: 'text',
+              label: 'Snipcart ID',
+              admin: {
+                description:
+                  'The unique identifier associated with this cart in Snipcart.',
+                placeholder: 'Enter Snipcart unique ID',
+                readOnly: true,
+              },
+            },
+          ],
+        },
       ],
     },
   ],
