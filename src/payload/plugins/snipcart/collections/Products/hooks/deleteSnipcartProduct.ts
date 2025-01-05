@@ -11,7 +11,7 @@ export const deleteSnipcartProduct: CollectionAfterDeleteHook<
       method: 'DELETE',
     })
 
-    console.log('Snipcart product deleted successfully:', response.data)
+    console.log('Snipcart product deleted successfully:', response)
   } catch (error) {
     console.error('Error deleting product in Snipcart (DELETE):', error)
   }
