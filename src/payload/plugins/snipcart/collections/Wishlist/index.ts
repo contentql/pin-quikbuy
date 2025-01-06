@@ -1,4 +1,4 @@
-import { revalidateWishlist } from '../hooks/revalidateWishlist'
+import { revalidateWishlist } from '../../hooks/revalidateWishlist'
 import { CollectionConfig } from 'payload'
 
 export const Wishlist: CollectionConfig = {

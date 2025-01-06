@@ -1,0 +1,5 @@
+.snipcart-modal__container {
+  width: 100vw !important;
+  height: auto !important;
+  overflow-y: auto !important;
+}

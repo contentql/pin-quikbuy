@@ -501,6 +501,10 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
+  /**
+   * The unique identifier associated with this cart in Snipcart.
+   */
+  snipcartId?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1363,6 +1367,7 @@ export interface ProductsSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  snipcartId?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
