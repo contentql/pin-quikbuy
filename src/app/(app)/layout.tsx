@@ -9,6 +9,7 @@ import '@/app/(app)/globals.css'
 import GoogleAdsense from '@/components/GoogleAdsense'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import { PreloadResources } from '@/payload/plugins/snipcart'
+import '@/payload/plugins/snipcart/styles.css'
 import Provider from '@/trpc/Provider'
 import { getCachedSiteSettings } from '@/utils/getCachedSiteSettings'
 
@@ -109,7 +110,7 @@ export default async function RootLayout({
           hidden
           id='snipcart'
           data-api-key={env.SNIPCART_PUBLIC_API_KEY}
-          data-config-modal-style='side'
+          // data-config-modal-style='side'
           data-config-add-product-behavior='none'
           data-config-load-strategy='on-user-interaction'></div>
       </body>
