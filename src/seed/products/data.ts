@@ -7,7 +7,7 @@ export type ProductImageType = {
   filePath: string
 }
 
-export const projectsData: ProductDataType[] = [
+export const productsData: ProductDataType[] = [
   {
     name: 'Horizon Gaze Sunglasses',
     slug: 'horizon-gaze-sunglasses',
@@ -24,13 +24,13 @@ export const projectsData: ProductDataType[] = [
     },
     finalPrice: 20,
 
-    category: 3,
+    category: 'Apparel' as any,
 
     tags: [],
 
     attributes: [],
 
-    images: [],
+    images: [0],
     isFeatured: false,
     isNewArrival: false,
     isSpecialOffer: false,
@@ -41,7 +41,7 @@ export const projectsData: ProductDataType[] = [
   },
 ]
 
-export const projectsImagesData: ProductImageType[] = [
+export const productsImagesData: ProductImageType[] = [
   {
     alt: 'Sun glasses',
     filePath: path.join(
