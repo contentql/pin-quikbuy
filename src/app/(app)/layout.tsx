@@ -254,7 +254,7 @@ export default async function RootLayout({
         ))}
 
         {/* following shadcn approach & generating lightMode & darkMode variables */}
-        <style
+        {/* <style
           dangerouslySetInnerHTML={{
             __html: `
             :root {
@@ -266,7 +266,7 @@ export default async function RootLayout({
               }
             `,
           }}
-        />
+        /> */}
 
         <GoogleAdsense metadata={metadata} />
         <GoogleAnalytics metadata={metadata} />
