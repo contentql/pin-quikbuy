@@ -1,6 +1,6 @@
 import { isAdmin } from '../../access/isAdmin'
 import { revalidateProducts } from '../../hooks/revalidateProducts'
-import { slugField } from '@node_modules/@contentql/core/dist/payload/fields/slug'
+import { slugField } from 'node_modules/@contentql/core/dist/payload/fields/slug'
 import { CollectionConfig } from 'payload'
 
 import { createOrFetchSnipcartProduct } from './hooks/createOrFetchSnipcartProduct'

@@ -1,8 +1,8 @@
 import { Params } from '../types'
-import { headers } from '@node_modules/next/headers'
 import configPromise from '@payload-config'
 import { ListType } from '@payload-types'
 import { unstable_cache } from 'next/cache'
+import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import React from 'react'
 
