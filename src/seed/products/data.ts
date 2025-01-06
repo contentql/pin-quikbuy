@@ -24,7 +24,7 @@ export const projectsData: ProductDataType[] = [
     },
     finalPrice: 20,
 
-    category: ,
+    category: 3,
 
     tags: [],
 
@@ -43,7 +43,7 @@ export const projectsData: ProductDataType[] = [
 
 export const projectsImagesData: ProductImageType[] = [
   {
-    alt: 'Project 1',
+    alt: 'Sun glasses',
     filePath: path.join(
       process.cwd(),
       '/public/images/seed/products/sun-glasses.webp',
