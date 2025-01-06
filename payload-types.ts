@@ -554,6 +554,14 @@ export interface Category {
    * The total number of products under this category.
    */
   productCount?: number | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1521,6 +1529,13 @@ export interface CategoriesSelect<T extends boolean = true> {
   image?: T;
   products?: T;
   productCount?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1941,6 +1956,30 @@ export interface SiteSetting {
      */
     ogImageUrl: string | Media;
     keywords?: string[] | null;
+    /**
+     * This field is used to format currency values & used as default currency for ecommerce-theme
+     */
+    currency:
+      | 'usd'
+      | 'eur'
+      | 'inr'
+      | 'gbp'
+      | 'jpy'
+      | 'cad'
+      | 'aud'
+      | 'chf'
+      | 'cny'
+      | 'hkd'
+      | 'sgd'
+      | 'mxn'
+      | 'brl'
+      | 'rub'
+      | 'krw'
+      | 'zar'
+      | 'try'
+      | 'sar'
+      | 'aed'
+      | 'pln';
   };
   navbar: {
     logo: BrandLogo;
@@ -1953,6 +1992,10 @@ export interface SiteSetting {
           menuLink?: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
+            /**
+             * Upload an svg or logo to be displayed with link
+             */
+            icon?: (string | null) | Media;
             label: string;
             page?: {
               relationTo: 'pages';
@@ -1967,6 +2010,10 @@ export interface SiteSetting {
               | {
                   type?: ('reference' | 'custom') | null;
                   newTab?: boolean | null;
+                  /**
+                   * Upload an svg or logo to be displayed with link
+                   */
+                  icon?: (string | null) | Media;
                   label: string;
                   page?: {
                     relationTo: 'pages';
@@ -1992,6 +2039,10 @@ export interface SiteSetting {
           menuLink?: {
             type?: ('reference' | 'custom') | null;
             newTab?: boolean | null;
+            /**
+             * Upload an svg or logo to be displayed with link
+             */
+            icon?: (string | null) | Media;
             label: string;
             page?: {
               relationTo: 'pages';
@@ -2006,6 +2057,10 @@ export interface SiteSetting {
               | {
                   type?: ('reference' | 'custom') | null;
                   newTab?: boolean | null;
+                  /**
+                   * Upload an svg or logo to be displayed with link
+                   */
+                  icon?: (string | null) | Media;
                   label: string;
                   page?: {
                     relationTo: 'pages';
@@ -2054,6 +2109,13 @@ export interface SiteSetting {
       value: string | Page;
     } | null;
     /**
+     * This redirect to a product details page
+     */
+    productLink?: {
+      relationTo: 'pages';
+      value: string | Page;
+    } | null;
+    /**
      * This redirects to a author details page
      */
     authorLink?: {
@@ -2077,6 +2139,39 @@ export interface SiteSetting {
      * Add the measurement id from Google Analytics dashboard
      */
     measurementId?: string | null;
+  };
+  themeSettings: {
+    lightMode: {
+      primary: string;
+      background: string;
+      text: string;
+      foreground: string;
+      popover: string;
+      border: string;
+    };
+    darkMode: {
+      primary: string;
+      background: string;
+      text: string;
+      foreground: string;
+      popover: string;
+      border: string;
+    };
+    fonts: {
+      display: {
+        type: 'customFont' | 'googleFont';
+        customFont?: (string | null) | Media;
+        remoteFont?: string | null;
+        fontName?: string | null;
+      };
+      body: {
+        type: 'customFont' | 'googleFont';
+        customFont?: (string | null) | Media;
+        remoteFont?: string | null;
+        fontName?: string | null;
+      };
+    };
+    radius: 'none' | 'small' | 'medium' | 'large' | 'full';
   };
   productInformation?: {
     currency?: ('USD' | 'INR') | null;
@@ -2116,6 +2211,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         faviconUrl?: T;
         ogImageUrl?: T;
         keywords?: T;
+        currency?: T;
       };
   navbar?:
     | T
@@ -2130,6 +2226,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                 | {
                     type?: T;
                     newTab?: T;
+                    icon?: T;
                     label?: T;
                     page?: T;
                     url?: T;
@@ -2144,6 +2241,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                       | {
                           type?: T;
                           newTab?: T;
+                          icon?: T;
                           label?: T;
                           page?: T;
                           url?: T;
@@ -2166,6 +2264,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                 | {
                     type?: T;
                     newTab?: T;
+                    icon?: T;
                     label?: T;
                     page?: T;
                     url?: T;
@@ -2180,6 +2279,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
                       | {
                           type?: T;
                           newTab?: T;
+                          icon?: T;
                           label?: T;
                           page?: T;
                           url?: T;
@@ -2201,6 +2301,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         blogLink?: T;
+        productLink?: T;
         authorLink?: T;
         tagLink?: T;
       };
@@ -2209,6 +2310,51 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         adSenseId?: T;
         measurementId?: T;
+      };
+  themeSettings?:
+    | T
+    | {
+        lightMode?:
+          | T
+          | {
+              primary?: T;
+              background?: T;
+              text?: T;
+              foreground?: T;
+              popover?: T;
+              border?: T;
+            };
+        darkMode?:
+          | T
+          | {
+              primary?: T;
+              background?: T;
+              text?: T;
+              foreground?: T;
+              popover?: T;
+              border?: T;
+            };
+        fonts?:
+          | T
+          | {
+              display?:
+                | T
+                | {
+                    type?: T;
+                    customFont?: T;
+                    remoteFont?: T;
+                    fontName?: T;
+                  };
+              body?:
+                | T
+                | {
+                    type?: T;
+                    customFont?: T;
+                    remoteFont?: T;
+                    fontName?: T;
+                  };
+            };
+        radius?: T;
       };
   productInformation?:
     | T
