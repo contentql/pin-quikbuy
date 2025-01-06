@@ -41,7 +41,7 @@ export default async function OrderList({ orders }: { orders: Order[] }) {
                   collapsible
                   className='w-full'
                   defaultValue='3'>
-                  <AccordionItem value={order.id}>
+                  <AccordionItem value={String(order.id)}>
                     <div
                       key={order.id}
                       className='shadow-xs justify-start bg-white sm:rounded-lg'>

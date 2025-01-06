@@ -1,6 +1,5 @@
 import { collectionSlug, cqlConfig } from '@contentql/core'
 import { env } from '@env'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { slateEditor } from '@payloadcms/richtext-slate'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -8,11 +7,8 @@ import { fileURLToPath } from 'url'
 import { ResetPassword } from '@/emails/reset-password'
 import { UserAccountVerification } from '@/emails/verify-email'
 import { blocksConfig } from '@/payload/blocks/blockConfig'
-import { revalidateAuthors } from '@/payload/hooks/revalidateAuthors'
-import { revalidateBlogs } from '@/payload/hooks/revalidateBlogs'
 import { revalidatePages } from '@/payload/hooks/revalidatePages'
 import { revalidateSiteSettings } from '@/payload/hooks/revalidateSiteSettings'
-import { revalidateTags } from '@/payload/hooks/revalidateTags'
 import { snipcart } from '@/payload/plugins/snipcart'
 
 const filename = fileURLToPath(import.meta.url)
@@ -34,15 +30,17 @@ export default cqlConfig({
 
   secret: env.PAYLOAD_SECRET,
 
-  // db: sqliteAdapter({
-  //   client: {
-  //     url: 'file:payload.db',
-  //     // authToken: env.DATABASE_SECRET,
-  //   },
-  // }),
-  db: mongooseAdapter({
-    url: env.DATABASE_URI,
-  }),
+  dbURI: env.DATABASE_URI,
+  dbSecret: env.DATABASE_SECRET,
+  syncDB: false,
+
+  removeCollections: ['blogs', 'tags'],
+  searchPluginOptions: {
+    collections: [collectionSlug['users']],
+    defaultPriorities: {
+      [collectionSlug['users']]: 30,
+    },
+  },
 
   s3: {
     accessKeyId: env.S3_ACCESS_KEY_ID,
@@ -105,9 +103,6 @@ export default cqlConfig({
           },
         },
       },
-      hooks: {
-        afterChange: [revalidateAuthors],
-      },
     },
     {
       slug: collectionSlug.pages,
@@ -116,20 +111,20 @@ export default cqlConfig({
         afterChange: [revalidatePages],
       },
     },
-    {
-      slug: collectionSlug.blogs,
-      fields: [],
-      hooks: {
-        afterChange: [revalidateBlogs],
-      },
-    },
-    {
-      slug: collectionSlug.tags,
-      fields: [],
-      hooks: {
-        afterChange: [revalidateTags],
-      },
-    },
+    // {
+    //   slug: collectionSlug.blogs,
+    //   fields: [],
+    //   hooks: {
+    //     afterChange: [revalidateBlogs],
+    //   },
+    // },
+    // {
+    //   slug: collectionSlug.tags,
+    //   fields: [],
+    //   hooks: {
+    //     afterChange: [revalidateTags],
+    //   },
+    // },
   ],
 
   globals: [

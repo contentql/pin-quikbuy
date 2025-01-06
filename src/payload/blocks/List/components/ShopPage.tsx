@@ -17,7 +17,7 @@ export default function ShopPage({ products }: { products: Product[] }) {
 
   const { data: productsByCategories } =
     trpc.product.getProductsByCategory.useQuery({
-      categoryId: categoryId ?? '',
+      categoryId: categoryId,
     })
 
   const displayProducts = category ? productsByCategories : products

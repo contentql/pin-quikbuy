@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@payload-types'
+import { Product, SiteSetting } from '@payload-types'
 import { useEffect, useState } from 'react'
 
 import { ProductBottomStickyCard } from './product-bottom-sticky-card'
@@ -8,9 +8,13 @@ import { ProductBottomStickyCard } from './product-bottom-sticky-card'
 export const StickyBottom = ({
   children,
   product,
+  route,
+  currencyCode,
 }: Readonly<{
   children: React.ReactNode
   product: Product | undefined
+  route: string
+  currencyCode: SiteSetting['general']['currency']
 }>) => {
   const [show, setShow] = useState(false)
   useEffect(() => {
@@ -37,7 +41,12 @@ export const StickyBottom = ({
   return (
     <>
       {children}
-      <ProductBottomStickyCard product={product} show={show} />
+      <ProductBottomStickyCard
+        product={product}
+        show={show}
+        route={route}
+        currencyCode={currencyCode}
+      />
     </>
   )
 }

@@ -15,18 +15,6 @@ const DetailsConfig: Block = {
       label: 'Collection Slug',
       options: [
         {
-          label: 'Blogs',
-          value: 'blogs',
-        },
-        {
-          label: 'Tags',
-          value: 'tags',
-        },
-        {
-          label: 'Authors',
-          value: 'users',
-        },
-        {
           label: 'Products',
           value: 'products',
         },

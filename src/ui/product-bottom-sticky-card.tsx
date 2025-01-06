@@ -1,4 +1,5 @@
-import { Media, Product } from '@payload-types'
+import { formatCurrency } from '@contentql/core/client'
+import { Media, Product, SiteSetting } from '@payload-types'
 
 import { MainProductImage } from '@/ui/products/main-product-image'
 import { cn } from '@/utils/cn'
@@ -8,9 +9,13 @@ import { AddToCartButton } from './add-to-cart-button'
 export const ProductBottomStickyCard = ({
   product,
   show,
+  route,
+  currencyCode,
 }: {
   product: Product | undefined
   show: boolean
+  route: string
+  currencyCode: SiteSetting['general']['currency']
 }) => {
   return (
     <div
@@ -39,20 +44,18 @@ export const ProductBottomStickyCard = ({
               {product?.name}
             </h3>
 
-            {/* {product.default_price.unit_amount && (
-              <p className='text-xs sm:text-sm'>
-                {formatMoney({
-                  amount: product.default_price.unit_amount,
-                  currency: product.default_price.currency,
-                  locale,
-                })}
-              </p>
-            )} */}
+            <p className='text-xs sm:text-sm'>
+              {formatCurrency({
+                amount: product?.finalPrice ?? 0,
+                currencyCode,
+              })}
+            </p>
           </div>
         </div>
 
         <AddToCartButton
-          productId={product?.id || ''}
+          product={product}
+          route={route}
           disabled={(product?.stock ?? 0) <= 0}
           className='h-9 shrink-0 px-3 text-sm sm:h-10 sm:px-8 sm:text-lg'
         />

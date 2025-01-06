@@ -1,3 +1,4 @@
+import { formatCurrency } from '@node_modules/@contentql/core/dist/exports/client'
 import { Media, Product } from '@payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -26,7 +27,9 @@ export default async function ProductDetails({
 }) {
   const images = product?.images.map(image => image) ?? []
   const metadata = await getCachedSiteSettings()
-  const { productInformation } = metadata
+  const {
+    general: { currency: currencyCode },
+  } = metadata
 
   return (
     <article className='pb-12'>
@@ -68,7 +71,7 @@ export default async function ProductDetails({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <StickyBottom product={product}>
+      <StickyBottom product={product} route={route} currencyCode={currencyCode}>
         <div className='mt-4 grid gap-4 lg:grid-cols-12'>
           <div className='lg:col-span-5 lg:col-start-8'>
             <h1 className='text-3xl font-bold leading-none tracking-tight text-foreground'>
@@ -77,7 +80,7 @@ export default async function ProductDetails({
             {product?.finalPrice && (
               <p className='mt-2 text-2xl font-medium leading-none tracking-tight text-foreground/70'>
                 {product?.finalPrice
-                  ? `${productInformation?.currency === 'USD' ? '$' : '₹'}${product?.finalPrice}`
+                  ? `${formatCurrency({ amount: product?.finalPrice, currencyCode })}`
                   : 'Price not available'}
               </p>
             )}

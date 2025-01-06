@@ -10,9 +10,9 @@ export const dynamic = 'force-dynamic'
 type StaticRoute = { route: string; updatedAt: Date }
 
 const sitemapGenerationMapping = {
-  blogs: serverClient.blog.getAllBlogs(),
-  tags: serverClient.tag.getAllTags(),
-  users: serverClient.author.getAllAuthors(),
+  products: serverClient.product.getAllProducts(),
+  categories: serverClient.category.getAllCategories(),
+  pages: serverClient.page.getAllPages(),
 } as const
 
 export async function GET() {
@@ -51,9 +51,7 @@ export async function GET() {
         if (data && Array.isArray(data)) {
           let path = ''
           for (const item of data) {
-            if ('username' in item) {
-              path = item.username
-            } else if ('slug' in item) {
+            if ('slug' in item) {
               path = `${item.slug}`
             }
 
