@@ -1,5 +1,5 @@
 import configPromise from '@payload-config'
-import { Product } from '@payload-types'
+import { Category, Product } from '@payload-types'
 import { Ora } from 'ora'
 import { getPayload } from 'payload'
 
@@ -47,7 +47,7 @@ const seed = async (spinner: Ora): Promise<(string | Product)[]> => {
             return image
           }),
           category: categories.find(
-            category => category.name === (product.category as any),
+            category => category.name === (product.category as Category).name,
           )?.id as number,
         }
 

@@ -9,9 +9,8 @@ export type ProductImageType = {
   filePath: string
 }
 
-export const projectsData: ProductDataType[] = [
+export const productsData: ProductDataType[] = [
   {
-    // id: 1,
     name: 'Sunbeam Tote',
     slug: 'sunbeam-tote',
     description:
@@ -58,7 +57,7 @@ export const projectsData: ProductDataType[] = [
 
     attributes: [],
 
-    images: [],
+    images: [0, 1, 2, 3],
     isFeatured: false,
     isNewArrival: false,
     isSpecialOffer: false,
@@ -66,12 +65,9 @@ export const projectsData: ProductDataType[] = [
 
     additionalInformationSections: [],
     snipcartId: null,
-    // updatedAt: '2025-01-05T15:23:29.989Z',
-    // createdAt: '2025-01-01T12:06:09.590Z',
     _status: 'published',
   },
   {
-    // id: 2,
     name: 'ShadowStride Shoes',
     slug: 'shadowstride-shoes',
     description:
@@ -118,7 +114,7 @@ export const projectsData: ProductDataType[] = [
 
     attributes: [],
 
-    images: [],
+    images: [4],
     isFeatured: false,
     isNewArrival: false,
     isSpecialOffer: false,
@@ -126,12 +122,9 @@ export const projectsData: ProductDataType[] = [
 
     additionalInformationSections: [],
     snipcartId: null,
-    // updatedAt: '2025-01-01T12:15:58.674Z',
-    // createdAt: '2025-01-01T12:15:58.674Z',
     _status: 'published',
   },
   {
-    // id: 3,
     name: 'Horizon Gaze Sunglasses',
     slug: 'horizon-gaze-sunglasses',
     description:
@@ -178,7 +171,7 @@ export const projectsData: ProductDataType[] = [
 
     attributes: [],
 
-    images: [],
+    images: [5],
     isFeatured: false,
     isNewArrival: false,
     isSpecialOffer: false,
@@ -186,13 +179,11 @@ export const projectsData: ProductDataType[] = [
 
     additionalInformationSections: [],
     snipcartId: null,
-    // updatedAt: '2025-01-01T12:57:07.790Z',
-    // createdAt: '2025-01-01T12:57:07.790Z',
     _status: 'published',
   },
 ]
 
-export const projectsImagesData: ProductImageType[] = [
+export const productsImagesData: ProductImageType[] = [
   {
     alt: 'Bag 1',
     filePath: path.join(
