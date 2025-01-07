@@ -47,6 +47,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "block_name": {
           "name": "block_name",
           "type": "text",
@@ -76,9 +83,29 @@
             "_path"
           ],
           "isUnique": false
+        },
+        "pages_blocks_home_image_idx": {
+          "name": "pages_blocks_home_image_idx",
+          "columns": [
+            "image_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
+        "pages_blocks_home_image_id_media_id_fk": {
+          "name": "pages_blocks_home_image_id_media_id_fk",
+          "tableFrom": "pages_blocks_home",
+          "tableTo": "media",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "pages_blocks_home_parent_id_fk": {
           "name": "pages_blocks_home_parent_id_fk",
           "tableFrom": "pages_blocks_home",
@@ -1374,6 +1401,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "_uuid": {
           "name": "_uuid",
           "type": "text",
@@ -1410,9 +1444,29 @@
             "_path"
           ],
           "isUnique": false
+        },
+        "_pages_v_blocks_home_image_idx": {
+          "name": "_pages_v_blocks_home_image_idx",
+          "columns": [
+            "image_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
+        "_pages_v_blocks_home_image_id_media_id_fk": {
+          "name": "_pages_v_blocks_home_image_id_media_id_fk",
+          "tableFrom": "_pages_v_blocks_home",
+          "tableTo": "media",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "_pages_v_blocks_home_parent_id_fk": {
           "name": "_pages_v_blocks_home_parent_id_fk",
           "tableFrom": "_pages_v_blocks_home",
@@ -12700,6 +12754,6 @@
   "internal": {
     "indexes": {}
   },
-  "id": "18cc4f3e-d61e-4784-9e35-0a6997b71eaf",
+  "id": "cd6c1a02-469a-49b2-bff8-dd375fe9643d",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }
