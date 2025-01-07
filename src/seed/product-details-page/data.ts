@@ -1,9 +1,6 @@
-import { Page } from '@payload-types'
+import { RequiredDataFromCollectionSlug } from 'payload'
 
-export type ProductDetailsPageDataType = Omit<
-  Page,
-  'id' | 'createdAt' | 'updatedAt'
->
+export type ProductDetailsPageDataType = RequiredDataFromCollectionSlug<'pages'>
 
 export const productDetailsPageData: ProductDetailsPageDataType = {
   title: 'Product Details',
@@ -69,20 +66,5 @@ export const productDetailsPageData: ProductDetailsPageDataType = {
     _status: 'published',
   },
 
-  breadcrumbs: [
-    {
-      id: '67753270c405f90001543f8a',
-      doc: 2,
-      url: '/products',
-      label: 'Products',
-    },
-
-    {
-      id: '67753270c405f90001543f8b',
-      doc: 3,
-      url: '/product/[product-details]',
-      label: 'Product Details',
-    },
-  ],
   _status: 'published',
 }
