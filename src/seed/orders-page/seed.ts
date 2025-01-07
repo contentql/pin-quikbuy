@@ -9,18 +9,18 @@ const payload = await getPayload({ config: configPromise })
 
 const seed = async (spinner: Ora): Promise<string | Page> => {
   try {
-    spinner.start(`Started created orders page...`)
+    spinner.start(`Started creating orders page...`)
 
     const result = await payload.create({
       collection: 'pages',
       data: ordersPageData,
     })
 
-    spinner.start(`Successfully created orders page.`)
+    spinner.succeed(`Successfully created orders page.`)
 
     return result
   } catch (error) {
-    spinner.succeed(`Failed to create orders page.`)
+    spinner.fail(`Failed to create orders page.`)
 
     throw error
   }

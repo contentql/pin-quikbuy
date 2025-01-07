@@ -9,7 +9,7 @@ const payload = await getPayload({ config: configPromise })
 
 const seed = async (spinner: Ora): Promise<string | Page> => {
   try {
-    spinner.start(`Started created home page...`)
+    spinner.start(`Started creating home page...`)
 
     const { docs: products } = await payload.find({
       collection: 'products',
@@ -61,11 +61,11 @@ const seed = async (spinner: Ora): Promise<string | Page> => {
       data: formattedHomePageData,
     })
 
-    spinner.start(`Successfully created home page.`)
+    spinner.succeed(`Successfully created home page.`)
 
     return result
   } catch (error) {
-    spinner.succeed(`Failed to create home page.`)
+    spinner.fail(`Failed to create home page.`)
 
     throw error
   }
