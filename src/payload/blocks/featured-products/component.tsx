@@ -11,7 +11,15 @@ const FeaturedProducts: React.FC<FeaturedProductsType> = async ({
   const metadata = await getCachedSiteSettings()
   const {
     general: { currency: currencyCode },
+    redirectionLinks,
   } = metadata
+
+  const productRedirectionLink = redirectionLinks?.productLink
+  const slug =
+    productRedirectionLink && typeof productRedirectionLink.value === 'object'
+      ? productRedirectionLink.value.path!
+      : ''
+  const slicedSlug = slug ? slug.split('[')[0] : ''
 
   return (
     <ul className='mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
@@ -20,7 +28,7 @@ const FeaturedProducts: React.FC<FeaturedProductsType> = async ({
 
         return (
           <li key={product.id} className='group'>
-            <Link href={`/product/${product.slug}`}>
+            <Link href={`${slicedSlug}${product.slug}`}>
               <article className='overflow-hidden bg-white'>
                 {product.images[0] && (
                   <div className='aspect-square w-full overflow-hidden rounded-lg bg-neutral-100'>

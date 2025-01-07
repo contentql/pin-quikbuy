@@ -54,10 +54,16 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
       // Item-related events
       registerEvent('item.adding', item => {
         console.log('Item adding:', item)
+
+        // Dispatch a event to do something in frontend
+        document.dispatchEvent(new CustomEvent('itemAddingToCart'))
       })
 
       registerEvent('item.added', async item => {
         console.log('Item added:', item)
+
+        // Dispatch a event to do something in frontend
+        document.dispatchEvent(new CustomEvent('itemAddedSuccessfullyToCart'))
 
         const user = await fetchCurrentUser()
         if (!user) {
@@ -73,6 +79,9 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
 
       registerEvent('item.updated', async item => {
         console.log('Item updated:', item)
+
+        // Dispatch a event to do something in frontend
+        document.dispatchEvent(new CustomEvent('itemUpdatedSuccessfullyToCart'))
 
         const user = await fetchCurrentUser()
         if (!user) {

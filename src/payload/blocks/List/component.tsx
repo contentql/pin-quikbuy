@@ -6,6 +6,7 @@ import { headers } from 'next/headers'
 import { getPayload } from 'payload'
 import React from 'react'
 
+import { getCachedSiteSettings } from '@/utils/getCachedSiteSettings'
 import { getCurrentUser } from '@/utils/getCurrentUser'
 
 import OrderList from './components/OrdersList'
@@ -19,6 +20,15 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
   const payload = await getPayload({
     config: configPromise,
   })
+  const metadata = await getCachedSiteSettings()
+  const { redirectionLinks } = metadata
+
+  const productRedirectionLink = redirectionLinks?.productLink
+  const slug =
+    productRedirectionLink && typeof productRedirectionLink.value === 'object'
+      ? productRedirectionLink.value.path!
+      : ''
+  const slicedSlug = slug ? slug.split('[')[0] : ''
 
   switch (block?.collectionSlug) {
     case 'products': {
@@ -35,7 +45,7 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
 
       return (
         <div>
-          <ShopPage products={products} />
+          <ShopPage products={products} slicedSlug={slicedSlug} />
         </div>
       )
     }

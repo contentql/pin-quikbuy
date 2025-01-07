@@ -7,7 +7,7 @@ const HomeConfig: Block = {
     singular: 'Home Block',
     plural: 'Home Blocks',
   },
-  imageURL: '/images/blocks/hero-block.jpg',
+  imageURL: '/images/blocks/hero-block.webp',
   fields: [
     {
       name: 'title',
@@ -19,6 +19,12 @@ const HomeConfig: Block = {
       name: 'description',
       type: 'text',
       label: 'Description',
+      required: true,
+    },
+    {
+      name: 'image',
+      type: 'relationship',
+      relationTo: 'media',
       required: true,
     },
   ],

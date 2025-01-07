@@ -164,23 +164,23 @@ export default async function RootLayout({
   })
 
   // All the color variables are generated using generateThemeStyles function for light & dark mode
-  const lightModeVariables = generateThemeVariables({
-    colors: lightMode,
-    fontName: {
-      display: displayFont?.fontName ?? '',
-      body: bodyFont?.fontName ?? '',
-    },
-    radius,
-  })
+  // const lightModeVariables = generateThemeVariables({
+  //   colors: lightMode,
+  //   fontName: {
+  //     display: displayFont?.fontName ?? '',
+  //     body: bodyFont?.fontName ?? '',
+  //   },
+  //   radius,
+  // })
 
-  const darkModeVariables = generateThemeVariables({
-    colors: darkMode,
-    fontName: {
-      display: displayFont?.fontName ?? '',
-      body: bodyFont?.fontName ?? '',
-    },
-    radius,
-  })
+  // const darkModeVariables = generateThemeVariables({
+  //   colors: darkMode,
+  //   fontName: {
+  //     display: displayFont?.fontName ?? '',
+  //     body: bodyFont?.fontName ?? '',
+  //   },
+  //   radius,
+  // })
 
   return (
     <html lang='en' className='light h-full'>
