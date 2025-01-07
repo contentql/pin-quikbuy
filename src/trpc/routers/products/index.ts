@@ -1,5 +1,5 @@
-import { TRPCError } from '@node_modules/@trpc/server/dist'
 import configPromise from '@payload-config'
+import { TRPCError } from '@trpc/server'
 import { getPayload } from 'payload'
 import { z } from 'zod'
 

@@ -1,5 +1,7 @@
+'use client'
+
 import { ShoppingBagIcon } from 'lucide-react'
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import {
   Tooltip,
@@ -23,15 +25,71 @@ export const CartSummaryNav = () => {
 }
 
 const CartSummaryNavInner = () => {
-  //   const cart = await getCartFromCookiesAction()
-  //   if (!cart) {
-  //     return <CartFallback />
-  //   }
-  //   if (!cart.lines.length) {
-  //     return <CartFallback />
-  //   }
+  const [cart, setCart] = useState<{
+    itemsCount: number
+    totalPrice: number
+    currency: string
+  }>({
+    itemsCount: 0,
+    totalPrice: 0,
+    currency: '', // No default currency; keep empty if unavailable
+  })
+  const [isMounted, setIsMounted] = useState(false)
 
-  //   const totalItems = cart.lines.reduce((acc, line) => acc + line.quantity, 0)
+  useEffect(() => {
+    const updateCart = () => {
+      if (typeof window === 'undefined' || !window.Snipcart) return
+
+      const state = window.Snipcart.store.getState()
+      const itemsCount = state?.cart?.items?.count || 0 // Get the number of items in the cart
+      const totalPrice = state?.cart?.total || 0 // Get the total price from the cart state
+      const currency = state?.cart?.currency || '' // Fetch the dynamic currency, fallback to empty if not found
+
+      setCart({
+        itemsCount,
+        totalPrice,
+        currency,
+      })
+    }
+
+    if (typeof window !== 'undefined') {
+      setIsMounted(true)
+
+      // Subscribe to Snipcart updates
+      const unsubscribe = window.Snipcart.store.subscribe(updateCart)
+
+      // Initial cart state update
+      updateCart()
+
+      // Listen for custom event to trigger reload
+      const handleCartUpdateEvent = () => {
+        window.location.reload()
+      }
+
+      document.addEventListener('snipcartCartUpdated', handleCartUpdateEvent)
+
+      return () => {
+        unsubscribe()
+        document.removeEventListener(
+          'snipcartCartUpdated',
+          handleCartUpdateEvent,
+        )
+      }
+    }
+  }, [])
+
+  // Return fallback UI if component is not mounted yet
+  if (!isMounted) {
+    return <CartFallback />
+  }
+
+  // Format the price dynamically based on the currency from the cart state
+  const formattedPrice = cart.currency
+    ? new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: cart.currency.toUpperCase(), // Use cart currency dynamically
+      }).format(cart.totalPrice || 0) // Ensure totalPrice is a number
+    : cart.totalPrice.toString() // Fallback to displaying the raw totalPrice if no currency is present
 
   return (
     <TooltipProvider>
@@ -41,31 +99,23 @@ const CartSummaryNavInner = () => {
             <button className='snipcart-checkout relative block h-6 w-6'>
               <ShoppingBagIcon />
               <span className='absolute bottom-0 right-0 inline-flex h-5 w-5 translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full border-2 bg-white text-center text-xs'>
-                <span className='sr-only'>Items in cart: </span>
-                <span className='snipcart-items-count'>{0}</span>
+                <span className='sr-only'>
+                  Items in cart: {cart.itemsCount}
+                </span>
+                <span className='snipcart-items-count'>{cart.itemsCount}</span>
               </span>
-              <span className='sr-only'>
-                Total:<span className='snipcart-total-price'>{0}</span>
-                {/* {formatMoney({
-                  amount: total,
-                  currency: cart.cart.currency,
-                  locale,
-                })} */}
-              </span>
+              <span className='sr-only'>Total: {formattedPrice}</span>
             </button>
           </div>
         </TooltipTrigger>
         <TooltipContent side='left' sideOffset={25}>
           <p>
-            <span className='snipcart-items-count'>{0}</span> items in cart
+            <span className='snipcart-items-count'>{cart.itemsCount}</span>{' '}
+            items in cart
           </p>
           <p>
-            Total:<span className='snipcart-total-price'>{0}</span>
-            {/* {formatMoney({
-              amount: total,
-              currency: cart.cart.currency,
-              locale,
-            })} */}
+            Total:{' '}
+            <span className='snipcart-total-price'>{formattedPrice}</span>
           </p>
         </TooltipContent>
       </Tooltip>

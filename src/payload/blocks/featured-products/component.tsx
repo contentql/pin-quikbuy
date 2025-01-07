@@ -1,8 +1,8 @@
-import { formatCurrency } from '@contentql/core/client'
 import { FeaturedProductsType } from '@payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { formatCurrency } from '@/utils/formatCurrency'
 import { getCachedSiteSettings } from '@/utils/getCachedSiteSettings'
 
 const FeaturedProducts: React.FC<FeaturedProductsType> = async ({

@@ -1,8 +1,8 @@
-import { formatCurrency } from '@contentql/core/client'
 import { Media, Product, SiteSetting } from '@payload-types'
 
 import { MainProductImage } from '@/ui/products/main-product-image'
 import { cn } from '@/utils/cn'
+import { formatCurrency } from '@/utils/formatCurrency'
 
 import { AddToCartButton } from './add-to-cart-button'
 

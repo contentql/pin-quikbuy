@@ -1,4 +1,4 @@
-import { revalidateCart } from '../hooks/revalidateCart'
+import { revalidateCart } from '../../hooks/revalidateCart'
 import { CollectionConfig } from 'payload'
 
 import { deleteOldCarts } from './hooks/deleteOldCart'

@@ -1,4 +1,3 @@
-import { formatCurrency } from '@node_modules/@contentql/core/dist/exports/client'
 import { Media, Product } from '@payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,6 +15,7 @@ import { AddToCartButton } from '@/ui/add-to-cart-button'
 import { MainProductImage } from '@/ui/products/main-product-image'
 import { ProductImageModal } from '@/ui/products/product-image-modal'
 import { StickyBottom } from '@/ui/sticky-bottom'
+import { formatCurrency } from '@/utils/formatCurrency'
 import { getCachedSiteSettings } from '@/utils/getCachedSiteSettings'
 
 export default async function ProductDetails({
