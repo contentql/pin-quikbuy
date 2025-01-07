@@ -1,9 +1,8 @@
 import path from 'path'
 import { RequiredDataFromCollectionSlug } from 'payload'
 
-export type ProductDataType = RequiredDataFromCollectionSlug<'products'> & {
-  snipcartId: string | null
-}
+export type ProductDataType = RequiredDataFromCollectionSlug<'products'>
+
 export type ProductImageType = {
   alt: string
   filePath: string
