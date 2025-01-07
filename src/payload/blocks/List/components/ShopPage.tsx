@@ -7,7 +7,13 @@ import { useSearchParams } from 'next/navigation'
 
 import { trpc } from '@/trpc/client'
 
-export default function ShopPage({ products }: { products: Product[] }) {
+export default function ShopPage({
+  products,
+  slicedSlug,
+}: {
+  products: Product[]
+  slicedSlug: string
+}) {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
 
@@ -33,7 +39,7 @@ export default function ShopPage({ products }: { products: Product[] }) {
 
           return (
             <li key={product.id} className='group'>
-              <Link href={`/product/${product.slug}`}>
+              <Link href={`${slicedSlug}${product.slug}`}>
                 <article className='overflow-hidden bg-white'>
                   {product.images[0] && (
                     <div className='aspect-square w-full overflow-hidden rounded-lg bg-neutral-100'>
