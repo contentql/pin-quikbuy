@@ -3,7 +3,7 @@ import { Category, Page, Product } from '@payload-types'
 import { Ora } from 'ora'
 import { getPayload } from 'payload'
 
-import { HomePageDataType, homepageData } from './data'
+import { HomePageDataType, homePageImagesData, homepageData } from './data'
 
 const payload = await getPayload({ config: configPromise })
 
@@ -19,9 +19,35 @@ const seed = async (spinner: Ora): Promise<string | Page> => {
       collection: 'categories',
     })
 
+    const homePageImagesResult = await Promise.allSettled(
+      homePageImagesData.map(image =>
+        payload.create({
+          collection: 'media',
+          data: {
+            alt: image.alt,
+          },
+          filePath: image.filePath,
+        }),
+      ),
+    )
+    const formattedHomePageImagesResult = homePageImagesResult
+      .map(result =>
+        result.status === 'fulfilled'
+          ? result.value
+          : `Failed to seed: ${result.reason}`,
+      )
+      .filter(result => typeof result !== 'string')
+
     const formattedHomePageData: HomePageDataType = {
       ...homepageData,
       layout: homepageData.layout?.map(block => {
+        if (block.blockType === 'Home') {
+          return {
+            ...block,
+            image: formattedHomePageImagesResult[0].id,
+          }
+        }
+
         if (block.blockType === 'FeaturedProducts') {
           return {
             ...block,

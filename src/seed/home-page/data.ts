@@ -1,6 +1,12 @@
+import path from 'path'
 import { RequiredDataFromCollectionSlug } from 'payload'
 
 export type HomePageDataType = RequiredDataFromCollectionSlug<'pages'>
+
+export type HomePageImageType = {
+  alt: string
+  filePath: string
+}
 
 export const homepageData: HomePageDataType = {
   title: 'Home Page',
@@ -12,6 +18,7 @@ export const homepageData: HomePageDataType = {
         'Explore our carefully selected products for your home and lifestyle.',
       blockName: null,
       blockType: 'Home',
+      image: 0,
     },
 
     {
@@ -218,3 +225,13 @@ export const homepageData: HomePageDataType = {
   parent: null,
   _status: 'published',
 }
+
+export const homePageImagesData: HomePageImageType[] = [
+  {
+    alt: 'Banner block image',
+    filePath: path.join(
+      process.cwd(),
+      '/public/images/seed/home-page/banner-block-image.webp',
+    ),
+  },
+]
