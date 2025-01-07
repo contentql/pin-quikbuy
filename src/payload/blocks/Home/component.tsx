@@ -20,7 +20,7 @@ const Home: React.FC<HomeProps> = ({ params, ...block }) => {
           <p className='text-pretty text-neutral-600'>{block?.description}</p>
           <Link
             className='inline-flex h-10 items-center justify-center rounded-full bg-neutral-900 px-6 font-medium text-neutral-50 transition-colors hover:bg-neutral-900/90 focus:outline-none focus:ring-1 focus:ring-neutral-950'
-            href={'/accessories'}>
+            href={'/products'}>
             Shop Now
           </Link>
         </div>
