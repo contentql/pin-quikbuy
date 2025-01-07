@@ -1,5 +1,8 @@
-export const productsPage = {
-  //   id: 2,
+import { RequiredDataFromCollectionSlug } from 'payload'
+
+export type ProductsPageDataType = RequiredDataFromCollectionSlug<'pages'>
+
+export const productsPageData: ProductsPageDataType = {
   title: 'Products',
 
   layout: [
@@ -24,16 +27,5 @@ export const productsPage = {
   pathMode: 'generate',
   path: '/products',
   parent: null,
-
-  breadcrumbs: [
-    {
-      id: '67753226c405f90001543f86',
-      doc: 2,
-      url: '/products',
-      label: 'Products',
-    },
-  ],
-  //   updatedAt: '2025-01-01T12:16:38.518Z',
-  //   createdAt: '2025-01-01T12:16:37.102Z',
   _status: 'published',
 }
