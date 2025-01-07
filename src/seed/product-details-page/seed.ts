@@ -31,11 +31,11 @@ const seed = async (spinner: Ora): Promise<string | Page> => {
       data: formattedProductDetailsPageData,
     })
 
-    spinner.start(`Successfully created categories.`)
+    spinner.start(`Successfully created product details page.`)
 
     return result
   } catch (error) {
-    spinner.succeed(`Failed to create categories`)
+    spinner.succeed(`Failed to create product details page.`)
 
     throw error
   }

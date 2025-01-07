@@ -4,24 +4,7 @@ export type OrdersDataType = RequiredDataFromCollectionSlug<'orders'>
 
 export const ordersData: OrdersDataType[] = [
   {
-    // id: 1,
-    user: {
-      id: 1,
-      displayName: null,
-      username: 'manikanta',
-      imageUrl: null,
-
-      role: ['admin'],
-      emailVerified: '2025-01-01T00:00:00.000Z',
-
-      socialLinks: [],
-      bio: null,
-      updatedAt: '2025-01-01T11:51:15.916Z',
-      createdAt: '2025-01-01T11:32:51.978Z',
-      email: 'manikanta.potnuru@resonateaes.com',
-      _verified: true,
-      loginAttempts: 0,
-    },
+    user: 0,
 
     items: [
       {
@@ -180,30 +163,10 @@ export const ordersData: OrdersDataType[] = [
       instructions: null,
       display: 'CreditCard',
     },
-    // updatedAt: '2025-01-01T17:13:32.558Z',
-    // createdAt: '2025-01-01T17:13:32.558Z',
-    _status: 'draft',
+    _status: 'published',
   },
   {
-    // id: 2,
-
-    user: {
-      id: 1,
-      displayName: null,
-      username: 'manikanta',
-      imageUrl: null,
-
-      role: ['admin'],
-      emailVerified: '2025-01-01T00:00:00.000Z',
-
-      socialLinks: [],
-      bio: null,
-      updatedAt: '2025-01-01T11:51:15.916Z',
-      createdAt: '2025-01-01T11:32:51.978Z',
-      email: 'manikanta.potnuru@resonateaes.com',
-      _verified: true,
-      loginAttempts: 0,
-    },
+    user: 1,
 
     items: [
       {
@@ -362,8 +325,6 @@ export const ordersData: OrdersDataType[] = [
       instructions: null,
       display: 'CreditCard',
     },
-    // updatedAt: '2025-01-03T04:36:06.072Z',
-    // createdAt: '2025-01-03T04:36:06.072Z',
-    _status: 'draft',
+    _status: 'published',
   },
 ]
