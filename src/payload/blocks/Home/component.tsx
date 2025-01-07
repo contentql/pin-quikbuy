@@ -1,7 +1,7 @@
 'use client'
 
 import { Params } from '../types'
-import { HomeType } from '@payload-types'
+import { HomeType, Media } from '@payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -125,7 +125,7 @@ const Home: React.FC<HomeProps> = ({ params, ...block }) => {
           className='rounded'
           height={450}
           width={450}
-          src='/images/blocks/hero-block.jpg'
+          src={(block?.image as Media)?.url!}
           style={{
             objectFit: 'cover',
           }}
