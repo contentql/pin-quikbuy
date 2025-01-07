@@ -1,10 +1,12 @@
-export const homepageData = {
-  //   id: 1,
+import { RequiredDataFromCollectionSlug } from 'payload'
+
+export type HomePageDataType = RequiredDataFromCollectionSlug<'pages'>
+
+export const homepageData: HomePageDataType = {
   title: 'Home Page',
 
   layout: [
     {
-      id: '6775311177b2cd00ce08142c',
       title: 'Discover our Curated Collection',
       description:
         'Explore our carefully selected products for your home and lifestyle.',
@@ -13,13 +15,10 @@ export const homepageData = {
     },
 
     {
-      id: '6775313577b2cd00ce08142d',
       blockName: null,
 
       featuredProducts: [
         {
-          id: '6775313977b2cd00ce08142e',
-
           products: [
             {
               id: 1,
@@ -59,8 +58,6 @@ export const homepageData = {
         },
 
         {
-          id: '677537ae4a83b61299800007',
-
           products: [
             {
               id: 2,
@@ -100,8 +97,6 @@ export const homepageData = {
         },
 
         {
-          id: '67753bbd74329152d72c18f9',
-
           products: [
             {
               id: 3,
@@ -144,13 +139,10 @@ export const homepageData = {
     },
 
     {
-      id: '67753180df41dccc1e7895ef',
       blockName: null,
 
       categories: [
         {
-          id: '67753184df41dccc1e7895f0',
-
           category: {
             id: 1,
             name: 'Apparel',
@@ -180,8 +172,6 @@ export const homepageData = {
         },
 
         {
-          id: '67753bdf74329152d72c18fa',
-
           category: {
             id: 2,
             name: 'Accessories',
@@ -226,16 +216,5 @@ export const homepageData = {
   pathMode: 'generate',
   path: '/',
   parent: null,
-
-  breadcrumbs: [
-    {
-      id: '67753be5ead83b00012c7a90',
-      doc: 1,
-      url: '/',
-      label: 'Home Page',
-    },
-  ],
-  //   updatedAt: '2025-01-01T12:58:13.995Z',
-  //   createdAt: '2025-01-01T12:12:47.908Z',
   _status: 'published',
 }
