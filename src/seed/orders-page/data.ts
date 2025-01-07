@@ -1,5 +1,8 @@
-export const ordersPageData = {
-  //   id: 7,
+import { RequiredDataFromCollectionSlug } from 'payload'
+
+export type OrdersPageDataType = RequiredDataFromCollectionSlug<'pages'>
+
+export const ordersPageData: OrdersPageDataType = {
   title: 'orders',
 
   layout: [
@@ -25,15 +28,5 @@ export const ordersPageData = {
   path: '/orders',
   parent: null,
 
-  breadcrumbs: [
-    {
-      id: '6775356d281b780001dd8243',
-      doc: 7,
-      url: '/orders',
-      label: 'orders',
-    },
-  ],
-  //   updatedAt: '2025-01-01T12:30:37.130Z',
-  //   createdAt: '2025-01-01T12:30:35.805Z',
   _status: 'published',
 }
