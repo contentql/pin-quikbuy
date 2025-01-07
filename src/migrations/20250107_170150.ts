@@ -1,15 +1,6 @@
 import { MigrateDownArgs, MigrateUpArgs, sql } from '@payloadcms/db-sqlite'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  await db.run(
-    sql`CREATE INDEX \`pages_blocks_home_image_idx\` ON \`pages_blocks_home\` (\`image_id\`);`,
-  )
-  await db.run(
-    sql`ALTER TABLE \`_pages_v_blocks_home\` ADD \`image_id\` integer REFERENCES media(id);`,
-  )
-  await db.run(
-    sql`CREATE INDEX \`_pages_v_blocks_home_image_idx\` ON \`_pages_v_blocks_home\` (\`image_id\`);`,
-  )
   await db.run(sql`ALTER TABLE \`products\` ADD \`snipcart_id\` text;`)
   await db.run(
     sql`ALTER TABLE \`_products_v\` ADD \`version_snipcart_id\` text;`,
