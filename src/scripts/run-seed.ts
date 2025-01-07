@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // ? For interactive confirmation prompts
 import { confirm } from '@clack/prompts'
+import configPromise from '@payload-config'
 // ? For colored terminal output
 import chalk from 'chalk'
 // ? To load environment variables from a .env file
@@ -10,6 +11,16 @@ import 'dotenv/config'
 import { MongoClient } from 'mongodb'
 // ? For displaying a loading spinner
 import ora from 'ora'
+import { getPayload } from 'payload'
+
+import { seedCategories } from '@/seed/categories'
+import { seedHomePage } from '@/seed/home-page'
+import { seedOrders } from '@/seed/orders'
+import { seedOrdersPage } from '@/seed/orders-page'
+import { seedProductDetailsPage } from '@/seed/product-details-page'
+import { seedProducts } from '@/seed/products'
+import { seedProductsPage } from '@/seed/products-page'
+import { seedSiteSettings } from '@/seed/site-settings'
 
 // Extract database name from the URI
 const extractDatabaseName = (uri: string): string | null => {
@@ -30,6 +41,8 @@ if (!databaseName) {
   console.error(chalk.red('Failed to extract database name from DATABASE_URI.'))
   process.exit(1)
 }
+
+const payload = await getPayload({ config: configPromise })
 
 // Function to drop the MongoDB database
 const dropDatabase = async (): Promise<boolean> => {
@@ -62,6 +75,55 @@ const executeSeeding = async () => {
   }).start()
 
   try {
+    // Seed categories
+    const { totalDocs: totalCategories } = await payload.count({
+      collection: 'categories',
+    })
+
+    if (!totalCategories) {
+      await seedCategories(spinner)
+    } else {
+      spinner.info('Categories already exist. Skipping seeding.')
+    }
+
+    // Seed products
+    const { totalDocs: totalProducts } = await payload.count({
+      collection: 'products',
+    })
+
+    if (!totalProducts) {
+      await seedProducts(spinner)
+    } else {
+      spinner.info('Products already exist. Skipping seeding.')
+    }
+
+    // Seed orders
+    const { totalDocs: totalOrders } = await payload.count({
+      collection: 'orders',
+    })
+
+    if (!totalOrders) {
+      await seedOrders(spinner)
+    } else {
+      spinner.info('Orders already exist. Skipping seeding.')
+    }
+
+    // Seed pages
+    const { totalDocs: totalPages } = await payload.count({
+      collection: 'pages',
+    })
+
+    if (!totalPages) {
+      await seedProductsPage(spinner)
+      await seedProductDetailsPage(spinner)
+      await seedOrdersPage(spinner)
+      await seedHomePage(spinner)
+    } else {
+      spinner.info('Pages already exist. Skipping seeding.')
+    }
+
+    // Seed site settings
+    await seedSiteSettings(spinner)
   } catch (error) {
     console.error(chalk.red('Error running seeds:'), error)
   } finally {
