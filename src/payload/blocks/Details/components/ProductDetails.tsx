@@ -180,7 +180,7 @@ export default async function ProductDetails({
             <AddToCartButton
               product={product}
               route={route}
-              disabled={(product?.stock ?? 0) <= 0}
+              outOfStock={(product?.stock ?? 0) <= 0}
             />
           </div>
         </div>

@@ -56,7 +56,7 @@ export const ProductBottomStickyCard = ({
         <AddToCartButton
           product={product}
           route={route}
-          disabled={(product?.stock ?? 0) <= 0}
+          outOfStock={(product?.stock ?? 0) <= 0}
           className='h-9 shrink-0 px-3 text-sm sm:h-10 sm:px-8 sm:text-lg'
         />
       </div>
