@@ -30,8 +30,8 @@ export default cqlConfig({
 
   secret: env.PAYLOAD_SECRET,
 
-  dbURI: env.DATABASE_URI,
-  dbSecret: env.DATABASE_SECRET,
+  // dbURI: env.DATABASE_URI,
+  // dbSecret: env.DATABASE_SECRET,
   syncDB: false,
 
   removeCollections: ['blogs', 'tags'],

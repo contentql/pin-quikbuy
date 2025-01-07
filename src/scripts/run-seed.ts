@@ -1,18 +1,20 @@
 #!/usr/bin/env node
 // ? For interactive confirmation prompts
-import { confirm } from '@clack/prompts'
-import configPromise from '@payload-config'
+import { confirm, select, text } from '@clack/prompts'
 // ? For colored terminal output
 import chalk from 'chalk'
 // ? To load environment variables from a .env file
 import 'dotenv/config'
+// ? For filesystem operations
+import fs from 'fs'
 // ? For special characters (tick and cross) in output
 // ? For MongoDB database operations
 import { MongoClient } from 'mongodb'
-// ? For displaying a loading spinner
 import ora from 'ora'
-import { getPayload } from 'payload'
+// ? For displaying a loading spinner
+import path from 'path'
 
+// ! Import seeding functions
 import { seedCategories } from '@/seed/categories'
 import { seedHomePage } from '@/seed/home-page'
 import { seedOrders } from '@/seed/orders'
@@ -22,30 +24,23 @@ import { seedProducts } from '@/seed/products'
 import { seedProductsPage } from '@/seed/products-page'
 import { seedSiteSettings } from '@/seed/site-settings'
 
-// Extract database name from the URI
+// MongoDB connection URI
+const { DATABASE_URI, SQLITE_DB_PATH } = process.env
+
+// Extract database name from the MongoDB URI
 const extractDatabaseName = (uri: string): string | null => {
   const match = uri.match(/\/([^/?]+)(\?|$)/)
   return match ? match[1] : null
 }
 
-// MongoDB connection URI
-const { DATABASE_URI } = process.env
+// Drop MongoDB database
+const dropMongoDatabase = async (): Promise<boolean> => {
+  const databaseName = extractDatabaseName(DATABASE_URI || '')
+  if (!DATABASE_URI || !databaseName) {
+    console.error(chalk.red('Invalid DATABASE_URI for MongoDB.'))
+    process.exit(1)
+  }
 
-if (!DATABASE_URI) {
-  console.error(chalk.red('Environment variable DATABASE_URI is required.'))
-  process.exit(1)
-}
-
-const databaseName = extractDatabaseName(DATABASE_URI)
-if (!databaseName) {
-  console.error(chalk.red('Failed to extract database name from DATABASE_URI.'))
-  process.exit(1)
-}
-
-const payload = await getPayload({ config: configPromise })
-
-// Function to drop the MongoDB database
-const dropDatabase = async (): Promise<boolean> => {
   const client = new MongoClient(DATABASE_URI)
   try {
     await client.connect()
@@ -59,14 +54,48 @@ const dropDatabase = async (): Promise<boolean> => {
     console.log(chalk.green(`Database "${databaseName}" dropped successfully.`))
     return true
   } catch (error) {
-    console.error(chalk.red('Error dropping the database:'), error)
+    console.error(chalk.red('Error dropping the MongoDB database:'), error)
     return false
   } finally {
     await client.close()
   }
 }
 
-// Function to execute the seeding process
+// Drop SQLite database (local)
+const dropSQLiteLocalDatabase = async (): Promise<boolean> => {
+  const dbPath = await text({
+    message: 'Enter the path to the SQLite database file:',
+    placeholder: SQLITE_DB_PATH || './database.sqlite',
+  })
+
+  if (!dbPath) {
+    console.error(chalk.red('SQLite database path is required.'))
+    process.exit(1)
+  }
+
+  const resolvedPath = path.resolve(dbPath as string)
+  if (fs.existsSync(resolvedPath)) {
+    fs.unlinkSync(resolvedPath)
+    console.log(chalk.green(`Deleted SQLite database file at ${resolvedPath}.`))
+    return true
+  } else {
+    console.error(
+      chalk.red(`SQLite database file not found at ${resolvedPath}.`),
+    )
+    return false
+  }
+}
+
+// Drop SQLite database (online)
+const dropSQLiteOnlineDatabase = async (): Promise<boolean> => {
+  console.log(
+    chalk.yellow('Online SQLite database logic is not implemented yet.'),
+  )
+  // Implement online SQLite database handling logic here if necessary
+  return false
+}
+
+// Execute seeding
 const executeSeeding = async () => {
   const spinner = ora({
     text: 'Starting the seeding process...',
@@ -75,56 +104,16 @@ const executeSeeding = async () => {
   }).start()
 
   try {
-    // Seed categories
-    const { totalDocs: totalCategories } = await payload.count({
-      collection: 'categories',
-    })
-
-    if (!totalCategories) {
-      await seedCategories(spinner)
-    } else {
-      spinner.info('Categories already exist. Skipping seeding.')
-    }
-
-    // Seed products
-    const { totalDocs: totalProducts } = await payload.count({
-      collection: 'products',
-    })
-
-    if (!totalProducts) {
-      await seedProducts(spinner)
-    } else {
-      spinner.info('Products already exist. Skipping seeding.')
-    }
-
-    // Seed orders
-    const { totalDocs: totalOrders } = await payload.count({
-      collection: 'orders',
-    })
-
-    if (!totalOrders) {
-      await seedOrders(spinner)
-    } else {
-      spinner.info('Orders already exist. Skipping seeding.')
-    }
-
-    // Seed pages
-    const { totalDocs: totalPages } = await payload.count({
-      collection: 'pages',
-    })
-
-    if (!totalPages) {
-      await seedProductsPage(spinner)
-      await seedProductDetailsPage(spinner)
-      await seedOrdersPage(spinner)
-      await seedHomePage(spinner)
-    } else {
-      spinner.info('Pages already exist. Skipping seeding.')
-    }
-
-    // Seed site settings
+    await seedCategories(spinner)
+    await seedProducts(spinner)
+    await seedOrders(spinner)
+    await seedProductsPage(spinner)
+    await seedProductDetailsPage(spinner)
+    await seedOrdersPage(spinner)
+    await seedHomePage(spinner)
     await seedSiteSettings(spinner)
   } catch (error) {
+    spinner.fail('Error running seeds.')
     console.error(chalk.red('Error running seeds:'), error)
   } finally {
     spinner.stop()
@@ -133,34 +122,8 @@ const executeSeeding = async () => {
   }
 }
 
-// Function to ask for confirmation to drop the database before seeding
-const askToDropDatabase = async (): Promise<void> => {
-  const answer = await confirm({
-    message: `${chalk.bold(
-      'Do you want to drop the database before seeding?',
-    )}\n\t${chalk.red.bold(
-      'WARNING: Dropping the database will permanently delete all data. This action cannot be undone.',
-    )}`,
-    initialValue: false,
-  })
-
-  if (answer) {
-    const dropSuccess = await dropDatabase()
-    if (dropSuccess) {
-      askForConfirmation()
-    } else {
-      console.error(
-        chalk.red('Failed to drop the database. Seeding process aborted.'),
-      )
-      process.exit(1)
-    }
-  } else {
-    askForConfirmation()
-  }
-}
-
-// Function to ask for confirmation before running seeds
-const askForConfirmation = async (): Promise<void> => {
+// Ask for confirmation to run seeding
+const askForConfirmation = async () => {
   const answer = await confirm({
     message: 'Are you sure you want to run the seeding process?',
     initialValue: false,
@@ -174,5 +137,60 @@ const askForConfirmation = async (): Promise<void> => {
   }
 }
 
-// Display the prompt to drop the database
-askToDropDatabase()
+// Ask for database options
+const askDatabaseType = async () => {
+  const dbType = await select({
+    message: 'Which database are you using?',
+    options: [
+      { value: 'mongodb', label: 'MongoDB' },
+      { value: 'sqlite', label: 'SQLite' },
+    ],
+  })
+
+  if (dbType === 'mongodb') {
+    const dropSuccess = await dropMongoDatabase()
+    if (dropSuccess) {
+      askForConfirmation()
+    } else {
+      console.error(
+        chalk.red('Failed to drop MongoDB database. Seeding aborted.'),
+      )
+      process.exit(1)
+    }
+  } else if (dbType === 'sqlite') {
+    const sqliteType = await select({
+      message: 'Are you using a local or online SQLite database?',
+      options: [
+        { value: 'local', label: 'Local' },
+        { value: 'online', label: 'Online' },
+      ],
+    })
+
+    if (sqliteType === 'local') {
+      const dropSuccess = await dropSQLiteLocalDatabase()
+      if (dropSuccess) {
+        askForConfirmation()
+      } else {
+        console.error(
+          chalk.red('Failed to drop SQLite database. Seeding aborted.'),
+        )
+        process.exit(1)
+      }
+    } else if (sqliteType === 'online') {
+      const dropSuccess = await dropSQLiteOnlineDatabase()
+      if (dropSuccess) {
+        askForConfirmation()
+      } else {
+        console.error(
+          chalk.red(
+            'Failed to handle online SQLite database. Seeding aborted.',
+          ),
+        )
+        process.exit(1)
+      }
+    }
+  }
+}
+
+// Start the script
+askDatabaseType()
