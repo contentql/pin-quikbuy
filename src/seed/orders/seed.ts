@@ -9,7 +9,7 @@ const payload = await getPayload({ config: configPromise })
 
 const seed = async (spinner: Ora): Promise<(string | Order)[]> => {
   try {
-    spinner.start(`Started created orders...`)
+    spinner.start(`Started creating orders...`)
 
     const { docs: products } = await payload.find({
       collection: 'products',
@@ -47,11 +47,11 @@ const seed = async (spinner: Ora): Promise<(string | Order)[]> => {
         : `Failed to seed: ${result.reason}`,
     )
 
-    spinner.start(`Successfully created orders.`)
+    spinner.succeed(`Successfully created orders.`)
 
     return formattedResults
   } catch (error) {
-    spinner.succeed(`Failed to create orders.`)
+    spinner.fail(`Failed to create orders.`)
 
     throw error
   }

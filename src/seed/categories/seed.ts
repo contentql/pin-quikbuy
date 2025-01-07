@@ -9,7 +9,7 @@ const payload = await getPayload({ config: configPromise })
 
 const seed = async (spinner: Ora): Promise<(string | Category)[]> => {
   try {
-    spinner.start(`Started created categories...`)
+    spinner.start(`Started creating categories...`)
 
     const categoryImagesResult = await Promise.allSettled(
       categoriesImagesData.map(image =>
@@ -58,11 +58,11 @@ const seed = async (spinner: Ora): Promise<(string | Category)[]> => {
         : `Failed to seed: ${result.reason}`,
     )
 
-    spinner.start(`Successfully created categories.`)
+    spinner.succeed(`Successfully created categories.`)
 
     return formattedResults
   } catch (error) {
-    spinner.succeed(`Failed to create categories`)
+    spinner.fail(`Failed to create categories`)
 
     throw error
   }

@@ -36,7 +36,7 @@ export const siteSettingsData: SiteSettingsDataType = {
         group: false,
 
         menuLink: {
-          type: 'custom',
+          type: 'reference',
           newTab: null,
           icon: null,
           label: 'Apparel',
@@ -46,12 +46,6 @@ export const siteSettingsData: SiteSettingsDataType = {
             relationTo: 'pages',
             value: 0,
           },
-        },
-
-        menuLinkGroup: {
-          groupTitle: '',
-
-          groupLinks: [],
         },
       },
 
@@ -70,12 +64,6 @@ export const siteSettingsData: SiteSettingsDataType = {
           },
           url: null,
         },
-
-        menuLinkGroup: {
-          groupTitle: '',
-
-          groupLinks: [],
-        },
       },
 
       {
@@ -92,12 +80,6 @@ export const siteSettingsData: SiteSettingsDataType = {
             value: 0,
           },
           url: null,
-        },
-
-        menuLinkGroup: {
-          groupTitle: '',
-
-          groupLinks: [],
         },
       },
     ],

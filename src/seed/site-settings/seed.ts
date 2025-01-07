@@ -100,11 +100,11 @@ const seed = async (spinner: Ora): Promise<string | SiteSetting> => {
       data: formattedSiteSettingsData,
     })
 
-    spinner.start(`Successfully created site settings.`)
+    spinner.succeed(`Successfully created site settings.`)
 
     return result
   } catch (error) {
-    spinner.succeed(`Failed to create site settings.`)
+    spinner.fail(`Failed to create site settings.`)
 
     throw error
   }
