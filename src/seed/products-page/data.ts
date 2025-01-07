@@ -7,7 +7,6 @@ export const productsPageData: ProductsPageDataType = {
 
   layout: [
     {
-      id: '677531f9df41dccc1e7895f1',
       title: 'All Products',
       collectionSlug: 'products',
       blockName: null,

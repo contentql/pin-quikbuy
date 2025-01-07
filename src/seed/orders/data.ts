@@ -66,7 +66,6 @@ export const ordersData: OrdersDataType[] = [
 
         categories: [
           {
-            id: '677577bc1b9f8900018f5180',
             category: 'Apparel',
           },
         ],
@@ -228,7 +227,6 @@ export const ordersData: OrdersDataType[] = [
 
         categories: [
           {
-            id: '677769352329ba0001180191',
             category: 'Apparel',
           },
         ],

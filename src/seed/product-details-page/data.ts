@@ -7,7 +7,6 @@ export const productDetailsPageData: ProductDetailsPageDataType = {
 
   layout: [
     {
-      id: '6775323a5b30ca73ea7dff30',
       collectionSlug: 'products',
       blockName: null,
       blockType: 'Details',
@@ -32,7 +31,6 @@ export const productDetailsPageData: ProductDetailsPageDataType = {
 
     layout: [
       {
-        id: '677531f9df41dccc1e7895f1',
         title: 'All Products',
         collectionSlug: 'products',
         blockName: null,

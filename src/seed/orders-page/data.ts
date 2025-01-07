@@ -7,7 +7,6 @@ export const ordersPageData: OrdersPageDataType = {
 
   layout: [
     {
-      id: '677535664a83b61299800006',
       title: null,
       collectionSlug: 'orders',
       blockName: null,
