@@ -38,9 +38,14 @@ const CartSummaryNavInner = () => {
 
   useEffect(() => {
     const updateCart = () => {
-      if (typeof window === 'undefined' || !window.Snipcart) return
+      if (
+        typeof window === 'undefined' ||
+        !window.Snipcart ||
+        !window.Snipcart.store
+      )
+        return
 
-      const state = window.Snipcart?.store?.getState()
+      const state = window.Snipcart.store.getState()
       const itemsCount = state?.cart?.items?.count || 0 // Get the number of items in the cart
       const totalPrice = state?.cart?.total || 0 // Get the total price from the cart state
       const currency = state?.cart?.currency || '' // Fetch the dynamic currency, fallback to empty if not found
@@ -52,11 +57,15 @@ const CartSummaryNavInner = () => {
       })
     }
 
+    let unsubscribe: (() => void) | undefined
+
     if (typeof window !== 'undefined') {
       setIsMounted(true)
 
-      // Subscribe to Snipcart updates
-      const unsubscribe = window.Snipcart?.store?.subscribe(updateCart)
+      if (window.Snipcart && window.Snipcart.store) {
+        // Subscribe to Snipcart updates
+        unsubscribe = window.Snipcart.store.subscribe(updateCart)
+      }
 
       // Initial cart state update
       updateCart()
@@ -69,7 +78,8 @@ const CartSummaryNavInner = () => {
       document.addEventListener('snipcartCartUpdated', handleCartUpdateEvent)
 
       return () => {
-        unsubscribe()
+        // Unsubscribe if available
+        if (unsubscribe) unsubscribe()
         document.removeEventListener(
           'snipcartCartUpdated',
           handleCartUpdateEvent,
