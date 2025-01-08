@@ -3,10 +3,8 @@ import { importMap } from '../importMap.js'
 import config from '@payload-config'
 
 /* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
-import { RootPage, generatePageMetadata } from '@payloadcms/next/views'
+import { NotFoundPage, generatePageMetadata } from '@payloadcms/next/views'
 import type { Metadata } from 'next'
-
-import '@/public/favicon.ico'
 
 type Args = {
   params: Promise<{
@@ -40,7 +38,7 @@ export const generateMetadata = async ({
   }
 }
 
-const Page = ({ params, searchParams }: Args) =>
-  RootPage({ config, importMap, params, searchParams })
+const NotFound = ({ params, searchParams }: Args) =>
+  NotFoundPage({ config, importMap, params, searchParams })
 
-export default Page
+export default NotFound

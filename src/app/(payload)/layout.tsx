@@ -1,10 +1,14 @@
 /* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
-import configPromise from '@payload-config'
-import { RootLayout, handleServerFunctions } from '@payloadcms/next/layouts'
-import { ServerFunctionClient } from 'payload'
 
 /* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
+// import '@payloadcms/ui/styles.css' // Uncomment this line if `@payloadcms/ui` in `tsconfig.json` points to `/ui/dist` instead of `/ui/src`
+import configPromise from '@payload-config'
+import '@payloadcms/next/css'
+import { RootLayout, handleServerFunctions } from '@payloadcms/next/layouts'
+import type { ServerFunctionClient } from 'payload'
 import React from 'react'
+
+import '@/public/favicon.ico'
 
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
