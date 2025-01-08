@@ -48,7 +48,7 @@ const Footer = ({ metadata }: { metadata: SiteSetting }) => {
           </div>
         </div>
 
-        <nav className='grid grid-cols-4 gap-16'>
+        <nav className='grid grid-cols-1 gap-16'>
           {menuLinks?.map(({ children, label }, index) => {
             if (children) {
               return (
