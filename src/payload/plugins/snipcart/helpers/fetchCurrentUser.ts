@@ -6,7 +6,7 @@ import { User } from '@payload-types'
  */
 export const fetchCurrentUser = async (): Promise<User | null> => {
   try {
-    const res = await fetch(`${env.NEXT_PUBLIC_PUBLIC_URL}/api/users/me`, {
+    const res = await fetch(`${env.NEXT_PUBLIC_WEBSITE_URL}/api/users/me`, {
       credentials: 'include',
     })
 

@@ -29,15 +29,15 @@ export const env = createEnv({
     SNIPCART_SECRET_API_KEY: z.string().optional(),
   },
   client: {
-    NEXT_PUBLIC_PUBLIC_URL: z.string().url(),
+    NEXT_PUBLIC_WEBSITE_URL: z.string().url(),
   },
   runtimeEnv: {
     DATABASE_URI: process.env.DATABASE_URI,
     DATABASE_SECRET: process.env.DATABASE_SECRET,
     PAYLOAD_SECRET: process.env.PAYLOAD_SECRET,
-    NEXT_PUBLIC_PUBLIC_URL: changeBasedOnENV(
-      process.env.NEXT_PUBLIC_PUBLIC_URL ||
-        process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    NEXT_PUBLIC_WEBSITE_URL: changeBasedOnENV(
+      process.env.NEXT_PUBLIC_WEBSITE_URL ||
+        process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL,
     ),
     PAYLOAD_URL: changeBasedOnENV(
       process.env.PAYLOAD_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL,
