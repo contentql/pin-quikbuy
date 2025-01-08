@@ -11,6 +11,7 @@ import { seedProductDetailsPage } from '@/seed/product-details-page'
 import { seedProducts } from '@/seed/products'
 import { seedProductsPage } from '@/seed/products-page'
 import { seedSiteSettings } from '@/seed/site-settings'
+import { seedUsers } from '@/seed/users'
 import { publicProcedure, router } from '@/trpc'
 
 const payload = await getPayload({ config: configPromise })
@@ -24,6 +25,17 @@ export const seedRouter = router({
     }).start()
 
     try {
+      // Seed categories
+      const { totalDocs: totalUsers } = await payload.count({
+        collection: 'categories',
+      })
+
+      if (!totalUsers) {
+        await seedUsers(spinner)
+      } else {
+        spinner.info('Users already exist. Skipping seeding.')
+      }
+
       // Seed categories
       const { totalDocs: totalCategories } = await payload.count({
         collection: 'categories',
