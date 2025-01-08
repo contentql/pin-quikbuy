@@ -1,6 +1,7 @@
 'use client'
 
-import { Media, Product } from '@payload-types'
+import { formatCurrency } from '@contentql/core/client'
+import { Media, Product, SiteSetting } from '@payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -10,9 +11,11 @@ import { trpc } from '@/trpc/client'
 export default function ShopPage({
   products,
   slicedSlug,
+  currency,
 }: {
   products: Product[]
   slicedSlug: string
+  currency: SiteSetting['general']['currency']
 }) {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
@@ -60,6 +63,13 @@ export default function ShopPage({
                       {product.name}
                     </h2>
                     <footer className='text-base font-normal text-neutral-900'>
+                      {product?.finalPrice && (
+                        <p className='mt-2 font-medium leading-none tracking-tight text-foreground/70'>
+                          {product?.finalPrice
+                            ? `${formatCurrency({ amount: product?.finalPrice, currencyCode: currency })}`
+                            : 'Price not available'}
+                        </p>
+                      )}
                       {/* <p>
                         {product.finalPrice
                           ? `${productInformation?.currency === 'USD' ? '$' : '₹'}${product.finalPrice}`

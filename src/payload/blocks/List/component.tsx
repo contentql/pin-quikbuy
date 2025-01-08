@@ -21,7 +21,10 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
     config: configPromise,
   })
   const metadata = await getCachedSiteSettings()
-  const { redirectionLinks } = metadata
+  const {
+    redirectionLinks,
+    general: { currency },
+  } = metadata
 
   const productRedirectionLink = redirectionLinks?.productLink
   const slug =
@@ -44,9 +47,11 @@ const List: React.FC<ListProps> = async ({ params, ...block }) => {
       )()
 
       return (
-        <div>
-          <ShopPage products={products} slicedSlug={slicedSlug} />
-        </div>
+        <ShopPage
+          products={products}
+          slicedSlug={slicedSlug}
+          currency={currency}
+        />
       )
     }
 
