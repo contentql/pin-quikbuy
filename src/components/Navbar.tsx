@@ -77,16 +77,19 @@ const Navbar = ({
         <div className='flex w-auto max-w-full flex-shrink overflow-auto max-sm:order-2 sm:mr-auto'>
           <div className='hidden sm:block'>
             <ul className='flex flex-row items-center justify-center gap-x-1'>
-              {navLinks.map(({ label, children, href = '', newTab }) => (
-                <li key={label}>
-                  <Link
-                    href={`/products?category=${label}`}
-                    target={newTab ? '_blank' : '_self'}
-                    className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none'>
-                    {label}
-                  </Link>
-                </li>
-              ))}
+              {navLinks.map(({ label, children, href = '', newTab }) => {
+                const category = label.toLowerCase()
+                return (
+                  <li key={label}>
+                    <Link
+                      href={`/products?category=${category}`}
+                      target={newTab ? '_blank' : '_self'}
+                      className='group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none'>
+                      {label}
+                    </Link>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         </div>

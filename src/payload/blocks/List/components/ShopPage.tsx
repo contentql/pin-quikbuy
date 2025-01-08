@@ -31,10 +31,16 @@ export default function ShopPage({
 
   const displayProducts = category ? productsByCategories : products
 
+  function capitalizeFirstLetter(val: string) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1)
+  }
+
   return (
     <>
       <div className='text-3xl font-bold leading-none tracking-tight text-foreground'>
-        {category ? `${category} Products` : 'All Products'}
+        {category
+          ? `${capitalizeFirstLetter(category)} Products`
+          : 'All Products'}
       </div>
       <ul className='mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
         {displayProducts?.map((product, idx) => {
