@@ -1,12 +1,12 @@
 'use client'
 
-import { formatCurrency } from '@contentql/core/client'
 import { Media, Product, SiteSetting } from '@payload-types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
 import { trpc } from '@/trpc/client'
+import { formatCurrency } from '@/utils/formatCurrency'
 
 export default function ShopPage({
   products,
