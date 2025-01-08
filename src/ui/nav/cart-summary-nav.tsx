@@ -40,7 +40,7 @@ const CartSummaryNavInner = () => {
     const updateCart = () => {
       if (typeof window === 'undefined' || !window.Snipcart) return
 
-      const state = window.Snipcart.store.getState()
+      const state = window.Snipcart?.store?.getState()
       const itemsCount = state?.cart?.items?.count || 0 // Get the number of items in the cart
       const totalPrice = state?.cart?.total || 0 // Get the total price from the cart state
       const currency = state?.cart?.currency || '' // Fetch the dynamic currency, fallback to empty if not found
@@ -56,7 +56,7 @@ const CartSummaryNavInner = () => {
       setIsMounted(true)
 
       // Subscribe to Snipcart updates
-      const unsubscribe = window.Snipcart.store.subscribe(updateCart)
+      const unsubscribe = window.Snipcart?.store?.subscribe(updateCart)
 
       // Initial cart state update
       updateCart()
