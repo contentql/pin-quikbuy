@@ -15,9 +15,21 @@ const seed = async (spinner: Ora): Promise<(string | Order)[]> => {
       collection: 'products',
     })
 
+    const { docs: users } = await payload.find({
+      collection: 'users',
+      limit: 1,
+      where: {
+        username: {
+          equals: 'admin',
+        },
+      },
+    })
+    const userId = users.at(0)?.id as number
+
     const formattedOrdersData: OrdersDataType[] = ordersData.map(product => {
       const formattedOrder: OrdersDataType = {
         ...product,
+        user: userId,
         items: product.items.map(item => {
           const formattedItem = {
             ...item,
