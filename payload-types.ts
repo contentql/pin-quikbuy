@@ -805,7 +805,7 @@ export interface Order {
   items: {
     uniqueId: string;
     product: number | Product;
-    id: string | null;
+    itemId: string;
     name: string;
     price: number;
     description?: string | null;
@@ -856,6 +856,7 @@ export interface Order {
     addedOn?: string | null;
     modificationDate?: string | null;
     paymentGatewayId?: string | null;
+    id?: string | null;
   }[];
   /**
    * Total number of items in the order.
@@ -1466,7 +1467,7 @@ export interface OrdersSelect<T extends boolean = true> {
     | {
         uniqueId?: T;
         product?: T;
-        id?: T;
+        itemId?: T;
         name?: T;
         price?: T;
         description?: T;
@@ -1513,6 +1514,7 @@ export interface OrdersSelect<T extends boolean = true> {
         addedOn?: T;
         modificationDate?: T;
         paymentGatewayId?: T;
+        id?: T;
       };
   totalCount?: T;
   totalPrice?: T;

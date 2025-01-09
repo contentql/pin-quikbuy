@@ -4,6 +4,7 @@ import { addItemToPayloadCart } from '../helpers/cart/addItemToPayloadCart'
 import { createPayloadCart } from '../helpers/cart/createPayloadCart'
 import { removeItemFromPayloadCart } from '../helpers/cart/removeItemFromPayloadCart'
 import { updateItemInPayloadCart } from '../helpers/cart/updateItemInPayloadCart'
+import { checkAndCreateUser } from '../helpers/checkAndCreateUser'
 import { checkAndSetSnipcartCart } from '../helpers/checkAndSetSnipcartCart'
 import { createPayloadOrder } from '../helpers/createPayloadOrder'
 import { fetchCurrentUser } from '../helpers/fetchCurrentUser'
@@ -129,16 +130,28 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
       registerEvent('cart.confirmed', async cart => {
         console.log('Cart confirmed:', cart)
 
-        const user = await fetchCurrentUser()
-        if (!user) {
-          console.log('No user found. Cannot add order to cart collection.')
-          return
-        }
-
         // Serialize the item object to remove unsupported properties
         const plainOrder = JSON.parse(JSON.stringify(cart))
 
-        await createPayloadOrder(user, plainOrder)
+        const currentUser = await fetchCurrentUser()
+        if (!currentUser) {
+          console.log('No user found. Cannot add order to cart collection.')
+
+          const user = await checkAndCreateUser({
+            email: plainOrder.email,
+            password: 'changeme',
+            username:
+              plainOrder.billingAddress.fullName ||
+              plainOrder.billingAddress.name,
+          })
+          if (user) {
+            await createPayloadOrder(user, plainOrder)
+          }
+
+          return
+        }
+
+        await createPayloadOrder(currentUser, plainOrder)
       })
 
       registerEvent('cart.confirm.error', confirmError => {

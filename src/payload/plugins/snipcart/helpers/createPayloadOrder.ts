@@ -47,7 +47,7 @@ export const createPayloadOrder = async (
           uniqueId: item.uniqueId,
           product: product.id,
           image: item.imageUrl,
-          id: item.id,
+          itemId: item.id,
           name: item.name,
           price: item.price,
           description: item.description,
@@ -86,12 +86,12 @@ export const createPayloadOrder = async (
           state: {
             committing: item.state.committing,
           },
-        } as Order['items'][0]
+        } as Order['items'][number]
       }),
     )
 
     // Filter out null values from items
-    const filteredItems = items
+    const filteredItems: Order['items'] = items
       .map(result =>
         result.status === 'fulfilled'
           ? result.value
