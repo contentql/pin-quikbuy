@@ -14,6 +14,17 @@ import { snipcart } from '@/payload/plugins/snipcart'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const convertRailwayURL = (url: string) => {
+  const railwayDomain = '.up.railway.app'
+  const contentqlDomain = '.contentql.io'
+  // Check if the URL ends with .up.railway.app or contains it
+  if (url.includes(railwayDomain)) {
+    return url.replace(railwayDomain, contentqlDomain)
+  }
+  // Return the original URL if it doesn't match
+  return url
+}
+
 export default cqlConfig({
   admin: {
     components: {
@@ -23,8 +34,8 @@ export default cqlConfig({
       },
     },
   },
-  cors: [env.PAYLOAD_URL],
-  csrf: [env.PAYLOAD_URL],
+  cors: [env.PAYLOAD_URL, convertRailwayURL(env.PAYLOAD_URL)],
+  csrf: [env.PAYLOAD_URL, convertRailwayURL(env.PAYLOAD_URL)],
 
   baseURL: env.PAYLOAD_URL,
 
