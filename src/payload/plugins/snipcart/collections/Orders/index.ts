@@ -107,7 +107,7 @@ export const Orders: CollectionConfig = {
                   required: true,
                 },
                 {
-                  name: 'id',
+                  name: 'itemId',
                   type: 'text',
                   label: 'ID or Slug',
                   required: true,

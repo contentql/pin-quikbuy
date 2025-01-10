@@ -1,5 +1,6 @@
 'use client'
 
+import { env } from '@env'
 import { Category, Media, Product } from '@payload-types'
 import { CircleCheck, Loader2Icon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -129,7 +130,7 @@ export const AddToCartButton = ({
       data-item-name={product?.name}
       data-item-description={product?.description}
       data-item-price={product?.finalPrice || product?.price}
-      data-item-url={`https://tender-dog-85.telebit.io/${route}`}
+      data-item-url={`${env.NEXT_PUBLIC_WEBSITE_URL}/${route}`}
       data-item-image={(productImages.at(0) as Media).url}
       data-item-quantity={1}
       data-item-min-quantity={1}
