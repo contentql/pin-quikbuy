@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 
 import { ResetPassword } from '@/emails/reset-password'
 import { UserAccountVerification } from '@/emails/verify-email'
+import { migrations } from '@/migrations'
 import { blocksConfig } from '@/payload/blocks/blockConfig'
 import { revalidatePages } from '@/payload/hooks/revalidatePages'
 import { revalidateSiteSettings } from '@/payload/hooks/revalidateSiteSettings'
@@ -44,6 +45,7 @@ export default cqlConfig({
   dbURI: env.DATABASE_URI,
   dbSecret: env.DATABASE_SECRET,
   syncDB: false,
+  prodMigrations: migrations,
 
   removeCollections: ['blogs', 'tags'],
   searchPluginOptions: {
