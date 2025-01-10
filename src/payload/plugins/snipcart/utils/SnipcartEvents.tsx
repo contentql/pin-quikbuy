@@ -12,10 +12,14 @@ import { updateSnipcartCheckout } from '../helpers/updateSnipcartCheckout'
 // Helper to add order to the cart collection
 import { useEffect, useRef } from 'react'
 
+import { trpc } from '@/trpc/client'
+
 const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const unsubscribeRef = useRef<(() => void)[]>([])
+
+  const trpcUtils = trpc.useUtils()
 
   useEffect(() => {
     const updateSnipcartCart = async () => {
@@ -145,6 +149,7 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
               plainOrder.billingAddress.name,
           })
           if (user) {
+            trpcUtils.user.getUser.invalidate()
             await createPayloadOrder(user, plainOrder)
           }
 
