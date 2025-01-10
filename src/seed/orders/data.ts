@@ -8,7 +8,7 @@ export const ordersData: OrdersDataType[] = [
 
     items: [
       {
-        id: 'shadowstride-shoes',
+        itemId: 'shadowstride-shoes',
         uniqueId: '7ce87c7b-74fe-4439-99f5-e3bdce97c7ff',
 
         product: {
@@ -169,7 +169,7 @@ export const ordersData: OrdersDataType[] = [
 
     items: [
       {
-        id: 'sunbeam-tote',
+        itemId: 'sunbeam-tote',
         uniqueId: '362663be-3f6c-426a-acb9-31ea3318bef0',
 
         product: {
