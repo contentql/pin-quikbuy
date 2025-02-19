@@ -1,4 +1,4 @@
-import { User } from '@payload-types'
+import { Category, User } from '@payload-types'
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import { LogOut, Menu, X } from 'lucide-react'
 import Link from 'next/link'
@@ -20,6 +20,7 @@ const variants = {
 }
 
 type HamburgerMenuType = {
+  categoriesData: Category[]
   data: User | undefined
   userDetails: {
     url:
@@ -42,6 +43,7 @@ const HamburgerMenu = ({
   navLinks,
   initials,
   handleSignOut,
+  categoriesData,
 }: HamburgerMenuType) => {
   const [open, setOpen] = useState<boolean>(false)
 
@@ -59,6 +61,10 @@ const HamburgerMenu = ({
       window.removeEventListener('resize', resizeListener)
     }
   }, [])
+
+  function capitalizeFirstLetter(val: string) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1)
+  }
 
   return (
     <>
@@ -117,64 +123,81 @@ const HamburgerMenu = ({
             </div>
           )}
 
-          {navLinks?.length > 0 && (
-            <ul className='space-y-4'>
-              {navLinks.map(({ label, children, href = '', newTab }) => {
-                return (
-                  <li className='flex list-none items-center gap-1' key={label}>
-                    {children ? (
-                      <Accordion type='single' collapsible className='w-full'>
-                        <AccordionItem value='item-1' className='border-none'>
-                          <AccordionTrigger className='px-3 py-2 hover:no-underline'>
-                            {label}
-                          </AccordionTrigger>
-                          <AccordionContent className='p-0'>
-                            {children
-                              ? children.map(details => (
-                                  <li
-                                    className='flex list-none items-center gap-1'
-                                    key={details.label}>
-                                    <Link
-                                      key={details.label}
-                                      href={details.href}
-                                      onClick={() => setOpen(false)}
-                                      className='w-full rounded px-3 py-2 transition-colors hover:bg-secondary/10'
-                                      target={
-                                        details.newTab ? '_blank' : '_self'
-                                      }>
-                                      {details.label}
-                                    </Link>
-                                  </li>
-                                ))
-                              : null}
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    ) : (
-                      <Link
-                        href={href}
-                        onClick={() => setOpen(false)}
-                        className='w-full rounded px-3 py-2 transition-colors hover:bg-secondary/10'
-                        target={newTab ? '_blank' : '_self'}>
-                        {label}
-                      </Link>
-                    )}
-                  </li>
-                )
-              })}
-
-              {data && (
-                <li className='flex list-none items-center gap-1'>
-                  <p
-                    onClick={handleSignOut}
-                    className='flex w-full cursor-pointer items-center gap-1 rounded px-3 py-2 transition-colors hover:bg-secondary/10'>
-                    <LogOut size={16} className='mr-2' />
-                    Log out
-                  </p>
+          <ul className='space-y-4'>
+            {categoriesData?.map((category, index) => {
+              return (
+                <li className='flex list-none items-center gap-1' key={index}>
+                  <Link
+                    href={`/products?category=${category?.name.toLowerCase()}`}
+                    onClick={() => setOpen(false)}
+                    className='w-full rounded px-3 py-2 transition-colors hover:bg-secondary/10'>
+                    {capitalizeFirstLetter(category?.name)}
+                  </Link>
                 </li>
-              )}
-            </ul>
-          )}
+              )
+            })}
+
+            {navLinks?.length > 0 && (
+              <ul className='space-y-4'>
+                {navLinks.map(({ label, children, href = '', newTab }) => {
+                  return (
+                    <li
+                      className='flex list-none items-center gap-1'
+                      key={label}>
+                      {children ? (
+                        <Accordion type='single' collapsible className='w-full'>
+                          <AccordionItem value='item-1' className='border-none'>
+                            <AccordionTrigger className='px-3 py-2 hover:no-underline'>
+                              {label}
+                            </AccordionTrigger>
+                            <AccordionContent className='p-0'>
+                              {children
+                                ? children.map(details => (
+                                    <li
+                                      className='flex list-none items-center gap-1'
+                                      key={details.label}>
+                                      <Link
+                                        key={details.label}
+                                        href={details.href}
+                                        onClick={() => setOpen(false)}
+                                        className='w-full rounded px-3 py-2 transition-colors hover:bg-secondary/10'
+                                        target={
+                                          details.newTab ? '_blank' : '_self'
+                                        }>
+                                        {details.label}
+                                      </Link>
+                                    </li>
+                                  ))
+                                : null}
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                      ) : (
+                        <Link
+                          href={href}
+                          onClick={() => setOpen(false)}
+                          className='w-full rounded px-3 py-2 transition-colors hover:bg-secondary/10'
+                          target={newTab ? '_blank' : '_self'}>
+                          {label}
+                        </Link>
+                      )}
+                    </li>
+                  )
+                })}
+
+                {data && (
+                  <li className='flex list-none items-center gap-1'>
+                    <p
+                      onClick={handleSignOut}
+                      className='flex w-full cursor-pointer items-center gap-1 rounded px-3 py-2 transition-colors hover:bg-secondary/10'>
+                      <LogOut size={16} className='mr-2' />
+                      Log out
+                    </p>
+                  </li>
+                )}
+              </ul>
+            )}
+          </ul>
         </aside>
       )}
     </>

@@ -1,6 +1,6 @@
 'use client'
 
-import { User } from '@payload-types'
+import { Category, User } from '@payload-types'
 import { LogOut, ReceiptText, UserRound, UserRoundCog } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -23,9 +23,11 @@ import { Button } from './common/Button'
 const ProfileDropdown = ({
   user,
   navLinks,
+  categoriesData,
 }: {
   user: User | null
   navLinks: GenerateMenuLinksType[]
+  categoriesData: Category[]
 }) => {
   const router = useRouter()
   const { data } = trpc.user.getUser.useQuery(undefined, {
@@ -123,6 +125,7 @@ const ProfileDropdown = ({
       )}
 
       <HamburgerMenu
+        categoriesData={categoriesData}
         data={data}
         userDetails={userDetails}
         handleSignOut={handleSignOut}
