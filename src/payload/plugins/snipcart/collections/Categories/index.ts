@@ -1,5 +1,8 @@
 import { isAdmin } from '../../access/isAdmin'
-import { revalidateCategories } from '../../hooks/revalidateCategories'
+import {
+  revalidateCategoriesAfterChange,
+  revalidateCategoriesAfterDelete,
+} from '../../hooks/revalidateCategories'
 import { slugField } from 'node_modules/@contentql/core/dist/payload/fields/slug'
 import { CollectionConfig, ValueWithRelation } from 'payload'
 
@@ -17,7 +20,8 @@ export const Categories: CollectionConfig = {
     drafts: true,
   },
   hooks: {
-    afterChange: [revalidateCategories],
+    afterChange: [revalidateCategoriesAfterChange],
+    afterDelete: [revalidateCategoriesAfterDelete],
   },
   access: {
     read: () => true,

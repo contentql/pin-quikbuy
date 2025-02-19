@@ -1,5 +1,8 @@
 import { isAdmin } from '../../access/isAdmin'
-import { revalidateProducts } from '../../hooks/revalidateProducts'
+import {
+  revalidateProductsAfterChange,
+  revalidateProductsAfterDelete,
+} from '../../hooks/revalidateProducts'
 import { slugField } from 'node_modules/@contentql/core/dist/payload/fields/slug'
 import { CollectionConfig } from 'payload'
 
@@ -25,13 +28,13 @@ export const Products: CollectionConfig = {
   },
   hooks: {
     afterChange: [
-      revalidateProducts,
+      revalidateProductsAfterChange,
       manageProductsCountInCategories,
       createOrFetchSnipcartProduct,
       updateSnipcartProduct,
     ],
     beforeChange: [manageProductAttributes, validateStock],
-    afterDelete: [deleteSnipcartProduct],
+    afterDelete: [deleteSnipcartProduct, revalidateProductsAfterDelete],
   },
   access: {
     read: () => true,

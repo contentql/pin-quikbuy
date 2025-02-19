@@ -1,4 +1,7 @@
-import { revalidateWishlist } from '../../hooks/revalidateWishlist'
+import {
+  revalidateWishlistAfterChange,
+  revalidateWishlistAfterDelete,
+} from '../../hooks/revalidateWishlist'
 import { CollectionConfig } from 'payload'
 
 export const Wishlist: CollectionConfig = {
@@ -11,7 +14,8 @@ export const Wishlist: CollectionConfig = {
     drafts: true,
   },
   hooks: {
-    afterChange: [revalidateWishlist],
+    afterChange: [revalidateWishlistAfterChange],
+    afterDelete: [revalidateWishlistAfterDelete],
   },
   access: {
     read: ({ req }) => {

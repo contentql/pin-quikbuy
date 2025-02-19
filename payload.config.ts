@@ -8,7 +8,10 @@ import { ResetPassword } from '@/emails/reset-password'
 import { UserAccountVerification } from '@/emails/verify-email'
 import { migrations } from '@/migrations'
 import { blocksConfig } from '@/payload/blocks/blockConfig'
-import { revalidatePages } from '@/payload/hooks/revalidatePages'
+import {
+  revalidatePagesAfterChange,
+  revalidatePagesAfterDelete,
+} from '@/payload/hooks/revalidatePages'
 import { revalidateSiteSettings } from '@/payload/hooks/revalidateSiteSettings'
 import { snipcart } from '@/payload/plugins/snipcart'
 
@@ -121,7 +124,8 @@ export default cqlConfig({
       slug: collectionSlug.pages,
       fields: [],
       hooks: {
-        afterChange: [revalidatePages],
+        afterChange: [revalidatePagesAfterChange],
+        afterDelete: [revalidatePagesAfterDelete],
       },
     },
     // {

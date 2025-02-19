@@ -1,4 +1,7 @@
-import { revalidateOrders } from '../../hooks/revalidateOrders'
+import {
+  revalidateOrdersAfterChange,
+  revalidateOrdersAfterDelete,
+} from '../../hooks/revalidateOrders'
 import { CollectionConfig } from 'payload'
 
 export const Orders: CollectionConfig = {
@@ -11,7 +14,8 @@ export const Orders: CollectionConfig = {
     drafts: true,
   },
   hooks: {
-    afterChange: [revalidateOrders],
+    afterChange: [revalidateOrdersAfterChange],
+    afterDelete: [revalidateOrdersAfterDelete],
   },
   access: {
     read: ({ req }) => {

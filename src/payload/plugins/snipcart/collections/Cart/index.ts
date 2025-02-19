@@ -1,4 +1,7 @@
-import { revalidateCart } from '../../hooks/revalidateCart'
+import {
+  revalidateCartAfterChange,
+  revalidateCartAfterDelete,
+} from '../../hooks/revalidateCart'
 import { CollectionConfig } from 'payload'
 
 import { deleteOldCarts } from './hooks/deleteOldCart'
@@ -69,7 +72,8 @@ export const Cart: CollectionConfig = {
     },
   },
   hooks: {
-    afterChange: [revalidateCart],
+    afterChange: [revalidateCartAfterChange],
+    afterDelete: [revalidateCartAfterDelete],
     beforeChange: [deleteOldCarts],
   },
   admin: {
