@@ -92,6 +92,5 @@ jobs:
             RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
             RESEND_SENDER_EMAIL=${{ secrets.RESEND_SENDER_EMAIL }}
             RESEND_SENDER_NAME=${{ secrets.RESEND_SENDER_NAME }}
-            SUBSCRIPTION_PLAN=${{secrets.SUBSCRIPTION_PLAN}}
             SNIPCART_PUBLIC_API_KEY=${{secrets.SNIPCART_PUBLIC_API_KEY}}
             SNIPCART_SECRET_API_KEY=${{secrets.SNIPCART_SECRET_API_KEY}}
