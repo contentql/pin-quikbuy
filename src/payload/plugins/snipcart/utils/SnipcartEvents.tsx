@@ -28,8 +28,6 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
     for (let i = 0; i < length; i++) {
       password += chars.charAt(Math.floor(Math.random() * chars.length))
     }
-    console.log({ password })
-
     return password
   }
 
@@ -37,16 +35,13 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
     const updateSnipcartCart = async () => {
       const user = await fetchCurrentUser()
       if (!user) {
-        console.log('No user found. Cannot update checkout details.')
         return
       }
 
       const data = await checkAndSetSnipcartCart({ user })
-      console.log({ data })
       if (data?.snipcartId !== data?.oldSnipcartId) {
         // Notify Snipcart to reload the page
         document.dispatchEvent(new CustomEvent('snipcartCartUpdated'))
-        console.log('Cart updated successfully on client')
       }
     }
 
@@ -70,21 +65,16 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
 
       // Item-related events
       registerEvent('item.adding', item => {
-        console.log('Item adding:', item)
-
         // Dispatch a event to do something in frontend
         document.dispatchEvent(new CustomEvent('itemAddingToCart'))
       })
 
       registerEvent('item.added', async item => {
-        console.log('Item added:', item)
-
         // Dispatch a event to do something in frontend
         document.dispatchEvent(new CustomEvent('itemAddedSuccessfullyToCart'))
 
         const user = await fetchCurrentUser()
         if (!user) {
-          console.log('No user found. Cannot update item in cart.')
           return
         }
 
@@ -95,14 +85,11 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
       })
 
       registerEvent('item.updated', async item => {
-        console.log('Item updated:', item)
-
         // Dispatch a event to do something in frontend
         document.dispatchEvent(new CustomEvent('itemUpdatedSuccessfullyToCart'))
 
         const user = await fetchCurrentUser()
         if (!user) {
-          console.log('No user found. Cannot update item in cart.')
           return
         }
 
@@ -113,11 +100,8 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
       })
 
       registerEvent('item.removed', async item => {
-        console.log('Item removed:', item)
-
         const user = await fetchCurrentUser()
         if (!user) {
-          console.log('No user found. Cannot update cart.')
           return
         }
 
@@ -129,11 +113,8 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
 
       // Cart-related events
       registerEvent('cart.created', async cart => {
-        console.log('Cart created:', cart)
-
         const user = await fetchCurrentUser()
         if (!user) {
-          console.log('No user found. Cannot add item to cart.')
           return
         }
 
@@ -144,15 +125,11 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
       })
 
       registerEvent('cart.confirmed', async cart => {
-        console.log('Cart confirmed:', cart)
-
         // Serialize the item object to remove unsupported properties
         const plainOrder = JSON.parse(JSON.stringify(cart))
 
         const currentUser = await fetchCurrentUser()
         if (!currentUser) {
-          console.log('No user found. Cannot add order to cart collection.')
-
           const user = await checkAndCreateUser({
             email: plainOrder.email,
             password: generatePassword(),
@@ -171,58 +148,55 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
         await createPayloadOrder(currentUser, plainOrder)
       })
 
-      registerEvent('cart.confirm.error', confirmError => {
-        console.log('Cart confirm error: ', confirmError)
-      })
+      // registerEvent('cart.confirm.error', confirmError => {
+      //   console.log('Cart confirm error: ', confirmError)
+      // })
 
-      registerEvent('cart.reset', cart => {
-        console.log('Cart reset:', cart)
-      })
+      // registerEvent('cart.reset', cart => {
+      //   console.log('Cart reset:', cart)
+      // })
 
-      // Payment-related events
-      registerEvent('payment.failed', error => {
-        console.log('Payment failed:', error)
-      })
+      // // Payment-related events
+      // registerEvent('payment.failed', error => {
+      //   console.log('Payment failed:', error)
+      // })
 
-      // Discount-related events
-      registerEvent('discount.applied', discount => {
-        console.log('Discount applied:', discount)
-      })
+      // // Discount-related events
+      // registerEvent('discount.applied', discount => {
+      //   console.log('Discount applied:', discount)
+      // })
 
-      // Shipping-related events
-      registerEvent('shipping.selected', shipping => {
-        console.log('Shipping selected:', shipping)
-      })
+      // // Shipping-related events
+      // registerEvent('shipping.selected', shipping => {
+      //   console.log('Shipping selected:', shipping)
+      // })
 
-      // Customer-related events
-      registerEvent('customer.registered', customer => {
-        console.log('Customer registered:', customer)
-      })
+      // // Customer-related events
+      // registerEvent('customer.registered', customer => {
+      //   console.log('Customer registered:', customer)
+      // })
 
-      registerEvent('customer.signedin', customer => {
-        console.log('Customer signed in:', customer)
-      })
+      // registerEvent('customer.signedin', customer => {
+      //   console.log('Customer signed in:', customer)
+      // })
 
-      registerEvent('customer.signedout', () => {
-        console.log('Customer signed out')
-      })
+      // registerEvent('customer.signedout', () => {
+      //   console.log('Customer signed out')
+      // })
 
-      // Initialization and theme-related events
-      registerEvent('snipcart.initialized', state => {
-        console.log('Snipcart initialized:', state)
-      })
+      // // Initialization and theme-related events
+      // registerEvent('snipcart.initialized', state => {
+      //   console.log('Snipcart initialized:', state)
+      // })
 
-      registerEvent('theme.routechanged', routes => {
-        console.log('Theme route changed:', routes)
-      })
+      // registerEvent('theme.routechanged', routes => {
+      //   console.log('Theme route changed:', routes)
+      // })
 
       // Summary-related events
       registerEvent('summary.checkout_clicked', async () => {
-        console.log('Checkout clicked')
-
         const user = await fetchCurrentUser()
         if (!user) {
-          console.log('No user found. Cannot update checkout details.')
           return
         }
 

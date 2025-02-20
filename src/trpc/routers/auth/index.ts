@@ -86,8 +86,6 @@ export const authRouter = router({
             },
             usePublicKey: true,
           })
-
-          console.log('Snipcart customer created successfully:', response)
         } catch (error) {
           console.log('Error creating Snipcart customer:', error)
         }
@@ -147,11 +145,6 @@ export const authRouter = router({
             path: '/',
             maxAge: 60 * 60 * 24 * 7,
           })
-
-          console.log(
-            'Snipcart customer session created successfully:',
-            response,
-          )
         } catch (error) {
           console.log('Error creating Snipcart customer session:', error)
         }

@@ -10,8 +10,6 @@ export const deleteSnipcartProduct: CollectionAfterDeleteHook<
       endpoint: `/products/${doc.slug}`,
       method: 'DELETE',
     })
-
-    console.log('Snipcart product deleted successfully:', response)
   } catch (error) {
     console.error('Error deleting product in Snipcart (DELETE):', error)
   }

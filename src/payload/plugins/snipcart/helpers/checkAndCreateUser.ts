@@ -39,8 +39,6 @@ export const checkAndCreateUser = async ({
     })
     const existingUser = existingUsers[0]
 
-    console.log({ existingUser })
-
     // Get current date in ISO string format
     const currentDate = new Date().toISOString()
 

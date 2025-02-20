@@ -42,11 +42,6 @@ export const checkAndSetSnipcartCart = async ({ user }: { user: User }) => {
       maxAge: 60 * 60 * 24 * 30, // 30 days
     })
 
-    console.log(
-      'Snipcart cart set successfully in cookies:',
-      cartData.snipcartId,
-    )
-
     // Return a response indicating success
     return {
       snipcartId: cartData.snipcartId,

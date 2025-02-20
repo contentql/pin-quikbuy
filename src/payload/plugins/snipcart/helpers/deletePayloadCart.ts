@@ -39,8 +39,6 @@ export const deletePayloadCart = async (
         collection: 'cart',
         id: cart.id,
       })
-
-      console.log('Cart deleted in Payload.')
     } else {
       // Otherwise, update the cart with the remaining items
       await payload.delete({
@@ -51,8 +49,6 @@ export const deletePayloadCart = async (
           },
         },
       })
-
-      console.log('Item removed, cart updated in Payload.')
     }
   } catch (error) {
     console.error('Error deleting cart in Payload:', error)

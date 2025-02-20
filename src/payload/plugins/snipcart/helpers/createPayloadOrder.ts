@@ -177,8 +177,6 @@ export const createPayloadOrder = async (
         user: user.id,
       },
     })
-
-    console.log('Order created successfully in Payload.')
   } catch (error) {
     console.error('Error creating order in Payload:', error)
   }

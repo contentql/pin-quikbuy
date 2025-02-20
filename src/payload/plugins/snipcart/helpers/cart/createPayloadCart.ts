@@ -54,8 +54,6 @@ export const createPayloadCart = async (
         totalPrice: cart.total,
       },
     })
-
-    console.log('Cart created in Payload.')
   } catch (error) {
     console.error('Error creating cart in Payload:', error)
   }

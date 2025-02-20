@@ -54,8 +54,6 @@ export const updateItemInPayloadCart = async (
         },
       },
     })
-
-    console.log('Item updated in cart.')
   } catch (error) {
     console.error('Error updating item in cart:', error)
   }

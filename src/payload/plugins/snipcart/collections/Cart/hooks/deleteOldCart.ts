@@ -26,7 +26,6 @@ export const deleteOldCarts: CollectionBeforeChangeHook<Cart> = async ({
         for (const cart of carts) {
           await payload.delete({ collection: 'cart', id: cart.id })
         }
-        console.log(`Deleted ${carts.length} old carts for user: ${user}`)
       }
     } catch (error) {
       console.error('Error deleting old carts:', error)

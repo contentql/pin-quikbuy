@@ -13,8 +13,6 @@ export const removeSnipcartCustomer = async () => {
 
     const cookieStore = await cookies()
     cookieStore.delete('snipcart-customer')
-
-    console.log('Snipcart customer session deleted successfully.')
   } catch (error) {
     console.log('Error deleting Snipcart customer session:', error)
   }

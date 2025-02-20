@@ -55,8 +55,6 @@ export const snipcartAPI = async <T = any>({
       ...config.headers,
     }
 
-    console.log({ headers })
-
     // Make the HTTP request using the Axios instance and provided options
     const response: AxiosResponse<T> = await snipcartAPIAxiosInstance.request({
       url: endpoint,

@@ -15,8 +15,6 @@ export const updateSnipcartProduct: CollectionAfterChangeHook<
         stock: doc.stock,
       },
     })
-
-    console.log('Snipcart product updated successfully:', response.data)
   } catch (error) {
     console.error('Error updating product in Snipcart (PUT):', error)
   }

@@ -15,8 +15,6 @@ export const createOrFetchSnipcartProduct: CollectionAfterChangeHook<
           fetchUrl: `${process.env.NODE_ENV !== 'production' ? process.env.SNIPCART_LOCAL_DEV_URL : env.PAYLOAD_URL}/product/${doc.slug}`,
         },
       })
-
-      console.log('Snipcart product created successfully:', response)
     } catch (error) {
       console.error('Error creating product with Snipcart:', error)
     }
@@ -47,8 +45,6 @@ export const createOrFetchSnipcartProduct: CollectionAfterChangeHook<
           // ],
         },
       })
-
-      console.log('Snipcart product updated successfully:', response)
     } catch (error) {
       console.error('Error updating product with Snipcart:', error)
     }

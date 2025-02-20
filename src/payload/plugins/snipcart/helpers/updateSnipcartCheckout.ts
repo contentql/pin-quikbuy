@@ -14,8 +14,6 @@ export const updateSnipcartCheckout = async (user: User): Promise<void> => {
       email: user.email,
       metadata: { payloadUserId: user.id },
     })
-
-    console.log('Checkout updated with user metadata.')
   } catch (error) {
     console.error('Error updating Snipcart checkout:', error)
   }
