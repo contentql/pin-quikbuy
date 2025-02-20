@@ -31,7 +31,11 @@ export const checkAndCreateUser = async ({
     // Check if the user already exists
     const { docs: existingUsers } = await payload.find({
       collection: 'users',
-      where: { email: { equals: email } },
+      where: {
+        email: {
+          equals: email,
+        },
+      },
     })
     const existingUser = existingUsers[0]
 
@@ -65,11 +69,16 @@ export const checkAndCreateUser = async ({
           logoTitle: siteData?.general?.title,
         }),
       })
+
       return newUser
     }
 
     // If the user exists, log them in and set the authentication cookie
-    await setAuthCookie(payload, email, password)
+    try {
+      await setAuthCookie(payload, email, password)
+    } catch (error) {
+      console.log('Invalid Credentials: unable to login user.')
+    }
 
     return existingUser
   } catch (error) {
