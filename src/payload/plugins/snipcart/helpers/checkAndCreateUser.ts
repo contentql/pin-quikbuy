@@ -54,9 +54,9 @@ export const checkAndCreateUser = async ({
       await payload.sendEmail({
         to: email,
         from: env?.RESEND_SENDER_EMAIL,
-        subject: 'Project Created Successfully',
+        subject: 'Welcome! Your Account is Ready',
         html: SignUpCredentials({
-          actionLabel: 'Welcome! Your Account is Ready',
+          actionLabel: 'Get Started',
           buttonText: 'Go to Profile',
           userName: username,
           password: password,

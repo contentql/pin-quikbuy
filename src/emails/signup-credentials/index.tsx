@@ -1,3 +1,4 @@
+import { env } from '@env'
 import {
   Body,
   Button,
@@ -43,8 +44,7 @@ export const SignUpCredentialsEmailTemplate = ({
             <Row style={header}>
               <Column>
                 <Img
-                  // src={`${env.PAYLOAD_URL}/favicon.ico`}
-                  src={logo}
+                  src={`${env.PAYLOAD_URL}${logo}`}
                   width='40'
                   height='40'
                   alt='ContentQL'
@@ -61,6 +61,7 @@ export const SignUpCredentialsEmailTemplate = ({
 
             <Text style={infoText}>
               Thank you for signing up! Below are your account credentials:
+              <br />
               <strong>Username:</strong> {userName}
               <br />
               <strong>Password:</strong> {password}
@@ -103,7 +104,7 @@ const header = {
 const title = {
   fontSize: '24px',
   fontWeight: 'bold',
-  color: '#f1f5f9',
+  color: '#020817',
   marginLeft: '10px',
 }
 
@@ -124,14 +125,14 @@ const container = {
 }
 
 const hr = {
-  borderColor: '#334155',
+  borderColor: '#64748B',
   margin: '20px 0',
 }
 
 const infoText = {
   margin: '0 0 10px 0',
   fontSize: '14px',
-  color: '#f1f5f9',
+  color: '#0F172A',
   textAlign: 'left' as const,
 }
 
