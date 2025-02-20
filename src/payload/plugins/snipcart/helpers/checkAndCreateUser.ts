@@ -51,14 +51,19 @@ export const checkAndCreateUser = async ({
       )
 
       await setAuthCookie(payload, email, password)
-      SignUpCredentials({
-        actionLabel: 'Welcome! Your Account is Ready',
-        buttonText: 'Go to Profile',
-        userName: username,
-        password: password,
-        href: `${env.PAYLOAD_URL}/profile`,
-        logo: (siteData.general?.faviconUrl as Media)?.url!,
-        logoTitle: siteData?.general?.title,
+      await payload.sendEmail({
+        to: email,
+        from: env?.RESEND_SENDER_EMAIL,
+        subject: 'Project Created Successfully',
+        html: SignUpCredentials({
+          actionLabel: 'Welcome! Your Account is Ready',
+          buttonText: 'Go to Profile',
+          userName: username,
+          password: password,
+          href: `${env.PAYLOAD_URL}/profile`,
+          logo: (siteData.general?.faviconUrl as Media)?.url!,
+          logoTitle: siteData?.general?.title,
+        }),
       })
       return newUser
     }

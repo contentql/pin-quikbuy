@@ -61,7 +61,9 @@ export const SignUpCredentialsEmailTemplate = ({
 
             <Text style={infoText}>
               Thank you for signing up! Below are your account credentials:
-              Username: {userName} Password: {password}
+              <strong>Username:</strong> {userName}
+              <br />
+              <strong>Password:</strong> {password}
             </Text>
 
             <Text style={infoText}>
@@ -116,7 +118,7 @@ const main = {
 
 const container = {
   maxWidth: '600px',
-  backgroundColor: '#0f172a',
+  backgroundColor: '#F5F5F5',
   margin: 'auto',
   padding: '24px',
 }
