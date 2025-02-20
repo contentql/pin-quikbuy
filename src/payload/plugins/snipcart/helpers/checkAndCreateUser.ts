@@ -1,9 +1,12 @@
 'use server'
 
+import { env } from '@env'
 import configPromise from '@payload-config'
-import { User } from '@payload-types'
+import { Media, User } from '@payload-types'
 import { cookies } from 'next/headers'
 import { getPayload } from 'payload'
+
+import { SignUpCredentials } from '@/emails/signup-credentials'
 
 /**
  * Creates a new user if one doesn't exist, or logs in an existing user.
@@ -19,6 +22,11 @@ export const checkAndCreateUser = async ({
 }): Promise<User | null> => {
   try {
     const payload = await getPayload({ config: configPromise })
+
+    const siteData = await payload.findGlobal({
+      slug: 'site-settings',
+      draft: false,
+    })
 
     // Check if the user already exists
     const { docs: existingUsers } = await payload.find({
@@ -43,6 +51,15 @@ export const checkAndCreateUser = async ({
       )
 
       await setAuthCookie(payload, email, password)
+      SignUpCredentials({
+        actionLabel: 'Welcome! Your Account is Ready',
+        buttonText: 'Go to Profile',
+        userName: username,
+        password: password,
+        href: `${env.PAYLOAD_URL}/profile`,
+        logo: (siteData.general?.faviconUrl as Media)?.url!,
+        logoTitle: siteData?.general?.title,
+      })
       return newUser
     }
 

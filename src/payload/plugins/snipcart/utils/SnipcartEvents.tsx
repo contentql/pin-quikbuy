@@ -21,6 +21,18 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
 
   const trpcUtils = trpc.useUtils()
 
+  function generatePassword(length = 6) {
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]'
+    let password = ''
+    for (let i = 0; i < length; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    console.log({ password })
+
+    return password
+  }
+
   useEffect(() => {
     const updateSnipcartCart = async () => {
       const user = await fetchCurrentUser()
@@ -143,7 +155,7 @@ const SnipcartEvents: React.FC<{ children: React.ReactNode }> = ({
 
           const user = await checkAndCreateUser({
             email: plainOrder.email,
-            password: 'changeme',
+            password: generatePassword(),
             username:
               plainOrder.billingAddress.fullName ||
               plainOrder.billingAddress.name,
