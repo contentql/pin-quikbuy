@@ -1,7 +1,7 @@
 'use client'
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 import { Input } from '@/components/common/Input'
 import { useDebouncedValue } from '@/lib/hooks'
@@ -31,15 +31,25 @@ export const SearchInputPlaceholder = ({
   )
 }
 
-export const SearchInput = ({ placeholder }: { placeholder: string }) => {
+export const SearchInput = ({
+  placeholder,
+  onSearch,
+}: {
+  placeholder: string
+  onSearch: (query: string) => void
+}) => {
   const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const router = useRouter()
 
   const searchParamQuery = searchParams.get('q') ?? ''
 
   const [query, setQuery] = useState(searchParamQuery)
-  const [_isQueryPending, debouncedQuery] = useDebouncedValue(query, 100)
+  const [_isQueryPending, debouncedQuery] = useDebouncedValue(query, 300)
+
+  useEffect(() => {
+    if (debouncedQuery || query === '') {
+      onSearch(debouncedQuery)
+    }
+  }, [debouncedQuery, query, onSearch])
 
   return (
     <Input
@@ -48,6 +58,8 @@ export const SearchInput = ({ placeholder }: { placeholder: string }) => {
       type='search'
       enterKeyHint='search'
       name='search'
+      value={query}
+      onChange={e => setQuery(e.target.value)}
     />
   )
 }

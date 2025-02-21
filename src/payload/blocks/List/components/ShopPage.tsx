@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
+import { useSearch } from '@/components/SearchContext'
 import { trpc } from '@/trpc/client'
 import { formatCurrency } from '@/utils/formatCurrency'
 
@@ -19,6 +20,7 @@ export default function ShopPage({
 }) {
   const searchParams = useSearchParams()
   const category = searchParams.get('category')
+  const { searchResults, searchTitle } = useSearch()
 
   const { data: categoryId } = trpc.category.getCategoryByName.useQuery({
     categoryName: category ?? '',
@@ -29,7 +31,11 @@ export default function ShopPage({
       categoryId: categoryId,
     })
 
-  const displayProducts = category ? productsByCategories : products
+  const displayProducts = searchTitle
+    ? searchResults
+    : category
+      ? productsByCategories
+      : products
 
   function capitalizeFirstLetter(val: string) {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1)
@@ -38,9 +44,11 @@ export default function ShopPage({
   return (
     <>
       <div className='text-3xl font-bold leading-none tracking-tight text-foreground'>
-        {category
-          ? `${capitalizeFirstLetter(category)} Products`
-          : 'All Products'}
+        {searchTitle
+          ? `Searching "${searchTitle}"`
+          : category
+            ? `${capitalizeFirstLetter(category)} Products`
+            : 'All Products'}
       </div>
       <ul className='mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
         {displayProducts?.map((product, idx) => {

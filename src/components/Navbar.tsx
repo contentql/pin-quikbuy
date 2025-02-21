@@ -1,9 +1,10 @@
 'use client'
 
-import type { Category, SiteSetting, User } from '@payload-types'
+import type { Category, Product, SiteSetting, User } from '@payload-types'
 import { ChevronDown, SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Suspense } from 'react'
 
 import {
@@ -20,18 +21,23 @@ import {
 import { generateMenuLinks } from '@/utils/generateMenuLinks'
 
 import ProfileDropdown from './ProfileDropdown'
+import { useSearch } from './SearchContext'
 
 const Navbar = ({
   metadata,
   user,
   categoriesData,
+  productsData,
 }: {
   metadata: SiteSetting
   user: User | null
   categoriesData: Category[]
+  productsData: Product[]
 }) => {
+  const router = useRouter()
   const { navbar } = metadata
   const { logo, menuLinks } = navbar
+  const { setSearchResults, setSearchTitle } = useSearch()
 
   let logoDetails = {
     url: '',
@@ -151,8 +157,27 @@ const Navbar = ({
               fallback={
                 <SearchInputPlaceholder placeholder='Search for products…' />
               }>
-              <SearchInput placeholder='Search for products…' />
+              <SearchInput
+                placeholder='Search for products…'
+                onSearch={async query => {
+                  try {
+                    query && router.push('/products')
+                    // Assuming `products` is an already available array of product data
+                    const filteredProducts = productsData.filter(product =>
+                      product.name.toLowerCase().includes(query.toLowerCase()),
+                    )
+                    setSearchTitle(query)
+                    setSearchResults(filteredProducts)
+                    return filteredProducts // Send back the filtered results
+                  } catch (error) {
+                    console.error('Search API Error:', error)
+                  }
+
+                  // Handle the search query as needed
+                }}
+              />
             </Suspense>
+
             <SearchIcon className='block h-5 w-5 max-smb:z-10 max-smb:cursor-pointer xs:-ml-7' />
           </label>
         </div>
